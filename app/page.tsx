@@ -1,34 +1,137 @@
+'use client';
+
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { categories, getFeaturedProducts, getPromoProducts } from '@/lib/products';
-import { ShoppingCart, MapPin, Truck, CheckCircle, CreditCard, Zap } from 'lucide-react';
+import { ShoppingCart, MapPin, Truck, CheckCircle, CreditCard, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import * as Icons from '@/lib/icons';
 
 export default function Home() {
   const featuredProducts = getFeaturedProducts(8);
   const promoProducts = getPromoProducts(8);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      id: 1,
+      title: "Promotion -15% sur tous les produits frais !",
+      subtitle: "Fromages, lait, beurre et plus encore",
+      buttonText: "Voir les promotions",
+      buttonLink: "/products/promo",
+      bgColor: "from-primary to-primary-600",
+      icon: Icons.Milk
+    },
+    {
+      id: 2,
+      title: "Livraison express en 3h maximum",
+      subtitle: "Commandez maintenant, recevez rapidement",
+      buttonText: "Commander maintenant",
+      buttonLink: "/products",
+      bgColor: "from-secondary to-secondary-600",
+      icon: Truck
+    },
+    {
+      id: 3,
+      title: "Nouveaux produits pour bébés",
+      subtitle: "Découvrez notre sélection spécialisée",
+      buttonText: "Découvrir",
+      buttonLink: "/products/bebes",
+      bgColor: "from-accent to-yellow-500",
+      icon: Icons.Baby
+    },
+    {
+      id: 4,
+      title: "Produits d'entretien à prix réduits",
+      subtitle: "Jusqu'à -20% sur votre hygiène quotidienne",
+      buttonText: "Profiter des offres",
+      buttonLink: "/products/entretien",
+      bgColor: "from-tertiary to-orange-400",
+      icon: Icons.Sparkles
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section avec localisation */}
-      <section className="bg-gradient-to-br from-primary-50 to-accent-50 py-8 md:py-12">
-        <div className="container-app">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Bienvenue chez MonEpice&Riz
-            </h1>
-            <p className="text-lg md:text-xl text-gray-700 mb-6">
-              Votre épicerie de confiance à <span className="font-semibold text-primary">Abidjan</span>
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/products" className="btn-primary inline-flex items-center">
-                <ShoppingCart className="w-5 h-5 mr-2" />
-                Commencer mes courses
-              </Link>
-              <Link href="/delivery" className="btn-outline">
-                En savoir plus sur la livraison
-              </Link>
+      {/* Carousel de promotions */}
+      <section className="relative h-64 md:h-80 overflow-hidden">
+        <div className="relative w-full h-full">
+          {slides.map((slide, index) => (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-transform duration-500 ease-in-out ${
+                index === currentSlide ? 'translate-x-0' : 
+                index < currentSlide ? '-translate-x-full' : 'translate-x-full'
+              }`}
+            >
+              <div className={`w-full h-full bg-gradient-to-r ${slide.bgColor} text-white`}>
+                <div className="container-app h-full flex items-center">
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex-1">
+                      <h1 className="text-2xl md:text-4xl font-bold mb-2">
+                        {slide.title}
+                      </h1>
+                      <p className="text-lg md:text-xl mb-6 opacity-90">
+                        {slide.subtitle}
+                      </p>
+                      <Link 
+                        href={slide.buttonLink} 
+                        className="inline-flex items-center bg-white text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                      >
+                        <ShoppingCart className="w-5 h-5 mr-2" />
+                        {slide.buttonText}
+                      </Link>
+                    </div>
+                    <div className="hidden md:block ml-8">
+                      <slide.icon className="w-32 h-32 opacity-20" />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
+
+        {/* Navigation buttons */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full transition-all"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full transition-all"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+
+        {/* Indicators */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-colors ${
+                index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'
+              }`}
+            />
+          ))}
         </div>
       </section>
 
