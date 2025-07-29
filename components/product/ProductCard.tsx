@@ -40,8 +40,8 @@ export default function ProductCard({ product }: ProductCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href={`/product/${product.slug}`} className="flex-1">
-        <div className="relative">
+      <Link href={`/product/${product.slug}`} className="flex-1 flex flex-col">
+        <div className="relative flex-shrink-0">
           {/* Image produit */}
           <div className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
             <div className="w-full h-full flex items-center justify-center p-4 transition-transform duration-200 group-hover:scale-110">
@@ -82,35 +82,37 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Informations produit */}
-        <div className="space-y-2">
-          <h3 className="font-medium text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
-            {product.name}
-          </h3>
-          
-          {product.weight && (
-            <p className="text-sm text-gray-600">{product.weight}</p>
-          )}
+        <div className="flex-1 flex flex-col justify-between">
+          <div className="space-y-2">
+            <h3 className="font-medium text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
+              {product.name}
+            </h3>
+            
+            {product.weight && (
+              <p className="text-sm text-gray-600">{product.weight}</p>
+            )}
 
-          {/* Prix */}
-          <div className="flex items-baseline space-x-2">
-            {product.isPromo && product.promoPrice ? (
-              <>
+            {/* Prix */}
+            <div className="flex items-baseline space-x-2">
+              {product.isPromo && product.promoPrice ? (
+                <>
+                  <span className="text-lg font-bold text-primary">
+                    {product.promoPrice.toLocaleString('fr-FR')} F
+                  </span>
+                  <span className="text-sm text-gray-500 line-through">
+                    {product.price.toLocaleString('fr-FR')} F
+                  </span>
+                </>
+              ) : (
                 <span className="text-lg font-bold text-primary">
-                  {product.promoPrice.toLocaleString('fr-FR')} F
-                </span>
-                <span className="text-sm text-gray-500 line-through">
                   {product.price.toLocaleString('fr-FR')} F
                 </span>
-              </>
-            ) : (
-              <span className="text-lg font-bold text-primary">
-                {product.price.toLocaleString('fr-FR')} F
-              </span>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Rating */}
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1 mt-2">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
                 <svg
@@ -131,7 +133,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       {/* Actions */}
-      <div className="mt-4 pt-4 border-t">
+      <div className="mt-4 pt-4 border-t flex-shrink-0">
         {product.stock === 'out_of_stock' ? (
           <button disabled className="btn-primary w-full opacity-50 cursor-not-allowed">
             Rupture de stock

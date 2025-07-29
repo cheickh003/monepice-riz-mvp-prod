@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Carousel de promotions */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
+      <section className="relative h-52 sm:h-64 md:h-80 overflow-hidden">
         <div className="relative w-full h-full">
           {slides.map((slide, index) => (
             <div
@@ -80,25 +80,25 @@ export default function Home() {
               }`}
             >
               <div className={`w-full h-full bg-gradient-to-r ${slide.bgColor} text-white`}>
-                <div className="container-app h-full flex items-center">
+                <div className="container-app h-full flex items-center py-4">
                   <div className="flex items-center justify-between w-full">
-                    <div className="flex-1">
-                      <h1 className="text-2xl md:text-4xl font-bold mb-2">
+                    <div className="flex-1 pr-4">
+                      <h1 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-bold mb-2 leading-tight">
                         {slide.title}
                       </h1>
-                      <p className="text-lg md:text-xl mb-6 opacity-90">
+                      <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 md:mb-6 opacity-90 leading-relaxed">
                         {slide.subtitle}
                       </p>
                       <Link 
                         href={slide.buttonLink} 
-                        className="inline-flex items-center bg-white text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                        className="inline-flex items-center bg-white text-gray-900 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base"
                       >
-                        <ShoppingCart className="w-5 h-5 mr-2" />
-                        {slide.buttonText}
+                        <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                        <span className="truncate">{slide.buttonText}</span>
                       </Link>
                     </div>
-                    <div className="hidden md:block ml-8">
-                      <slide.icon className="w-32 h-32 opacity-20" />
+                    <div className="hidden sm:block ml-4 md:ml-8 flex-shrink-0">
+                      <slide.icon className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 opacity-20" />
                     </div>
                   </div>
                 </div>
@@ -110,24 +110,24 @@ export default function Home() {
         {/* Navigation buttons */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full transition-all"
+          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white p-1.5 sm:p-2 rounded-full transition-all z-10"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full transition-all"
+          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white p-1.5 sm:p-2 rounded-full transition-all z-10"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
         </button>
 
         {/* Indicators */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 sm:space-x-2">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-colors ${
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
                 index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'
               }`}
             />
@@ -178,9 +178,9 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
             {featuredProducts.slice(0, 8).map((product) => (
-              <div key={product.id} className="text-center">
-                <Link href={`/product/${product.slug}`} className="block group">
-                  <div className="w-full aspect-square bg-white rounded-lg shadow-sm overflow-hidden mb-2 group-hover:shadow-md transition-shadow">
+              <div key={product.id} className="flex flex-col h-full">
+                <Link href={`/product/${product.slug}`} className="block group flex-1 flex flex-col">
+                  <div className="w-full aspect-square bg-white rounded-lg shadow-sm overflow-hidden mb-2 group-hover:shadow-md transition-shadow flex-shrink-0">
                     <div className="w-full h-full flex items-center justify-center p-4">
                       {(() => {
                         const Icon = Icons.categoryIcons[product.mainCategory as keyof typeof Icons.categoryIcons] || Icons.Package;
@@ -188,14 +188,16 @@ export default function Home() {
                       })()}
                     </div>
                   </div>
-                  <h3 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
-                    {product.name}
-                  </h3>
-                  <p className="text-sm font-bold text-primary mt-1">
-                    {product.price.toLocaleString('fr-FR')} F
-                  </p>
+                  <div className="text-center flex-1 flex flex-col justify-between">
+                    <h3 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-primary transition-colors mb-2">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm font-bold text-primary">
+                      {product.price.toLocaleString('fr-FR')} F
+                    </p>
+                  </div>
                 </Link>
-                <button className="btn-primary text-xs py-2 px-3 mt-2 w-full">
+                <button className="btn-primary text-xs py-2 px-3 mt-2 w-full flex-shrink-0">
                   + Ajouter
                 </button>
               </div>
@@ -219,10 +221,10 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {promoProducts.slice(0, 4).map((product) => (
-                <div key={product.id} className="card group">
-                  <Link href={`/product/${product.slug}`}>
+                <div key={product.id} className="card group h-full flex flex-col">
+                  <Link href={`/product/${product.slug}`} className="flex-1 flex flex-col">
                     <div className="relative">
-                      <div className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
+                      <div className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3 flex-shrink-0">
                         <div className="w-full h-full flex items-center justify-center p-4">
                           {(() => {
                             const Icon = Icons.categoryIcons[product.mainCategory as keyof typeof Icons.categoryIcons] || Icons.Package;
@@ -234,19 +236,21 @@ export default function Home() {
                         -15%
                       </span>
                     </div>
-                    <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                      {product.name}
-                    </h3>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-lg font-bold text-primary">
-                        {product.promoPrice?.toLocaleString('fr-FR')} F
-                      </span>
-                      <span className="text-sm text-gray-500 line-through">
-                        {product.price.toLocaleString('fr-FR')} F
-                      </span>
+                    <div className="flex-1 flex flex-col justify-between">
+                      <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg font-bold text-primary">
+                          {product.promoPrice?.toLocaleString('fr-FR')} F
+                        </span>
+                        <span className="text-sm text-gray-500 line-through">
+                          {product.price.toLocaleString('fr-FR')} F
+                        </span>
+                      </div>
                     </div>
                   </Link>
-                  <button className="btn-accent w-full mt-3 text-sm">
+                  <button className="btn-accent w-full mt-3 text-sm flex-shrink-0">
                     Ajouter au panier
                   </button>
                 </div>
