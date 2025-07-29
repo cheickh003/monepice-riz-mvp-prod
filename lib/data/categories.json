@@ -1,0 +1,44 @@
+[
+  {
+    "id": "frais",
+    "name": "Produits Frais",
+    "slug": "frais",
+    "description": "Produits laitiers, fromages, beurre et produits frais",
+    "productCount": 22
+  },
+  {
+    "id": "sec",
+    "name": "Produits Secs",
+    "slug": "sec",
+    "description": "Épicerie, conserves, biscuits et produits secs",
+    "productCount": 33
+  },
+  {
+    "id": "boissons",
+    "name": "Boissons",
+    "slug": "boissons",
+    "description": "Boissons gazeuses, jus, sirops et boissons énergisantes",
+    "productCount": 40
+  },
+  {
+    "id": "entretien",
+    "name": "Hygiène & Entretien",
+    "slug": "entretien",
+    "description": "Produits d'hygiène et d'entretien",
+    "productCount": 10
+  },
+  {
+    "id": "bebes",
+    "name": "Bébés",
+    "slug": "bebes",
+    "description": "Produits pour bébés et enfants",
+    "productCount": 10
+  },
+  {
+    "id": "promo",
+    "name": "Promotions",
+    "slug": "promo",
+    "description": "Produits en promotion",
+    "productCount": 15
+  }
+]
