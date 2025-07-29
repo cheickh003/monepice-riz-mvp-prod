@@ -122,13 +122,15 @@ export default function Home() {
         </button>
 
         {/* Indicators */}
-        <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 sm:space-x-2">
+        <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 sm:space-x-2">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
-                index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'
+              className={`transition-all duration-300 ${
+                index === currentSlide 
+                  ? 'w-6 h-1.5 sm:w-8 sm:h-2 bg-white rounded-full' 
+                  : 'w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white bg-opacity-40 rounded-full hover:bg-opacity-60'
               }`}
             />
           ))}
