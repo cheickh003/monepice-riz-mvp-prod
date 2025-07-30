@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/lib/stores/cartStore';
 import { useCheckoutStore } from '@/lib/stores/checkoutStore';
 import { CheckCircle, Loader2, ShoppingBag, CreditCard, Truck } from 'lucide-react';
 
-export default function ProcessingPage() {
+function ProcessingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderNumber = searchParams.get('order') || `MEP${Date.now().toString().slice(-8)}`;
@@ -39,10 +39,31 @@ export default function ProcessingPage() {
   ];
 
   useEffect(() => {
-    let timeouts: NodeJS.Timeout[] = [];
+    const timeouts: NodeJS.Timeout[] = [];
     let totalDuration = 0;
 
-    steps.forEach((step, index) => {
+    const stepData = [
+      {
+        icon: CreditCard,
+        title: "Validation du paiement",
+        subtitle: "Vérification de votre transaction...",
+        duration: 2000
+      },
+      {
+        icon: ShoppingBag,
+        title: "Confirmation de commande",
+        subtitle: "Enregistrement de votre commande...",
+        duration: 1500
+      },
+      {
+        icon: Truck,
+        title: "Préparation en cours",
+        subtitle: "Transmission à notre équipe...",
+        duration: 1500
+      }
+    ];
+
+    stepData.forEach((step, index) => {
       const timeout = setTimeout(() => {
         setCurrentStep(index);
       }, totalDuration);
@@ -195,5 +216,17 @@ export default function ProcessingPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProcessingPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-accent-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    }>
+      <ProcessingContent />
+    </Suspense>
   );
 }
