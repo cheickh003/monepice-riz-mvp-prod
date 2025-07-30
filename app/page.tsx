@@ -125,31 +125,17 @@ export default function Home() {
         {/* Navigation buttons */}
         <button
           onClick={prevSlide}
-          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white p-1.5 sm:p-2 rounded-full transition-all z-10"
+          className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 text-white hover:text-gray-200 transition-all duration-200 z-10 p-2 hover:scale-110"
         >
-          <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+          <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 drop-shadow-lg" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white p-1.5 sm:p-2 rounded-full transition-all z-10"
+          className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 text-white hover:text-gray-200 transition-all duration-200 z-10 p-2 hover:scale-110"
         >
-          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+          <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 drop-shadow-lg" />
         </button>
 
-        {/* Indicators */}
-        <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 sm:space-x-2">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`transition-all duration-300 ${
-                index === currentSlide 
-                  ? 'w-6 h-1.5 sm:w-8 sm:h-2 bg-white rounded-full' 
-                  : 'w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white bg-opacity-40 rounded-full hover:bg-opacity-60'
-              }`}
-            />
-          ))}
-        </div>
       </section>
 
       {/* Section Produits Frais du Jour - Mise en avant */}
