@@ -84,9 +84,8 @@ export default function PaymentPage() {
     // Generate order number
     const orderNumber = `MEP${Date.now().toString().slice(-8)}`;
     
-    // Clear cart and redirect to confirmation
-    clearCart();
-    router.push(`/checkout/confirmation?order=${orderNumber}`);
+    // Redirect to processing page (cart will be cleared there)
+    router.push(`/checkout/processing?order=${orderNumber}`);
   };
 
   const getMobileMoneyLogo = (provider: string) => {

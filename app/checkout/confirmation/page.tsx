@@ -1,14 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useCheckoutStore } from '@/lib/stores/checkoutStore';
-import { Check, Phone, MessageCircle, Lightbulb } from 'lucide-react';
+import { Check, Phone, MessageCircle, Lightbulb, MapPin, Clock, CreditCard, Package } from 'lucide-react';
 
 export default function ConfirmationPage() {
-  // Générer un numéro de commande basé sur le timestamp
-  const orderNumber = `MEP${Date.now().toString().slice(-8)}`;
-  const { resetCheckout } = useCheckoutStore();
+  const searchParams = useSearchParams();
+  const orderNumber = searchParams.get('order') || `MEP${Date.now().toString().slice(-8)}`;
+  const { resetCheckout, deliveryMethod, deliveryAddress, customerInfo } = useCheckoutStore();
 
   useEffect(() => {
     // Reset checkout store after successful order
@@ -37,16 +38,59 @@ export default function ConfirmationPage() {
 
           {/* Order Details */}
           <div className="bg-gray-50 rounded-lg p-6 mb-8">
-            <div className="space-y-3">
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <p className="text-sm text-gray-500">Numéro de commande</p>
                 <p className="text-2xl font-bold text-primary">{orderNumber}</p>
               </div>
               
-              <div className="pt-3 border-t border-gray-200">
-                <p className="text-sm text-gray-600">
-                  Un email de confirmation a été envoyé avec tous les détails de votre commande.
+              <div>
+                <p className="text-sm text-gray-500">Heure de commande</p>
+                <p className="text-lg font-semibold text-gray-900">
+                  {new Date().toLocaleString('fr-FR', { 
+                    day: '2-digit',
+                    month: '2-digit', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
                 </p>
+              </div>
+            </div>
+            
+            <div className="pt-4 border-t border-gray-200 mt-4">
+              <p className="text-sm text-gray-600 mb-4">
+                Un SMS de confirmation a été envoyé au {customerInfo?.phone || '+225 XX XX XX XX'}.
+              </p>
+              
+              {/* Delivery Info */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="flex items-start space-x-3">
+                  <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {deliveryMethod === 'pickup' ? 'Retrait en magasin' : 'Livraison à domicile'}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {deliveryMethod === 'pickup' 
+                        ? 'Allocodrome, Av. Jean Mermoz, Abidjan'
+                        : deliveryAddress?.street || 'Adresse de livraison'
+                      }
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3">
+                  <Clock className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {deliveryMethod === 'pickup' ? 'Disponible dès' : 'Livraison prévue'}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Dans 3h maximum
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
