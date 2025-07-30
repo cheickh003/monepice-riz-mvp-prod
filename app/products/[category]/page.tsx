@@ -6,6 +6,7 @@ import Link from 'next/link';
 import ProductCard from '@/components/product/ProductCard';
 import { getProductsByCategory, getCategoryBySlug, categories } from '@/lib/products';
 import { Product } from '@/lib/types';
+import * as Icons from '@/lib/icons';
 
 export default function CategoryPage() {
   const params = useParams();
@@ -194,11 +195,84 @@ export default function CategoryPage() {
           <div className="flex-1">
             {/* Header */}
             <div className="mb-6">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                {category.icon} {category.name}
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 flex items-center">
+                {(() => {
+                  const Icon = Icons.categoryIcons[category.id as keyof typeof Icons.categoryIcons];
+                  return Icon ? <Icon className="w-8 h-8 mr-3" /> : null;
+                })()}
+                {category.name}
               </h1>
               <p className="text-gray-600">{category.description}</p>
             </div>
+
+            {/* Bannières promotionnelles pour les catégories fraîches */}
+            {categorySlug === 'boucherie' && (
+              <div className="bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg p-6 mb-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">🥩 Qualité Boucherie Garantie</h3>
+                    <p className="mb-3">Viandes fraîches livrées tous les jours • Découpe sur mesure</p>
+                    <div className="flex flex-wrap gap-2 text-sm">
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Bœuf premium</span>
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Agneau tendre</span>
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Veau de qualité</span>
+                    </div>
+                  </div>
+                  <div className="hidden md:block text-6xl opacity-20">🥩</div>
+                </div>
+              </div>
+            )}
+
+            {categorySlug === 'poissonnerie' && (
+              <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg p-6 mb-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">🐟 Poissons Frais de San Pedro</h3>
+                    <p className="mb-3">Arrivage quotidien direct du port • Fraîcheur incomparable</p>
+                    <div className="flex flex-wrap gap-2 text-sm">
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Pêche du jour</span>
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Fruits de mer</span>
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Livraison glacée</span>
+                    </div>
+                  </div>
+                  <div className="hidden md:block text-6xl opacity-20">🐟</div>
+                </div>
+              </div>
+            )}
+
+            {categorySlug === 'volaille' && (
+              <div className="bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg p-6 mb-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">🐔 Volailles d'Élevage Local</h3>
+                    <p className="mb-3">Poulets fermiers élevés en plein air • Sans hormones</p>
+                    <div className="flex flex-wrap gap-2 text-sm">
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Poulet fermier</span>
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Dinde fraîche</span>
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Canard savoureux</span>
+                    </div>
+                  </div>
+                  <div className="hidden md:block text-6xl opacity-20">🐔</div>
+                </div>
+              </div>
+            )}
+
+            {categorySlug === 'charcuterie' && (
+              <div className="bg-gradient-to-r from-pink-600 to-pink-500 text-white rounded-lg p-6 mb-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">🥓 Charcuterie Fine Sélectionnée</h3>
+                    <p className="mb-3">Jambons et saucissons de qualité • Conservation optimale</p>
+                    <div className="flex flex-wrap gap-2 text-sm">
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Jambon premium</span>
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Saucissons artisanaux</span>
+                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Pâtés maison</span>
+                    </div>
+                  </div>
+                  <div className="hidden md:block text-6xl opacity-20">🥓</div>
+                </div>
+              </div>
+            )}
 
             {/* Barre de tri et filtres mobile */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -317,7 +391,10 @@ export default function CategoryPage() {
                   href={`/products/${cat.slug}`}
                   className="bg-white px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-shadow flex items-center space-x-2"
                 >
-                  <span className="text-2xl">{cat.icon}</span>
+                  {(() => {
+                    const Icon = Icons.categoryIcons[cat.id as keyof typeof Icons.categoryIcons];
+                    return Icon ? <Icon className="w-6 h-6" /> : null;
+                  })()}
                   <span className="font-medium">{cat.name}</span>
                 </Link>
               ))}

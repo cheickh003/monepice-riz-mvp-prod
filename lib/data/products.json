@@ -2964,6 +2964,535 @@
     "promoPrice": null
   },
   {
+    "id": 116,
+    "ref": "2400102000",
+    "barcode": "2400102000000",
+    "name": "Entrecôte de Bœuf",
+    "slug": "entrecote-de-boeuf",
+    "category": "VIANDE DE BOEUF FRAICHE",
+    "mainCategory": "boucherie",
+    "price": 7280,
+    "priceHT": 7280,
+    "priceTTC": 7280,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-boucherie.jpg"
+    ],
+    "description": "Entrecôte de bœuf fraîche de qualité supérieure - Idéal pour grillades et barbecue",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.8,
+    "reviewCount": 45,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Frais du jour",
+      "Premium"
+    ]
+  },
+  {
+    "id": 117,
+    "ref": "2400103000",
+    "barcode": "2400103000000",
+    "name": "Filet de Bœuf",
+    "slug": "filet-de-boeuf",
+    "category": "VIANDE DE BOEUF FRAICHE",
+    "mainCategory": "boucherie",
+    "price": 8500,
+    "priceHT": 8500,
+    "priceTTC": 8500,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-boucherie.jpg"
+    ],
+    "description": "Filet de bœuf tendre et savoureux - La pièce noble par excellence",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.9,
+    "reviewCount": 38,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Frais du jour",
+      "Coup de cœur"
+    ]
+  },
+  {
+    "id": 118,
+    "ref": "2400100000",
+    "barcode": "2400100000000",
+    "name": "Bourguignon Nature",
+    "slug": "bourguignon-nature",
+    "category": "VIANDE DE BOEUF FRAICHE",
+    "mainCategory": "boucherie",
+    "price": 4380,
+    "priceHT": 4380,
+    "priceTTC": 4380,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-boucherie.jpg"
+    ],
+    "description": "Viande de bœuf coupée en morceaux pour bourguignon - Idéal pour mijotés",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.6,
+    "reviewCount": 52,
+    "isFeatured": true,
+    "isPromo": true,
+    "promoPrice": 3723,
+    "badges": [
+      "Promo -15%"
+    ]
+  },
+  {
+    "id": 119,
+    "ref": "2400149000",
+    "barcode": "2400149000000",
+    "name": "Gigot d'Agneau",
+    "slug": "gigot-agneau",
+    "category": "VIANDE FRAICHE D'AGNEAU",
+    "mainCategory": "boucherie",
+    "price": 7200,
+    "priceHT": 7200,
+    "priceTTC": 7200,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-boucherie.jpg"
+    ],
+    "description": "Gigot d'agneau frais - Parfait pour les grandes occasions",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.7,
+    "reviewCount": 28,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Frais du jour"
+    ]
+  },
+  {
+    "id": 120,
+    "ref": "2400163000",
+    "barcode": "2400163000000",
+    "name": "Escalope de Veau",
+    "slug": "escalope-de-veau",
+    "category": "VIANDE FRAICHE DE VEAU",
+    "mainCategory": "boucherie",
+    "price": 6980,
+    "priceHT": 6980,
+    "priceTTC": 6980,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-boucherie.jpg"
+    ],
+    "description": "Escalope de veau tendre et délicate - Qualité garantie",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.8,
+    "reviewCount": 33,
+    "isFeatured": false,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Frais du jour"
+    ]
+  },
+  {
+    "id": 121,
+    "ref": "2400201000",
+    "barcode": "2400201000000",
+    "name": "Poisson Chinchard Frais",
+    "slug": "poisson-chinchard-frais",
+    "category": "POISSONS ET FRUITS DE MER",
+    "mainCategory": "poissonnerie",
+    "price": 1500,
+    "priceHT": 1500,
+    "priceTTC": 1500,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-poissonnerie.jpg"
+    ],
+    "description": "Chinchard frais pêché à San Pedro - Riche en oméga 3",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.5,
+    "reviewCount": 67,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Pêche du jour",
+      "San Pedro"
+    ]
+  },
+  {
+    "id": 122,
+    "ref": "2400187000",
+    "barcode": "2400187000000",
+    "name": "Poisson Mérou",
+    "slug": "poisson-merou",
+    "category": "POISSONS ET FRUITS DE MER",
+    "mainCategory": "poissonnerie",
+    "price": 5850,
+    "priceHT": 5850,
+    "priceTTC": 5850,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-poissonnerie.jpg"
+    ],
+    "description": "Mérou frais de San Pedro - Chair ferme et savoureuse",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.8,
+    "reviewCount": 41,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Premium",
+      "San Pedro"
+    ]
+  },
+  {
+    "id": 123,
+    "ref": "2400242000",
+    "barcode": "2400242000000",
+    "name": "Crevettes Fraîches",
+    "slug": "crevettes-fraiches",
+    "category": "POISSONS ET FRUITS DE MER",
+    "mainCategory": "poissonnerie",
+    "price": 5600,
+    "priceHT": 5600,
+    "priceTTC": 5600,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-poissonnerie.jpg"
+    ],
+    "description": "Crevettes fraîches de San Pedro - Décortiquées et prêtes à cuisiner",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.9,
+    "reviewCount": 89,
+    "isFeatured": true,
+    "isPromo": true,
+    "promoPrice": 4760,
+    "badges": [
+      "Promo -15%",
+      "San Pedro"
+    ]
+  },
+  {
+    "id": 124,
+    "ref": "2400213000",
+    "barcode": "2400213000573",
+    "name": "Langouste",
+    "slug": "langouste",
+    "category": "POISSONS ET FRUITS DE MER",
+    "mainCategory": "poissonnerie",
+    "price": 16000,
+    "priceHT": 16000,
+    "priceTTC": 16000,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "low_stock",
+    "images": [
+      "/images/products/placeholder-poissonnerie.jpg"
+    ],
+    "description": "Langouste fraîche - Produit d'exception pour les grandes occasions",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 5.0,
+    "reviewCount": 12,
+    "isFeatured": false,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Luxe",
+      "San Pedro"
+    ]
+  },
+  {
+    "id": 125,
+    "ref": "2400205000",
+    "barcode": "2400205000573",
+    "name": "Tilapia Frais",
+    "slug": "tilapia-frais",
+    "category": "POISSONS ET FRUITS DE MER",
+    "mainCategory": "poissonnerie",
+    "price": 5000,
+    "priceHT": 5000,
+    "priceTTC": 5000,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-poissonnerie.jpg"
+    ],
+    "description": "Tilapia frais d'élevage local - Chair blanche et délicate",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.4,
+    "reviewCount": 72,
+    "isFeatured": false,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Local"
+    ]
+  },
+  {
+    "id": 126,
+    "ref": "2400137000",
+    "barcode": "2400137000000",
+    "name": "Poulet Effilé +1.5kg",
+    "slug": "poulet-effile-1-5kg",
+    "category": "VOLAILLE",
+    "mainCategory": "volaille",
+    "price": 3300,
+    "priceHT": 3300,
+    "priceTTC": 3300,
+    "currency": "XOF",
+    "unit": "unité",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-volaille.jpg"
+    ],
+    "description": "Poulet effilé frais de plus de 1.5kg - Élevage local de qualité",
+    "brand": "MonEpice&Riz",
+    "weight": "1.5kg+",
+    "rating": 4.6,
+    "reviewCount": 124,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Frais du jour",
+      "Local"
+    ]
+  },
+  {
+    "id": 127,
+    "ref": "2400138000",
+    "barcode": "2400138000000",
+    "name": "Poulet Fermier",
+    "slug": "poulet-fermier",
+    "category": "VOLAILLE",
+    "mainCategory": "volaille",
+    "price": 6000,
+    "priceHT": 6000,
+    "priceTTC": 6000,
+    "currency": "XOF",
+    "unit": "unité",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-volaille.jpg"
+    ],
+    "description": "Poulet fermier élevé en plein air - Goût authentique garanti",
+    "brand": "MonEpice&Riz",
+    "weight": "2kg environ",
+    "rating": 4.9,
+    "reviewCount": 87,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Premium",
+      "Fermier"
+    ]
+  },
+  {
+    "id": 128,
+    "ref": "2400146000",
+    "barcode": "2400146000000",
+    "name": "Pintade Fraîche",
+    "slug": "pintade-fraiche",
+    "category": "VOLAILLE",
+    "mainCategory": "volaille",
+    "price": 7500,
+    "priceHT": 7500,
+    "priceTTC": 7500,
+    "currency": "XOF",
+    "unit": "unité",
+    "stock": "low_stock",
+    "images": [
+      "/images/products/placeholder-volaille.jpg"
+    ],
+    "description": "Pintade fraîche - Viande savoureuse et peu grasse",
+    "brand": "MonEpice&Riz",
+    "weight": "1.5kg environ",
+    "rating": 4.7,
+    "reviewCount": 34,
+    "isFeatured": false,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Frais du jour"
+    ]
+  },
+  {
+    "id": 129,
+    "ref": "2400141000",
+    "barcode": "2400141000000",
+    "name": "Dinde PAC",
+    "slug": "dinde-pac",
+    "category": "VOLAILLE",
+    "mainCategory": "volaille",
+    "price": 6000,
+    "priceHT": 6000,
+    "priceTTC": 6000,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-volaille.jpg"
+    ],
+    "description": "Dinde prête à cuire - Idéale pour les repas de famille",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.5,
+    "reviewCount": 56,
+    "isFeatured": true,
+    "isPromo": true,
+    "promoPrice": 5100,
+    "badges": [
+      "Promo -15%"
+    ]
+  },
+  {
+    "id": 130,
+    "ref": "2400056000",
+    "barcode": "2400056000000",
+    "name": "Jambon de Bœuf Extra",
+    "slug": "jambon-boeuf-extra",
+    "category": "JAMBONS",
+    "mainCategory": "charcuterie",
+    "price": 7077,
+    "priceHT": 7077,
+    "priceTTC": 7077,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-charcuterie.jpg"
+    ],
+    "description": "Jambon de bœuf extra - Qualité supérieure, peu de gras",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.6,
+    "reviewCount": 78,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Qualité Extra"
+    ]
+  },
+  {
+    "id": 131,
+    "ref": "6186000222",
+    "barcode": "6186000222346",
+    "name": "Saucisson de Bœuf",
+    "slug": "saucisson-boeuf",
+    "category": "SALAISONS",
+    "mainCategory": "charcuterie",
+    "price": 850,
+    "priceHT": 850,
+    "priceTTC": 850,
+    "currency": "XOF",
+    "unit": "unité",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-charcuterie.jpg"
+    ],
+    "description": "Saucisson de bœuf 250g - Idéal pour l'apéritif",
+    "brand": "MonEpice&Riz",
+    "weight": "250g",
+    "rating": 4.4,
+    "reviewCount": 93,
+    "isFeatured": false,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": []
+  },
+  {
+    "id": 132,
+    "ref": "2400086000",
+    "barcode": "2400086000000",
+    "name": "Chipolata de Bœuf",
+    "slug": "chipolata-boeuf",
+    "category": "SAUCISSE POUR BARBECUE",
+    "mainCategory": "charcuterie",
+    "price": 6824,
+    "priceHT": 6824,
+    "priceTTC": 6824,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-charcuterie.jpg"
+    ],
+    "description": "Chipolatas de bœuf - Parfaites pour barbecue et grillades",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.7,
+    "reviewCount": 102,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Spécial BBQ"
+    ]
+  },
+  {
+    "id": 133,
+    "ref": "2400088000",
+    "barcode": "2400088000000",
+    "name": "Merguez",
+    "slug": "merguez",
+    "category": "SAUCISSE POUR BARBECUE",
+    "mainCategory": "charcuterie",
+    "price": 5750,
+    "priceHT": 5750,
+    "priceTTC": 5750,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-charcuterie.jpg"
+    ],
+    "description": "Merguez épicées - L'incontournable du barbecue",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.8,
+    "reviewCount": 156,
+    "isFeatured": true,
+    "isPromo": true,
+    "promoPrice": 4888,
+    "badges": [
+      "Promo -15%",
+      "Best-seller"
+    ]
+  },
+  {
     "id": 115,
     "ref": "BEB010",
     "barcode": "8901030987654",

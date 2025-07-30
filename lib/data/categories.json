@@ -1,5 +1,33 @@
 [
   {
+    "id": "boucherie",
+    "name": "Boucherie",
+    "slug": "boucherie",
+    "description": "Viandes fraîches de bœuf, agneau et veau",
+    "productCount": 45
+  },
+  {
+    "id": "poissonnerie",
+    "name": "Poissonnerie",
+    "slug": "poissonnerie",
+    "description": "Poissons frais de San Pedro et fruits de mer",
+    "productCount": 35
+  },
+  {
+    "id": "volaille",
+    "name": "Volaille",
+    "slug": "volaille",
+    "description": "Poulets, dindes, canards et volailles fraîches",
+    "productCount": 25
+  },
+  {
+    "id": "charcuterie",
+    "name": "Charcuterie",
+    "slug": "charcuterie",
+    "description": "Jambons, saucissons, pâtés et charcuteries fines",
+    "productCount": 30
+  },
+  {
     "id": "frais",
     "name": "Produits Frais",
     "slug": "frais",

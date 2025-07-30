@@ -32,7 +32,11 @@ import {
   CheckCircle,
   XCircle,
   Loader2,
-  MessageCircle
+  MessageCircle,
+  Beef,
+  Bird,
+  Fish,
+  Sandwich
 } from 'lucide-react';
 
 // Mapping des catégories vers les icônes
@@ -42,6 +46,10 @@ export const categoryIcons = {
   boissons: Droplets,
   entretien: Sparkles,
   bebes: Baby,
+  boucherie: Beef,
+  volaille: Bird,
+  poissonnerie: Fish,
+  charcuterie: Sandwich,
   promo: Tag,
 };
 
@@ -80,5 +88,9 @@ export {
   CheckCircle,
   XCircle,
   Loader2,
-  MessageCircle
+  MessageCircle,
+  Beef,
+  Bird,
+  Fish,
+  Sandwich
 };

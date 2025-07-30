@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { categories } from '@/lib/products';
+import * as Icons from '@/lib/icons';
 
 export default function ProductsPage() {
   return (
@@ -16,6 +17,52 @@ export default function ProductsPage() {
         </div>
       </section>
 
+      {/* Bannière promotionnelle pour produits frais */}
+      <section className="bg-gradient-to-r from-green-500 to-green-600 text-white py-8">
+        <div className="container-app">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">
+              🥩 Nouveau : Produits Frais Disponibles ! 🐟
+            </h2>
+            <p className="text-lg opacity-90">
+              Boucherie • Poissonnerie • Volaille • Charcuterie
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {categories
+              .filter(cat => ['boucherie', 'poissonnerie', 'volaille', 'charcuterie'].includes(cat.id))
+              .map((category) => (
+                <Link
+                  key={category.id}
+                  href={`/products/${category.slug}`}
+                  className="bg-white/10 backdrop-blur hover:bg-white/20 rounded-lg p-4 text-center transition-all group"
+                >
+                  <div className="text-4xl mb-2">
+                    {(() => {
+                      const Icon = Icons.categoryIcons[category.id as keyof typeof Icons.categoryIcons];
+                      return Icon ? <Icon className="w-10 h-10 mx-auto" /> : null;
+                    })()}
+                  </div>
+                  <h3 className="font-semibold group-hover:scale-105 transition-transform">
+                    {category.name}
+                  </h3>
+                  <p className="text-sm opacity-90 mt-1">
+                    {category.productCount} produits
+                  </p>
+                </Link>
+              ))}
+          </div>
+          <div className="text-center mt-6">
+            <span className="inline-flex items-center bg-white/20 px-4 py-2 rounded-full text-sm">
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Livraison express garantie pour tous les produits frais
+            </span>
+          </div>
+        </div>
+      </section>
+
       {/* Catégories */}
       <section className="py-12">
         <div className="container-app">
@@ -27,7 +74,12 @@ export default function ProductsPage() {
                 className="card hover:scale-[1.02] transition-transform duration-200 group"
               >
                 <div className="flex items-start space-x-4">
-                  <div className="text-5xl flex-shrink-0">{category.icon}</div>
+                  <div className="text-5xl flex-shrink-0">
+                    {(() => {
+                      const Icon = Icons.categoryIcons[category.id as keyof typeof Icons.categoryIcons];
+                      return Icon ? <Icon className="w-12 h-12" /> : null;
+                    })()}
+                  </div>
                   <div className="flex-1">
                     <h2 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors">
                       {category.name}

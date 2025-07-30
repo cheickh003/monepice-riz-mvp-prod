@@ -2,18 +2,33 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { categories, getFeaturedProducts, getPromoProducts } from '@/lib/products';
+import { categories, getFeaturedProducts, getPromoProducts, getProductsByCategory } from '@/lib/products';
 import { ShoppingCart, MapPin, Truck, CheckCircle, CreditCard, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import * as Icons from '@/lib/icons';
+import ProductCard from '@/components/product/ProductCard';
 
 export default function Home() {
   const featuredProducts = getFeaturedProducts(8);
   const promoProducts = getPromoProducts(8);
   const [currentSlide, setCurrentSlide] = useState(0);
+  
+  // Récupérer les produits frais du jour
+  const boucherieProducts = getProductsByCategory('boucherie').slice(0, 4);
+  const poissonnerieProducts = getProductsByCategory('poissonnerie').slice(0, 4);
+  const volailleProducts = getProductsByCategory('volaille').slice(0, 4);
 
   const slides = [
     {
       id: 1,
+      title: "🥩 Nouveau ! Boucherie, Poissonnerie & Volaille",
+      subtitle: "Produits frais livrés tous les jours • Poissons de San Pedro",
+      buttonText: "Découvrir nos produits frais",
+      buttonLink: "#produits-frais",
+      bgColor: "from-red-500 to-orange-500",
+      icon: Icons.Beef
+    },
+    {
+      id: 2,
       title: "Promotion -15% sur tous les produits frais !",
       subtitle: "Fromages, lait, beurre et plus encore",
       buttonText: "Voir les promotions",
@@ -22,7 +37,7 @@ export default function Home() {
       icon: Icons.Milk
     },
     {
-      id: 2,
+      id: 3,
       title: "Livraison express en 3h maximum",
       subtitle: "Commandez maintenant, recevez rapidement",
       buttonText: "Commander maintenant",
@@ -31,7 +46,7 @@ export default function Home() {
       icon: Truck
     },
     {
-      id: 3,
+      id: 4,
       title: "Nouveaux produits pour bébés",
       subtitle: "Découvrez notre sélection spécialisée",
       buttonText: "Découvrir",
@@ -40,7 +55,7 @@ export default function Home() {
       icon: Icons.Baby
     },
     {
-      id: 4,
+      id: 5,
       title: "Produits d'entretien à prix réduits",
       subtitle: "Jusqu'à -20% sur votre hygiène quotidienne",
       buttonText: "Profiter des offres",
@@ -134,6 +149,97 @@ export default function Home() {
               }`}
             />
           ))}
+        </div>
+      </section>
+
+      {/* Section Produits Frais du Jour - Mise en avant */}
+      <section className="py-12 bg-gradient-to-b from-green-50 to-white">
+        <div className="container-app">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              🥩 Produits Frais du Jour 🐟
+            </h2>
+            <p className="text-lg text-gray-600">
+              Viandes fraîches, poissons de San Pedro et volailles de qualité
+            </p>
+          </div>
+
+          {/* Boucherie */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <Icons.Beef className="w-8 h-8 text-red-600 mr-3" />
+                <h3 className="text-2xl font-bold text-gray-900">Boucherie</h3>
+                <span className="ml-3 bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
+                  Fraîcheur garantie
+                </span>
+              </div>
+              <Link href="/products/boucherie" className="text-red-600 hover:text-red-700 font-medium">
+                Voir tout →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {boucherieProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+
+          {/* Poissonnerie */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <Icons.Fish className="w-8 h-8 text-blue-600 mr-3" />
+                <h3 className="text-2xl font-bold text-gray-900">Poissonnerie</h3>
+                <span className="ml-3 bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
+                  Direct de San Pedro
+                </span>
+              </div>
+              <Link href="/products/poissonnerie" className="text-blue-600 hover:text-blue-700 font-medium">
+                Voir tout →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {poissonnerieProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+
+          {/* Volaille */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <Icons.Bird className="w-8 h-8 text-orange-600 mr-3" />
+                <h3 className="text-2xl font-bold text-gray-900">Volaille</h3>
+                <span className="ml-3 bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-medium">
+                  Élevage local
+                </span>
+              </div>
+              <Link href="/products/volaille" className="text-orange-600 hover:text-orange-700 font-medium">
+                Voir tout →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {volailleProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+
+          {/* Bannière d'information */}
+          <div className="bg-gradient-to-r from-primary to-primary-600 text-white rounded-lg p-6 text-center">
+            <h4 className="text-xl font-bold mb-2">
+              🚚 Livraison Express de Produits Frais
+            </h4>
+            <p className="mb-4">
+              Commandez avant 10h pour une livraison le jour même
+            </p>
+            <Link href="/products" className="inline-flex items-center bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              <ShoppingCart className="w-5 h-5 mr-2" />
+              Commander maintenant
+            </Link>
+          </div>
         </div>
       </section>
 
