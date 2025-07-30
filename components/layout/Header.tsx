@@ -14,11 +14,32 @@ export default function Header() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const totalItems = useCartStore((state) => state.getTotalItems());
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Header disparaît quand on scroll vers le bas et réapparaît quand on scroll vers le haut
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+      
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -29,7 +50,9 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className={`sticky top-0 z-50 bg-white shadow-sm transition-transform duration-300 ${
+      isScrolled ? '-translate-y-full' : 'translate-y-0'
+    }`}>
       {/* Bannière supérieure défilante */}
       <div className="bg-gradient-to-r from-accent via-tertiary to-accent text-gray-900 py-2 overflow-hidden">
         <div className="flex animate-scroll whitespace-nowrap">
