@@ -158,9 +158,6 @@ export default function Home() {
               <div className="flex items-center">
                 <Icons.Beef className="w-8 h-8 text-red-600 mr-3" />
                 <h3 className="text-2xl font-bold text-gray-900">Boucherie</h3>
-                <span className="ml-3 bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
-                  Fraîcheur garantie
-                </span>
               </div>
               <Link href="/products/boucherie" className="text-red-600 hover:text-red-700 font-medium">
                 Voir tout →
@@ -179,9 +176,6 @@ export default function Home() {
               <div className="flex items-center">
                 <Icons.Fish className="w-8 h-8 text-blue-600 mr-3" />
                 <h3 className="text-2xl font-bold text-gray-900">Poissonnerie</h3>
-                <span className="ml-3 bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
-                  Direct de San Pedro
-                </span>
               </div>
               <Link href="/products/poissonnerie" className="text-blue-600 hover:text-blue-700 font-medium">
                 Voir tout →
@@ -200,9 +194,6 @@ export default function Home() {
               <div className="flex items-center">
                 <Icons.Bird className="w-8 h-8 text-orange-600 mr-3" />
                 <h3 className="text-2xl font-bold text-gray-900">Volaille</h3>
-                <span className="ml-3 bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-medium">
-                  Élevage local
-                </span>
               </div>
               <Link href="/products/volaille" className="text-orange-600 hover:text-orange-700 font-medium">
                 Voir tout →
@@ -221,9 +212,6 @@ export default function Home() {
               <div className="flex items-center">
                 <Icons.Star className="w-8 h-8 text-yellow-600 mr-3" />
                 <h3 className="text-2xl font-bold text-gray-900">Épices</h3>
-                <span className="ml-3 bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-sm font-medium">
-                  Authentiques
-                </span>
               </div>
               <Link href="/products/epices" className="text-yellow-600 hover:text-yellow-700 font-medium">
                 Voir tout →
@@ -242,9 +230,6 @@ export default function Home() {
               <div className="flex items-center">
                 <Icons.Zap className="w-8 h-8 text-gray-600 mr-3" />
                 <h3 className="text-2xl font-bold text-gray-900">Les petits fumées</h3>
-                <span className="ml-3 bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-medium">
-                  Fumage artisanal
-                </span>
               </div>
               <Link href="/products/petits-fumes" className="text-gray-600 hover:text-gray-700 font-medium">
                 Voir tout →
