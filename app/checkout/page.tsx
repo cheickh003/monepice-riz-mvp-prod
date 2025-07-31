@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/stores/cartStore';
 import { useState } from 'react';
-import { ShoppingCart, Minus, Plus, Trash2 } from 'lucide-react';
+import { ShoppingCart, Minus, Plus } from 'lucide-react';
 import * as Icons from '@/lib/icons';
 
 export default function CheckoutPage() {

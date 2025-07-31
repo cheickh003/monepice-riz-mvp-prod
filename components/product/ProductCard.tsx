@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { Product } from '@/lib/types';
 import { useCartStore } from '@/lib/stores/cartStore';
@@ -11,7 +10,6 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const { addItem, updateQuantity, getItemQuantity } = useCartStore();
   const quantity = getItemQuantity(product.id);
 
@@ -35,11 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div 
-      className="card h-full flex flex-col group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="card h-full flex flex-col group">
       <Link href={`/product/${product.slug}`} className="flex-1 flex flex-col">
         <div className="relative flex-shrink-0">
           {/* Image produit */}

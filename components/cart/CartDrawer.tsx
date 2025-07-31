@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/stores/cartStore';
-import { X, ShoppingCart, Minus, Plus, Trash2 } from 'lucide-react';
+import { X, ShoppingCart, Minus, Plus } from 'lucide-react';
 import * as Icons from '@/lib/icons';
 
 interface CartDrawerProps {

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/lib/stores/cartStore';
 import CartDrawer from '@/components/cart/CartDrawer';
-import { MapPin, Truck, Search, ShoppingCart, User, Menu, X, ChevronRight } from 'lucide-react';
+import { MapPin, Truck, Search, ShoppingCart, User, Menu, X } from 'lucide-react';
 import * as Icons from '@/lib/icons';
 
 export default function Header() {

@@ -25,7 +25,6 @@ export default function DeliveryPage() {
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [selectedDate, setSelectedDate] = useState<'today' | 'tomorrow'>('today');
-  const [showAddressForm, setShowAddressForm] = useState(true);
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -265,8 +264,7 @@ export default function DeliveryPage() {
             {deliveryMethod === 'delivery' && (
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-lg font-semibold mb-4">Adresse de livraison</h2>
-                {showAddressForm && (
-                  <div className="space-y-4">
+                <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Adresse complète *
@@ -336,8 +334,7 @@ export default function DeliveryPage() {
                         />
                       </div>
                     </div>
-                  </div>
-                )}
+                </div>
               </div>
             )}
 

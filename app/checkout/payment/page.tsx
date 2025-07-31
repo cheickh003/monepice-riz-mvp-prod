@@ -3,17 +3,17 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCheckoutStore } from '@/lib/stores/checkoutStore';
 import { useCartStore } from '@/lib/stores/cartStore';
-import { CreditCard, Smartphone, Lock, CheckCircle, XCircle } from 'lucide-react';
+import { CreditCard, CheckCircle, XCircle } from 'lucide-react';
 
 export default function PaymentPage() {
   const router = useRouter();
-  const { items, getCart, clearCart } = useCartStore();
+  const { items, getCart } = useCartStore();
   const cart = getCart();
   const {
     customerInfo,
-    deliveryAddress,
     deliveryMethod,
     deliverySlot,
     paymentMethod,
@@ -91,15 +91,15 @@ export default function PaymentPage() {
   const getMobileMoneyLogo = (provider: string) => {
     switch (provider) {
       case 'orange':
-        return '🟠';
+        return '/images/payment-logos/logo orange money.png';
       case 'mtn':
-        return '🟡';
+        return '/images/payment-logos/mtn money.png';
       case 'moov':
-        return '🔵';
+        return '/images/payment-logos/logo moov money.webp';
       case 'wave':
-        return '🌊';
+        return '/images/payment-logos/Logo vague.png';
       default:
-        return '💰';
+        return '/images/payment-logos/logo moov money.webp';
     }
   };
 
@@ -163,10 +163,10 @@ export default function PaymentPage() {
                 {paymentMethod === 'mobile_money' && (
                   <div className="ml-12 grid grid-cols-2 md:grid-cols-4 gap-3">
                     {[
-                      { id: 'orange', name: 'Orange Money', logo: '🟠' },
-                      { id: 'mtn', name: 'MTN Money', logo: '🟡' },
-                      { id: 'moov', name: 'Moov Money', logo: '🔵' },
-                      { id: 'wave', name: 'Wave', logo: '🌊' },
+                      { id: 'orange', name: 'Orange Money', logo: '/images/payment-logos/logo orange money.png' },
+                      { id: 'mtn', name: 'MTN Money', logo: '/images/payment-logos/mtn money.png' },
+                      { id: 'moov', name: 'Moov Money', logo: '/images/payment-logos/logo moov money.webp' },
+                      { id: 'wave', name: 'Wave', logo: '/images/payment-logos/Logo vague.png' },
                     ].map((provider) => (
                       <label
                         key={provider.id}
@@ -181,10 +181,17 @@ export default function PaymentPage() {
                           name="mobileMoneyProvider"
                           value={provider.id}
                           checked={mobileMoneyProvider === provider.id}
-                          onChange={() => setMobileMoneyProvider(provider.id as any)}
+                          onChange={() => setMobileMoneyProvider(provider.id as 'orange' | 'mtn' | 'moov' | 'wave')}
                           className="sr-only"
                         />
-                        <span className="text-3xl mb-1">{provider.logo}</span>
+                        <div className="w-12 h-12 mb-1 relative">
+                          <Image
+                            src={provider.logo}
+                            alt={provider.name}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
                         <span className="text-xs text-center">{provider.name}</span>
                       </label>
                     ))}
@@ -206,7 +213,22 @@ export default function PaymentPage() {
                       <p className="text-sm text-gray-600">Visa, Mastercard</p>
                     </div>
                     <div className="flex space-x-2">
-                      <CreditCard className="w-6 h-6" />
+                      <div className="w-8 h-5 relative">
+                        <Image
+                          src="/images/payment-logos/visa logo.webp"
+                          alt="Visa"
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                      <div className="w-8 h-5 relative">
+                        <Image
+                          src="/images/payment-logos/Logo Mastercard.svg"
+                          alt="Mastercard"
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
                     </div>
                   </div>
                 </label>
@@ -393,7 +415,14 @@ export default function PaymentPage() {
                   {paymentMethod === 'mobile_money' && (
                     <div className="mb-6">
                       <p className="text-sm text-gray-600 mb-2">Paiement via:</p>
-                      <div className="text-4xl">{getMobileMoneyLogo(mobileMoneyProvider || '')}</div>
+                      <div className="w-16 h-16 relative mx-auto mb-2">
+                        <Image
+                          src={getMobileMoneyLogo(mobileMoneyProvider || '')}
+                          alt={`${mobileMoneyProvider} logo`}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
                       <p className="font-medium capitalize">{mobileMoneyProvider?.replace('_', ' ')}</p>
                     </div>
                   )}

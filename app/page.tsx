@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { categories, getFeaturedProducts, getPromoProducts, getProductsByCategory } from '@/lib/products';
-import { ShoppingCart, MapPin, Truck, CheckCircle, CreditCard, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShoppingCart, Truck, CheckCircle, CreditCard, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import * as Icons from '@/lib/icons';
 import ProductCard from '@/components/product/ProductCard';
 
