@@ -12,7 +12,7 @@ export default function Home() {
   const promoProducts = getPromoProducts(8);
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Récupérer les produits frais du jour
+  // Récupérer les produits du jour
   const boucherieProducts = getProductsByCategory('boucherie').slice(0, 4);
   const poissonnerieProducts = getProductsByCategory('poissonnerie').slice(0, 4);
   const volailleProducts = getProductsByCategory('volaille').slice(0, 4);
@@ -23,15 +23,15 @@ export default function Home() {
     {
       id: 1,
       title: "🥩 Nouveau ! Boucherie, Poissonnerie & Volaille",
-      subtitle: "Produits frais livrés tous les jours • Poissons de San Pedro",
-      buttonText: "Découvrir nos produits frais",
-      buttonLink: "#produits-frais",
+      subtitle: "Livraison quotidienne • Poissons de San Pedro",
+      buttonText: "Découvrir la sélection",
+      buttonLink: "#selection-jour",
       bgColor: "from-red-500 to-orange-500",
       icon: Icons.Beef
     },
     {
       id: 2,
-      title: "Promotion -15% sur tous les produits frais !",
+      title: "Promotion -15% sur la sélection du jour !",
       subtitle: "Fromages, lait, beurre et plus encore",
       buttonText: "Voir les promotions",
       buttonLink: "/products/promo",
@@ -140,15 +140,15 @@ export default function Home() {
 
       </section>
 
-      {/* Section Produits Frais du Jour - Mise en avant */}
+      {/* Section Sélection du Jour - Mise en avant */}
       <section className="py-12 bg-gradient-to-b from-green-50 to-white">
         <div className="container-app">
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-              🥩 Produits Frais du Jour 🐟
+              🥩 Sélection du Jour 🐟
             </h2>
             <p className="text-lg text-gray-600">
-              Viandes fraîches, poissons de San Pedro et volailles de qualité
+              Viandes, poissons de San Pedro et volailles de qualité
             </p>
           </div>
 
@@ -245,7 +245,7 @@ export default function Home() {
           {/* Bannière d'information */}
           <div className="bg-gradient-to-r from-primary to-primary-600 text-white rounded-lg p-6 text-center">
             <h4 className="text-xl font-bold mb-2">
-              🚚 Livraison Express de Produits Frais
+              🚚 Livraison Express
             </h4>
             <p className="mb-4">
               Commandez avant 10h pour une livraison le jour même
@@ -405,7 +405,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Produits de Qualité</h3>
               <p className="text-gray-600">
-                Sélection rigoureuse de produits frais et de marques reconnues
+                Sélection rigoureuse et marques reconnues
               </p>
             </div>
             <div className="text-center">

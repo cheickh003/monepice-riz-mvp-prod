@@ -298,49 +298,49 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Menu mobile overlay - Plein écran */}
+      {/* Menu mobile overlay - Plein écran adaptatif */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-[9999] md:hidden">
-          {/* Menu Panel plein écran */}
-          <div className="absolute inset-0 bg-white animate-menu-fade">
+          {/* Menu Panel plein écran avec vh/vw */}
+          <div className="fixed top-0 left-0 w-screen h-screen bg-white animate-menu-fade overflow-hidden" style={{width: '100vw', height: '100vh', minHeight: '-webkit-fill-available'}}>
             {/* Header minimaliste */}
-            <div className="flex items-center justify-between px-6 py-6 border-b border-gray-100">
-              <h2 className="text-xl font-light tracking-wide text-gray-900">Menu</h2>
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6 border-b border-gray-100">
+              <h2 className="text-lg sm:text-xl font-light tracking-wide text-gray-900">Menu</h2>
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="group relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors duration-200"
+                className="group relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors duration-200"
               >
-                <div className="relative w-5 h-5">
+                <div className="relative w-5 h-5 sm:w-6 sm:h-6">
                   <span className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-600 transform -translate-y-1/2 rotate-45 transition-transform duration-200 group-hover:rotate-[50deg]"></span>
                   <span className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-600 transform -translate-y-1/2 -rotate-45 transition-transform duration-200 group-hover:-rotate-[50deg]"></span>
                 </div>
               </button>
             </div>
             
-            {/* Navigation minimaliste */}
-            <nav className="px-6 py-8 overflow-y-auto max-h-[calc(100vh-88px)] bg-white">
+            {/* Navigation minimaliste avec hauteur adaptative */}
+            <nav className="px-4 sm:px-6 py-6 sm:py-8 overflow-y-auto bg-white" style={{height: 'calc(100vh - 65px)'}}>
               {/* Compte section */}
               <div className="mb-10">
                 <Link 
                   href="/account" 
-                  className="group flex items-center space-x-4 py-3 transition-all duration-200"
+                  className="group flex items-center space-x-3 sm:space-x-4 py-2.5 sm:py-3 transition-all duration-200"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200">
-                    <User className="w-5 h-5 text-gray-600 group-hover:text-primary transition-colors duration-200" />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200">
+                    <User className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 group-hover:text-primary transition-colors duration-200" />
                   </div>
-                  <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Mon compte</span>
+                  <span className="text-sm sm:text-base text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Mon compte</span>
                 </Link>
                 
                 <Link 
                   href="/account/orders" 
-                  className="group flex items-center space-x-4 py-3 transition-all duration-200"
+                  className="group flex items-center space-x-3 sm:space-x-4 py-2.5 sm:py-3 transition-all duration-200"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200">
-                    <Icons.Grid3X3 className="w-5 h-5 text-gray-600 group-hover:text-primary transition-colors duration-200" />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200">
+                    <Icons.Grid3X3 className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 group-hover:text-primary transition-colors duration-200" />
                   </div>
-                  <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Mes commandes</span>
+                  <span className="text-sm sm:text-base text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Mes commandes</span>
                 </Link>
               </div>
               
@@ -349,7 +349,7 @@ export default function Header() {
                 <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Catégories</h3>
                 <ul className="space-y-1">
                   {[
-                    { href: '/products/frais', icon: Icons.Milk, label: 'Laitiers & Frais' },
+                    { href: '/products/frais', icon: Icons.Milk, label: 'Laitiers' },
                     { href: '/products/sec', icon: Icons.Package, label: 'Produits Secs' },
                     { href: '/products/boissons', icon: Icons.Droplets, label: 'Boissons' },
                     { href: '/products/entretien', icon: Icons.Sparkles, label: 'Hygiène & Entretien' },
@@ -360,11 +360,11 @@ export default function Header() {
                     <li key={item.href}>
                       <Link
                         href={item.href}
-                        className="group flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                        className="group flex items-center space-x-2.5 sm:space-x-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <item.icon className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors duration-200" />
-                        <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-200">{item.label}</span>
+                        <item.icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-primary transition-colors duration-200" />
+                        <span className="text-sm sm:text-base text-gray-700 group-hover:text-gray-900 transition-colors duration-200">{item.label}</span>
                       </Link>
                     </li>
                   ))}
@@ -373,12 +373,12 @@ export default function Header() {
                   <li>
                     <Link
                       href="/products/promo"
-                      className="group flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-primary/5 transition-all duration-200"
+                      className="group flex items-center space-x-2.5 sm:space-x-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg hover:bg-primary/5 transition-all duration-200"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <Icons.Tag className="w-5 h-5 text-primary group-hover:text-primary-600 transition-colors duration-200" />
-                      <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Promotions</span>
-                      <span className="ml-auto text-xs bg-primary text-white px-2 py-0.5 rounded-full">-15%</span>
+                      <Icons.Tag className="w-4 h-4 sm:w-5 sm:h-5 text-primary group-hover:text-primary-600 transition-colors duration-200" />
+                      <span className="text-sm sm:text-base text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Promotions</span>
+                      <span className="ml-auto text-xs bg-primary text-white px-1.5 sm:px-2 py-0.5 rounded-full">-15%</span>
                     </Link>
                   </li>
                 </ul>
