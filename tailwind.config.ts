@@ -99,6 +99,9 @@ const config: Config = {
         'fade-in': 'fadeIn 0.3s ease-out',
         'bounce-in': 'bounceIn 0.5s ease-out',
         'scroll': 'scroll 20s linear infinite',
+        'menu-slide': 'menuSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        'menu-fade': 'menuFade 0.3s ease-out',
+        'menu-item-slide': 'menuItemSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
       },
       keyframes: {
         slideIn: {
@@ -106,8 +109,8 @@ const config: Config = {
           '100%': { transform: 'translateX(0)' },
         },
         slideInRight: {
-          '0%': { transform: 'translateX(100%)', opacity: '0' },
-          '100%': { transform: 'translateX(0)', opacity: '1' },
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
         },
         fadeIn: {
           '0%': { opacity: '0' },
@@ -121,6 +124,18 @@ const config: Config = {
         scroll: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
+        },
+        menuSlide: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        menuFade: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        menuItemSlide: {
+          '0%': { transform: 'translateX(20px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
         },
       },
       screens: {

@@ -158,12 +158,23 @@ export default function Header() {
               )}
             </button>
 
-            {/* Menu mobile */}
+            {/* Menu mobile - Hamburger minimaliste */}
             <button
-              className="md:hidden p-2"
+              className="md:hidden relative w-12 h-12 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors duration-200"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Menu"
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              <div className="relative w-6 h-5 flex flex-col justify-between">
+                <span className={`block w-full h-0.5 bg-gray-700 transform transition-all duration-300 ease-out origin-left ${
+                  isMenuOpen ? 'rotate-45 translate-x-[2px]' : ''
+                }`}></span>
+                <span className={`block w-full h-0.5 bg-gray-700 transition-all duration-300 ease-out ${
+                  isMenuOpen ? 'opacity-0 scale-x-0' : ''
+                }`}></span>
+                <span className={`block w-full h-0.5 bg-gray-700 transform transition-all duration-300 ease-out origin-left ${
+                  isMenuOpen ? '-rotate-45 translate-x-[2px]' : ''
+                }`}></span>
+              </div>
             </button>
           </div>
         </div>
@@ -287,83 +298,101 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Menu mobile overlay */}
+      {/* Menu mobile overlay - Plein écran */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-50 animate-fade-in" 
-            onClick={() => setIsMenuOpen(false)} 
-          />
-          <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-xl animate-slide-in-right">
-            <div className="p-4 border-b">
+        <div className="fixed inset-0 z-[9999] md:hidden">
+          {/* Menu Panel plein écran */}
+          <div className="absolute inset-0 bg-white animate-menu-fade">
+            {/* Header minimaliste */}
+            <div className="flex items-center justify-between px-6 py-6 border-b border-gray-100">
+              <h2 className="text-xl font-light tracking-wide text-gray-900">Menu</h2>
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="absolute right-4 top-4 p-2"
+                className="group relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors duration-200"
               >
-                <X className="w-6 h-6" />
+                <div className="relative w-5 h-5">
+                  <span className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-600 transform -translate-y-1/2 rotate-45 transition-transform duration-200 group-hover:rotate-[50deg]"></span>
+                  <span className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-600 transform -translate-y-1/2 -rotate-45 transition-transform duration-200 group-hover:-rotate-[50deg]"></span>
+                </div>
               </button>
-              <h2 className="text-lg font-semibold">Menu</h2>
             </div>
-            <nav className="p-4">
-              <ul className="space-y-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                <li>
-                  <Link href="/account" className="flex items-center space-x-3 text-gray-700 hover:text-primary">
-                    <User className="w-5 h-5" />
-                    <span>Mon compte</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/account/orders" className="flex items-center space-x-3 text-gray-700 hover:text-primary">
-                    <Icons.Grid3X3 className="w-5 h-5" />
-                    <span>Mes commandes</span>
-                  </Link>
-                </li>
-                <li className="pt-4 border-t">
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Catégories</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <Link href="/products/frais" className="flex items-center py-2 text-gray-700 hover:text-primary">
-                        <Icons.Milk className="w-4 h-4 mr-2" /> Laitiers & Frais
+            
+            {/* Navigation minimaliste */}
+            <nav className="px-6 py-8 overflow-y-auto max-h-[calc(100vh-88px)] bg-white">
+              {/* Compte section */}
+              <div className="mb-10">
+                <Link 
+                  href="/account" 
+                  className="group flex items-center space-x-4 py-3 transition-all duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200">
+                    <User className="w-5 h-5 text-gray-600 group-hover:text-primary transition-colors duration-200" />
+                  </div>
+                  <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Mon compte</span>
+                </Link>
+                
+                <Link 
+                  href="/account/orders" 
+                  className="group flex items-center space-x-4 py-3 transition-all duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200">
+                    <Icons.Grid3X3 className="w-5 h-5 text-gray-600 group-hover:text-primary transition-colors duration-200" />
+                  </div>
+                  <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Mes commandes</span>
+                </Link>
+              </div>
+              
+              {/* Catégories */}
+              <div>
+                <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Catégories</h3>
+                <ul className="space-y-1">
+                  {[
+                    { href: '/products/frais', icon: Icons.Milk, label: 'Laitiers & Frais' },
+                    { href: '/products/sec', icon: Icons.Package, label: 'Produits Secs' },
+                    { href: '/products/boissons', icon: Icons.Droplets, label: 'Boissons' },
+                    { href: '/products/entretien', icon: Icons.Sparkles, label: 'Hygiène & Entretien' },
+                    { href: '/products/bebes', icon: Icons.Baby, label: 'Bébés' },
+                    { href: '/products/epices', icon: Icons.Star, label: 'Épices' },
+                    { href: '/products/petits-fumes', icon: Icons.Zap, label: 'Les petits fumées' },
+                  ].map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className="group flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <item.icon className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors duration-200" />
+                        <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-200">{item.label}</span>
                       </Link>
                     </li>
-                    <li>
-                      <Link href="/products/sec" className="flex items-center py-2 text-gray-700 hover:text-primary">
-                        <Icons.Package className="w-4 h-4 mr-2" /> Produits Secs
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/products/boissons" className="flex items-center py-2 text-gray-700 hover:text-primary">
-                        <Icons.Droplets className="w-4 h-4 mr-2" /> Boissons
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/products/entretien" className="flex items-center py-2 text-gray-700 hover:text-primary">
-                        <Icons.Sparkles className="w-4 h-4 mr-2" /> Hygiène & Entretien
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/products/bebes" className="flex items-center py-2 text-gray-700 hover:text-primary">
-                        <Icons.Baby className="w-4 h-4 mr-2" /> Bébés
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/products/epices" className="flex items-center py-2 text-gray-700 hover:text-primary">
-                        <Icons.Star className="w-4 h-4 mr-2" /> Épices
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/products/petits-fumes" className="flex items-center py-2 text-gray-700 hover:text-primary">
-                        <Icons.Zap className="w-4 h-4 mr-2" /> Les petits fumées
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/products/promo" className="flex items-center py-2 text-gray-700 hover:text-primary">
-                        <Icons.Tag className="w-4 h-4 mr-2" /> Promotions
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+                  ))}
+                  
+                  {/* Promotions avec badge */}
+                  <li>
+                    <Link
+                      href="/products/promo"
+                      className="group flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-primary/5 transition-all duration-200"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <Icons.Tag className="w-5 h-5 text-primary group-hover:text-primary-600 transition-colors duration-200" />
+                      <span className="text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Promotions</span>
+                      <span className="ml-auto text-xs bg-primary text-white px-2 py-0.5 rounded-full">-15%</span>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              
+              {/* Contact info */}
+              <div className="mt-10 pt-10 border-t border-gray-100">
+                <p className="text-sm text-gray-500">
+                  Service client<br />
+                  <a href="tel:+2250700000000" className="text-gray-700 hover:text-primary transition-colors duration-200">
+                    +225 07 00 00 00 00
+                  </a>
+                </p>
+              </div>
             </nav>
           </div>
         </div>
