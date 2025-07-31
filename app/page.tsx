@@ -16,6 +16,8 @@ export default function Home() {
   const boucherieProducts = getProductsByCategory('boucherie').slice(0, 4);
   const poissonnerieProducts = getProductsByCategory('poissonnerie').slice(0, 4);
   const volailleProducts = getProductsByCategory('volaille').slice(0, 4);
+  const epicesProducts = getProductsByCategory('epices').slice(0, 4);
+  const petitsFumesProducts = getProductsByCategory('petits-fumes').slice(0, 4);
 
   const slides = [
     {
@@ -38,7 +40,7 @@ export default function Home() {
     },
     {
       id: 3,
-      title: "Livraison express en 3h maximum",
+      title: "Livraison express",
       subtitle: "Commandez maintenant, recevez rapidement",
       buttonText: "Commander maintenant",
       buttonLink: "/products",
@@ -213,6 +215,48 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Épices */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <Icons.Star className="w-8 h-8 text-yellow-600 mr-3" />
+                <h3 className="text-2xl font-bold text-gray-900">Épices</h3>
+                <span className="ml-3 bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-sm font-medium">
+                  Authentiques
+                </span>
+              </div>
+              <Link href="/products/epices" className="text-yellow-600 hover:text-yellow-700 font-medium">
+                Voir tout →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {epicesProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+
+          {/* Les petits fumées */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <Icons.Zap className="w-8 h-8 text-gray-600 mr-3" />
+                <h3 className="text-2xl font-bold text-gray-900">Les petits fumées</h3>
+                <span className="ml-3 bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-medium">
+                  Fumage artisanal
+                </span>
+              </div>
+              <Link href="/products/petits-fumes" className="text-gray-600 hover:text-gray-700 font-medium">
+                Voir tout →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {petitsFumesProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+
           {/* Bannière d'information */}
           <div className="bg-gradient-to-r from-primary to-primary-600 text-white rounded-lg p-6 text-center">
             <h4 className="text-xl font-bold mb-2">
@@ -367,7 +411,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Livraison Express</h3>
               <p className="text-gray-600">
-                Recevez vos courses en 3h maximum dans tout Abidjan
+                Recevez vos courses rapidement dans tout Abidjan
               </p>
             </div>
             <div className="text-center">

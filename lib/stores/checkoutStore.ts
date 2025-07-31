@@ -28,8 +28,8 @@ interface CheckoutStore {
   setDeliveryInstructions: (instructions: string) => void;
 
   // Méthode de paiement
-  paymentMethod: 'mobile_money' | 'card' | 'cash_on_delivery';
-  setPaymentMethod: (method: 'mobile_money' | 'card' | 'cash_on_delivery') => void;
+  paymentMethod: 'mobile_money' | 'card' | 'cash_on_delivery' | 'cash_on_order';
+  setPaymentMethod: (method: 'mobile_money' | 'card' | 'cash_on_delivery' | 'cash_on_order') => void;
 
   // Mobile Money provider
   mobileMoneyProvider: 'orange' | 'mtn' | 'moov' | 'wave' | null;

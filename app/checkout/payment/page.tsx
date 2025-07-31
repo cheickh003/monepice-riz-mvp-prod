@@ -41,8 +41,8 @@ export default function PaymentPage() {
   }, [items, deliverySlot, router]);
 
   const handlePayment = () => {
-    if (paymentMethod === 'cash_on_delivery') {
-      // Direct confirmation for cash on delivery
+    if (paymentMethod === 'cash_on_delivery' || paymentMethod === 'cash_on_order') {
+      // Direct confirmation for cash payments
       completeOrder();
     } else if (paymentMethod === 'mobile_money' && !mobileMoneyProvider) {
       alert('Veuillez sélectionner un opérateur Mobile Money');
@@ -284,6 +284,24 @@ export default function PaymentPage() {
                       <p className="text-sm text-gray-600">Payez en espèces à la réception</p>
                     </div>
                     <span className="text-2xl">💵</span>
+                  </div>
+                </label>
+
+                {/* Cash on Order */}
+                <label className="block">
+                  <div className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="cash_on_order"
+                      checked={paymentMethod === 'cash_on_order'}
+                      onChange={() => setPaymentMethod('cash_on_order')}
+                    />
+                    <div className="flex-1">
+                      <p className="font-medium">Paiement à la commande</p>
+                      <p className="text-sm text-gray-600">Payez en espèces lors de la préparation de votre commande</p>
+                    </div>
+                    <span className="text-2xl">💰</span>
                   </div>
                 </label>
               </div>

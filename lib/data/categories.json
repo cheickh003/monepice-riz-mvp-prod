@@ -11,7 +11,7 @@
     "name": "Poissonnerie",
     "slug": "poissonnerie",
     "description": "Poissons frais de San Pedro et fruits de mer",
-    "productCount": 35
+    "productCount": 40
   },
   {
     "id": "volaille",
@@ -21,15 +21,22 @@
     "productCount": 25
   },
   {
-    "id": "charcuterie",
-    "name": "Charcuterie",
-    "slug": "charcuterie",
-    "description": "Jambons, saucissons, pâtés et charcuteries fines",
-    "productCount": 30
+    "id": "epices",
+    "name": "Épices",
+    "slug": "epices",
+    "description": "Épices africaines, mélanges et condiments",
+    "productCount": 18
+  },
+  {
+    "id": "petits-fumes",
+    "name": "Les petits fumées",
+    "slug": "petits-fumes",
+    "description": "Viandes et poissons fumés de qualité",
+    "productCount": 5
   },
   {
     "id": "frais",
-    "name": "Produits Frais",
+    "name": "Laitiers & Frais",
     "slug": "frais",
     "description": "Produits laitiers, fromages, beurre et produits frais",
     "productCount": 22

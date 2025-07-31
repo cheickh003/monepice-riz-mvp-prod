@@ -27,6 +27,7 @@ import {
   ChevronRight,
   ChevronLeft,
   Star,
+  Zap,
   AlertCircle,
   Info,
   CheckCircle,
@@ -49,7 +50,8 @@ export const categoryIcons = {
   boucherie: Beef,
   volaille: Bird,
   poissonnerie: Fish,
-  charcuterie: Sandwich,
+  epices: Star,
+  'petits-fumes': Zap,
   promo: Tag,
 };
 
@@ -83,6 +85,7 @@ export {
   ChevronRight,
   ChevronLeft,
   Star,
+  Zap,
   AlertCircle,
   Info,
   CheckCircle,

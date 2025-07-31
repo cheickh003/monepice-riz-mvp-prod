@@ -64,7 +64,7 @@ export default function Header() {
             <span className="text-sm">•</span>
             <span className="flex items-center text-sm font-medium">
               <Truck className="w-4 h-4 mr-2 flex-shrink-0" />
-              Livraison en 3h ou retrait gratuit
+              Livraison express ou retrait gratuit
             </span>
             <span className="text-sm">•</span>
             <span className="text-sm font-medium">
@@ -84,7 +84,7 @@ export default function Header() {
             <span className="text-sm">•</span>
             <span className="flex items-center text-sm font-medium">
               <Truck className="w-4 h-4 mr-2 flex-shrink-0" />
-              Livraison en 3h ou retrait gratuit
+              Livraison express ou retrait gratuit
             </span>
             <span className="text-sm">•</span>
             <span className="text-sm font-medium">
@@ -200,7 +200,7 @@ export default function Header() {
                 }`}
               >
                 <Icons.Milk className="w-6 h-6" />
-                <span className="text-xs font-medium">Frais</span>
+                <span className="text-xs font-medium">Laitiers</span>
               </Link>
             </li>
             <li>
@@ -245,6 +245,28 @@ export default function Header() {
               >
                 <Icons.Baby className="w-6 h-6" />
                 <span className="text-xs font-medium">Bébés</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/products/epices"
+                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
+                  pathname === '/products/epices' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
+                }`}
+              >
+                <Icons.Star className="w-6 h-6" />
+                <span className="text-xs font-medium">Épices</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/products/petits-fumes"
+                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
+                  pathname === '/products/petits-fumes' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
+                }`}
+              >
+                <Icons.Zap className="w-6 h-6" />
+                <span className="text-xs font-medium">Fumées</span>
               </Link>
             </li>
             <li>
@@ -301,7 +323,7 @@ export default function Header() {
                   <ul className="space-y-2">
                     <li>
                       <Link href="/products/frais" className="flex items-center py-2 text-gray-700 hover:text-primary">
-                        <Icons.Milk className="w-4 h-4 mr-2" /> Produits Frais
+                        <Icons.Milk className="w-4 h-4 mr-2" /> Laitiers & Frais
                       </Link>
                     </li>
                     <li>
@@ -322,6 +344,16 @@ export default function Header() {
                     <li>
                       <Link href="/products/bebes" className="flex items-center py-2 text-gray-700 hover:text-primary">
                         <Icons.Baby className="w-4 h-4 mr-2" /> Bébés
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/products/epices" className="flex items-center py-2 text-gray-700 hover:text-primary">
+                        <Icons.Star className="w-4 h-4 mr-2" /> Épices
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/products/petits-fumes" className="flex items-center py-2 text-gray-700 hover:text-primary">
+                        <Icons.Zap className="w-4 h-4 mr-2" /> Les petits fumées
                       </Link>
                     </li>
                     <li>
