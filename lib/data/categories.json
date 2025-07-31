@@ -10,7 +10,7 @@
     "id": "poissonnerie",
     "name": "Poissonnerie",
     "slug": "poissonnerie",
-    "description": "Poissons frais de San Pedro et fruits de mer",
+    "description": "Poissons de San Pedro, escargots, crabes et fruits de mer",
     "productCount": 40
   },
   {
@@ -38,7 +38,7 @@
     "id": "frais",
     "name": "Laitiers & Frais",
     "slug": "frais",
-    "description": "Produits laitiers, fromages, beurre et produits frais",
+    "description": "Produits laitiers, fromages, beurre et dérivés",
     "productCount": 22
   },
   {

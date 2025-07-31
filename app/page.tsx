@@ -18,6 +18,12 @@ export default function Home() {
   const volailleProducts = getProductsByCategory('volaille').slice(0, 4);
   const epicesProducts = getProductsByCategory('epices').slice(0, 4);
   const petitsFumesProducts = getProductsByCategory('petits-fumes').slice(0, 4);
+  
+  // Produits phares - Escargots et Crabes
+  const escargotsCrabesProducts = [
+    ...getProductsByCategory('poissonnerie').filter(p => p.name.toLowerCase().includes('escargot') || p.name.toLowerCase().includes('crabe')),
+    ...getProductsByCategory('frais').filter(p => p.name.toLowerCase().includes('escargot') || p.name.toLowerCase().includes('crabe'))
+  ].slice(0, 4);
 
   const slides = [
     {
@@ -148,7 +154,7 @@ export default function Home() {
               🥩 Sélection du Jour 🐟
             </h2>
             <p className="text-lg text-gray-600">
-              Viandes, poissons de San Pedro et volailles de qualité
+              Viandes, poissons de San Pedro, volailles et nos spécialités escargots & crabes
             </p>
           </div>
 
@@ -225,7 +231,7 @@ export default function Home() {
           </div>
 
           {/* Les petits fumées */}
-          <div className="mb-8">
+          <div className="mb-12">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
                 <Icons.Zap className="w-8 h-8 text-gray-600 mr-3" />
@@ -241,6 +247,27 @@ export default function Home() {
               ))}
             </div>
           </div>
+
+          {/* Nos Spécialités - Escargots & Crabes */}
+          {escargotsCrabesProducts.length > 0 && (
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center">
+                  <span className="text-2xl mr-3">🐌🦀</span>
+                  <h3 className="text-2xl font-bold text-gray-900">Nos Spécialités</h3>
+                  <span className="ml-2 text-sm bg-primary text-white px-2 py-1 rounded-full">Phares</span>
+                </div>
+                <Link href="/products/poissonnerie" className="text-primary hover:text-primary-600 font-medium">
+                  Voir tout →
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {escargotsCrabesProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Bannière d'information */}
           <div className="bg-gradient-to-r from-primary to-primary-600 text-white rounded-lg p-6 text-center">

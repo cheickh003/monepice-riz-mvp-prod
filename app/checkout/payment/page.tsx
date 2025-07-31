@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCheckoutStore } from '@/lib/stores/checkoutStore';
 import { useCartStore } from '@/lib/stores/cartStore';
-import { CreditCard, CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
 
 export default function PaymentPage() {
   const router = useRouter();

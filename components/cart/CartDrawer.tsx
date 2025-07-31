@@ -167,7 +167,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           </div>
                         </div>
                         <p className="mt-4 text-xs text-gray-500 text-center">
-                          Livraison en 3h ou retrait gratuit à Cocody Danga
+                          Livraison en 3h ou retrait gratuit dans nos magasins
                         </p>
                         <div className="mt-6">
                           <Link

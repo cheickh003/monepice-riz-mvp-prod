@@ -209,7 +209,7 @@ export default function ProductPage() {
                 🚚 Livraison en 3h maximum à Abidjan
               </p>
               <p className="text-sm text-gray-600">
-                📍 Retrait gratuit à Cocody Danga
+                📍 Retrait gratuit dans nos magasins
               </p>
             </div>
 

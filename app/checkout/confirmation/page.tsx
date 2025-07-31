@@ -4,7 +4,7 @@ import { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useCheckoutStore } from '@/lib/stores/checkoutStore';
-import { Check, Phone, MessageCircle, Lightbulb, MapPin, Clock } from 'lucide-react';
+import { Check, Lightbulb, MapPin, Clock } from 'lucide-react';
 
 function ConfirmationContent() {
   const searchParams = useSearchParams();
@@ -73,7 +73,7 @@ function ConfirmationContent() {
                   </p>
                   <p className="text-sm text-gray-600">
                     {deliveryMethod === 'pickup' 
-                      ? 'Allocodrome, Av. Jean Mermoz, Abidjan'
+                      ? 'MonEpice&Riz Cocody ou Koumassi (voir coordonnées ci-dessous)'
                       : deliveryAddress?.street || 'Adresse de livraison'
                     }
                   </p>
@@ -121,24 +121,28 @@ function ConfirmationContent() {
               Continuer vos achats
             </Link>
             
-            <div className="flex items-center justify-center space-x-4 text-sm">
-              <a
-                href="tel:+2250700000000"
-                className="flex items-center space-x-2 text-gray-600 hover:text-primary transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                <span>Appeler</span>
-              </a>
-              
-              <a
-                href="https://wa.me/2250700000000"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 text-gray-600 hover:text-primary transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>WhatsApp</span>
-              </a>
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 mb-2 text-center">Nos magasins</h4>
+              <div className="flex items-center justify-center space-x-6 text-sm">
+                <div className="text-center">
+                  <p className="font-medium text-gray-700">Cocody</p>
+                  <a
+                    href="tel:+2250161888888"
+                    className="text-primary hover:text-primary-600 transition-colors"
+                  >
+                    0161 888 888
+                  </a>
+                </div>
+                <div className="text-center">
+                  <p className="font-medium text-gray-700">Koumassi</p>
+                  <a
+                    href="tel:+2250172089090"
+                    className="text-primary hover:text-primary-600 transition-colors"
+                  >
+                    0172 089 090
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

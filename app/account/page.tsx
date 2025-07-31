@@ -80,7 +80,7 @@ export default function AccountPage() {
               <Link href="/account/orders" className="block text-primary hover:underline">
                 → Voir mes commandes récentes
               </Link>
-              <a href="tel:+2250700000000" className="block text-primary hover:underline">
+              <a href="tel:+2250161888888" className="block text-primary hover:underline">
                 → Contacter le service client
               </a>
             </div>

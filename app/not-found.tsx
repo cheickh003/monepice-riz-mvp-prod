@@ -113,7 +113,7 @@ export default function NotFound() {
             <p>
               MonEpice&Riz - Votre épicerie en ligne à Abidjan
               <br />
-              Livraison en 3h ou retrait gratuit à Cocody Danga
+              Livraison en 3h ou retrait gratuit dans nos magasins
             </p>
           </div>
         </div>

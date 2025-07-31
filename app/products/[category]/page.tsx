@@ -224,18 +224,39 @@ export default function CategoryPage() {
             )}
 
             {categorySlug === 'poissonnerie' && (
-              <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg p-6 mb-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-xl font-bold mb-2">🐟 Poissons Frais de San Pedro</h3>
-                    <p className="mb-3">Arrivage quotidien direct du port • Fraîcheur incomparable</p>
-                    <div className="flex flex-wrap gap-2 text-sm">
-                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Pêche du jour</span>
-                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Fruits de mer</span>
-                      <span className="bg-white/20 px-3 py-1 rounded-full">✓ Livraison glacée</span>
+              <div className="space-y-4 mb-6">
+                <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xl font-bold mb-2">🐟 Poissons de San Pedro</h3>
+                      <p className="mb-3">Arrivage quotidien direct du port • Fraîcheur incomparable</p>
+                      <div className="flex flex-wrap gap-2 text-sm">
+                        <span className="bg-white/20 px-3 py-1 rounded-full">✓ Pêche du jour</span>
+                        <span className="bg-white/20 px-3 py-1 rounded-full">✓ Fruits de mer</span>
+                        <span className="bg-white/20 px-3 py-1 rounded-full">✓ Livraison glacée</span>
+                      </div>
                     </div>
+                    <div className="hidden md:block text-6xl opacity-20">🐟</div>
                   </div>
-                  <div className="hidden md:block text-6xl opacity-20">🐟</div>
+                </div>
+                
+                {/* Bannière spéciale Escargots & Crabes */}
+                <div className="bg-gradient-to-r from-orange-600 to-amber-500 text-white rounded-lg p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xl font-bold mb-2 flex items-center">
+                        🐌🦀 Nos Spécialités Phares
+                        <span className="ml-2 text-xs bg-white/20 px-2 py-1 rounded-full">★ EXCLUSIF</span>
+                      </h3>
+                      <p className="mb-3">Escargots et crabes de qualité premium • Préparation traditionnelle</p>
+                      <div className="flex flex-wrap gap-2 text-sm">
+                        <span className="bg-white/20 px-3 py-1 rounded-full">✓ Escargots sélectionnés</span>
+                        <span className="bg-white/20 px-3 py-1 rounded-full">✓ Crabes vivants</span>
+                        <span className="bg-white/20 px-3 py-1 rounded-full">✓ Préparation sur demande</span>
+                      </div>
+                    </div>
+                    <div className="hidden md:block text-6xl opacity-20">🐌</div>
+                  </div>
                 </div>
               </div>
             )}

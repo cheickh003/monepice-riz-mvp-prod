@@ -10,12 +10,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MonEpice&Riz - Votre épicerie en ligne à Abidjan",
-  description: "Commandez vos produits d'épicerie en ligne et recevez-les en 3h à Abidjan ou retirez gratuitement à Cocody Danga",
-  keywords: "épicerie, Abidjan, livraison, Cocody, courses en ligne, MonEpice&Riz",
+  title: "MonEpice&Riz - Votre épicerie en ligne à Abidjan | Spécialités Escargots & Crabes",
+  description: "Commandez vos produits d'épicerie en ligne et recevez-les en 3h à Abidjan. Magasins à Cocody et Koumassi. Spécialistes des escargots et crabes de qualité.",
+  keywords: "épicerie, Abidjan, livraison, Cocody, Koumassi, courses en ligne, MonEpice&Riz, escargots, crabes, poissonnerie, San Pedro",
   openGraph: {
-    title: "MonEpice&Riz - Votre épicerie en ligne à Abidjan",
-    description: "Commandez vos produits d'épicerie en ligne et recevez-les en 3h à Abidjan",
+    title: "MonEpice&Riz - Votre épicerie en ligne à Abidjan | Spécialités Escargots & Crabes",
+    description: "Commandez vos produits d'épicerie en ligne et recevez-les en 3h à Abidjan. Magasins à Cocody et Koumassi. Spécialistes des escargots et crabes.",
     type: "website",
     locale: "fr_CI",
     url: "https://monepiceriz.ci",

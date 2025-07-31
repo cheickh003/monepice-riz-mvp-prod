@@ -252,7 +252,7 @@ export default function DeliveryPage() {
                   <div className="flex-1">
                     <p className="font-medium">Retrait en boutique</p>
                     <p className="text-sm text-gray-600">
-                      Retirez votre commande à Cocody Danga
+                      Retirez votre commande dans l'un de nos magasins
                     </p>
                   </div>
                   <span className="text-sm font-medium text-green-600">Gratuit</span>

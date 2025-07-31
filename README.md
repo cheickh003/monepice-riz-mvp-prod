@@ -1,6 +1,6 @@
 # MonEpice&Riz - Application d'épicerie en ligne
 
-Application e-commerce mobile-first pour MonEpice&Riz, une épicerie en ligne ciblant Abidjan, Côte d'Ivoire.
+Application e-commerce mobile-first pour MonEpice&Riz, une épicerie en ligne ciblant Abidjan, Côte d'Ivoire. Spécialistes des escargots et crabes de qualité.
 
 ## 🚀 Démarrage rapide
 
@@ -17,7 +17,7 @@ Ouvrir [http://localhost:3000](http://localhost:3000) dans votre navigateur.
 ## 📱 Fonctionnalités principales
 
 ### Page d'accueil
-- Géolocalisation "Abidjan Cocody Saint-Jean"
+- Présence à Abidjan (Cocody et Koumassi)
 - 6 catégories principales (Frais, Sec, Boissons, Entretien, Bébés, Promo)
 - Section "Achats fréquents" pour faciliter les réassorts
 - Promotions mises en avant
@@ -95,10 +95,15 @@ L'interface CinetPay est entièrement simulée :
 
 - **Livraison programmée** : Créneaux de 2h (8h-20h)
 - **Livraison express** : En moins de 3h (3000 F)
-- **Retrait boutique** : Gratuit à Cocody Danga
+- **Retrait boutique** : Gratuit dans nos 2 magasins (Cocody et Koumassi)
 
 ## 📞 Contact
 
 Pour toute question sur le MVP :
 - 📧 contact@monepiceriz.ci
-- 📱 +225 07 XX XX XX XX
+
+**Nos magasins :**
+- 🏪 **MonEpice&Riz Cocody** : 0161 888 888
+- 🏪 **MonEpice&Riz Koumassi** : 0172 089 090
+  - Centre commercial CONDOR, Boulevard du 7 décembre
+  - En face du marché Djè Konan

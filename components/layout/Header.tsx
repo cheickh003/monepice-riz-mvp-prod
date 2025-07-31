@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/lib/stores/cartStore';
 import CartDrawer from '@/components/cart/CartDrawer';
-import { MapPin, Truck, Search, ShoppingCart, User, Menu, X } from 'lucide-react';
+import { MapPin, Truck, Search, ShoppingCart, User } from 'lucide-react';
 import * as Icons from '@/lib/icons';
 
 export default function Header() {
@@ -59,7 +59,12 @@ export default function Header() {
           <div className="flex items-center space-x-8 px-4">
             <span className="flex items-center text-sm font-medium">
               <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-              Votre épicerie de confiance à Abidjan
+              Cocody: 0161888888
+            </span>
+            <span className="text-sm">•</span>
+            <span className="flex items-center text-sm font-medium">
+              <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+              Koumassi: 0172089090
             </span>
             <span className="text-sm">•</span>
             <span className="flex items-center text-sm font-medium">
@@ -68,18 +73,19 @@ export default function Header() {
             </span>
             <span className="text-sm">•</span>
             <span className="text-sm font-medium">
-              Commande minimum: 5 000 F
-            </span>
-            <span className="text-sm">•</span>
-            <span className="text-sm font-medium">
-              Frais de livraison: 1 500 F
+              Spécialités: Escargots & Crabes 🐌🦀
             </span>
           </div>
           {/* Duplication pour effet loop continu */}
           <div className="flex items-center space-x-8 px-4">
             <span className="flex items-center text-sm font-medium">
               <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-              Votre épicerie de confiance à Abidjan
+              Cocody: 0161888888
+            </span>
+            <span className="text-sm">•</span>
+            <span className="flex items-center text-sm font-medium">
+              <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+              Koumassi: 0172089090
             </span>
             <span className="text-sm">•</span>
             <span className="flex items-center text-sm font-medium">
@@ -88,11 +94,7 @@ export default function Header() {
             </span>
             <span className="text-sm">•</span>
             <span className="text-sm font-medium">
-              Commande minimum: 5 000 F
-            </span>
-            <span className="text-sm">•</span>
-            <span className="text-sm font-medium">
-              Frais de livraison: 1 500 F
+              Spécialités: Escargots & Crabes 🐌🦀
             </span>
           </div>
         </div>
@@ -386,12 +388,30 @@ export default function Header() {
               
               {/* Contact info */}
               <div className="mt-10 pt-10 border-t border-gray-100">
-                <p className="text-sm text-gray-500">
-                  Service client<br />
-                  <a href="tel:+2250700000000" className="text-gray-700 hover:text-primary transition-colors duration-200">
-                    +225 07 00 00 00 00
-                  </a>
-                </p>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Nos magasins</p>
+                    <div className="space-y-2">
+                      <div className="text-sm">
+                        <p className="font-medium text-gray-700">MonEpice&Riz Cocody</p>
+                        <a href="tel:+2250161888888" className="text-gray-600 hover:text-primary transition-colors duration-200">
+                          0161 888 888
+                        </a>
+                      </div>
+                      <div className="text-sm">
+                        <p className="font-medium text-gray-700">MonEpice&Riz Koumassi</p>
+                        <a href="tel:+2250172089090" className="text-gray-600 hover:text-primary transition-colors duration-200">
+                          0172 089 090
+                        </a>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Centre commercial CONDOR<br />
+                          Boulevard du 7 décembre<br />
+                          En face du marché Djè Konan
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </nav>
           </div>

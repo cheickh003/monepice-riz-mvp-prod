@@ -24,15 +24,29 @@ export default function Footer() {
               className="h-12 w-auto mb-4"
             />
             <p className="text-gray-600 text-sm">
-              Votre épicerie en ligne à Abidjan. Livraison rapide en 3h ou retrait gratuit.
+              Votre épicerie en ligne à Abidjan. Spécialistes des escargots & crabes 🐌🦀. Livraison rapide en 3h ou retrait gratuit.
             </p>
-            <div className="mt-4">
-              <p className="text-sm text-gray-700 font-medium flex items-center">
-                <MapPin className="w-4 h-4 mr-1" /> Allocodrome, Av. Jean Mermoz, Abidjan
-              </p>
-              <p className="text-sm text-gray-700 flex items-center">
-                <Phone className="w-4 h-4 mr-1" /> +225 07 XX XX XX XX
-              </p>
+            <div className="mt-4 space-y-3">
+              <div>
+                <p className="text-sm text-gray-700 font-medium flex items-center mb-1">
+                  <MapPin className="w-4 h-4 mr-1" /> MonEpice&Riz Cocody
+                </p>
+                <p className="text-sm text-gray-600 flex items-center">
+                  <Phone className="w-4 h-4 mr-1" /> 0161 888 888
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-700 font-medium flex items-center mb-1">
+                  <MapPin className="w-4 h-4 mr-1" /> MonEpice&Riz Koumassi
+                </p>
+                <p className="text-sm text-gray-600 flex items-center">
+                  <Phone className="w-4 h-4 mr-1" /> 0172 089 090
+                </p>
+                <p className="text-xs text-gray-500 ml-5">
+                  Centre commercial CONDOR, Boulevard du 7 décembre<br />
+                  En face du marché Djè Konan
+                </p>
+              </div>
               <p className="text-sm text-gray-700 flex items-center">
                 <Mail className="w-4 h-4 mr-1" /> contact@monepiceriz.ci
               </p>
