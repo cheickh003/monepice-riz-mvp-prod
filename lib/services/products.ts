@@ -8,9 +8,12 @@
 
 import { Query } from 'appwrite'
 import { databases } from '@/lib/appwrite'
-import { SERVER_CONFIG } from '@/lib/server/appwrite'
+import { StoreCode, ProductAvailability } from '@/lib/types'
 
-// Types
+// Database ID from environment
+const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!
+
+// Enhanced types with store awareness
 export interface ProductFilters {
   categoryId?: string
   featured?: boolean
@@ -19,6 +22,11 @@ export interface ProductFilters {
   priceRange?: { min: number; max: number }
   tags?: string[]
   search?: string
+  // Store-specific filters
+  store?: StoreCode
+  availability?: 'available' | 'low_stock' | 'out_of_stock' | 'all'
+  availableAtStore?: StoreCode
+  minQuantity?: number
 }
 
 export interface ProductQueryOptions {
@@ -48,7 +56,7 @@ export interface PaginatedResult<T> {
 export async function getProductById(productId: string) {
   try {
     const product = await databases.getDocument(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'products',
       productId
     )
@@ -69,7 +77,7 @@ export async function getProductById(productId: string) {
 export async function getProductBySlug(slug: string) {
   try {
     const result = await databases.listDocuments(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'products',
       [Query.equal('slug', slug), Query.limit(1)]
     )
@@ -89,7 +97,7 @@ export async function getProductBySlug(slug: string) {
 export async function getProductByLegacyId(legacyId: string) {
   try {
     const result = await databases.listDocuments(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'products',
       [Query.equal('legacyId', legacyId), Query.limit(1)]
     )
@@ -164,7 +172,7 @@ export async function listProducts(
     }
 
     const result = await databases.listDocuments(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'products',
       queries
     )
@@ -256,7 +264,7 @@ export async function getRelatedProducts(
 ) {
   try {
     const result = await databases.listDocuments(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'products',
       [
         Query.equal('categoryId', categoryId),
@@ -295,7 +303,7 @@ export async function getCategories(activeOnly: boolean = true) {
     }
 
     const result = await databases.listDocuments(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'categories',
       queries
     )
@@ -315,7 +323,7 @@ export async function getCategories(activeOnly: boolean = true) {
 export async function getCategoryById(categoryId: string) {
   try {
     const category = await databases.getDocument(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'categories',
       categoryId
     )
@@ -336,7 +344,7 @@ export async function getCategoryById(categoryId: string) {
 export async function getCategoryBySlug(slug: string) {
   try {
     const result = await databases.listDocuments(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'categories',
       [Query.equal('slug', slug), Query.limit(1)]
     )
@@ -356,7 +364,7 @@ export async function getCategoryBySlug(slug: string) {
 export async function getFeaturedCategories(limit: number = 6) {
   try {
     const result = await databases.listDocuments(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'categories',
       [
         Query.equal('isFeatured', true),
@@ -386,7 +394,7 @@ export async function getFeaturedCategories(limit: number = 6) {
 export async function checkProductAvailability(productId: string, storeCode: string = 'COCODY') {
   try {
     const result = await databases.listDocuments(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'store_inventory',
       [
         Query.equal('productId', productId),
@@ -416,6 +424,293 @@ export async function checkProductAvailability(productId: string, storeCode: str
 }
 
 /**
+ * Get products available at specific store
+ * @param storeCode - Store code
+ * @param options - Query options
+ * @returns Products available at store
+ */
+export async function getProductsAvailableAtStore(
+  storeCode: StoreCode,
+  options: ProductQueryOptions = {}
+) {
+  try {
+    // First get products with inventory at this store
+    const inventoryResult = await databases.listDocuments(
+      DATABASE_ID,
+      'store_inventory',
+      [
+        Query.equal('store', storeCode),
+        Query.greaterThan('quantityAvailable', 0),
+        Query.limit(options.limit || 50),
+        Query.offset(options.offset || 0)
+      ]
+    )
+
+    if (inventoryResult.documents.length === 0) {
+      return { documents: [], total: 0, limit: 0, offset: 0, hasMore: false }
+    }
+
+    // Get product IDs
+    const productIds = inventoryResult.documents.map(inv => inv.productId)
+
+    // Get product details
+    const productsResult = await databases.listDocuments(
+      DATABASE_ID,
+      'products',
+      [
+        Query.contains('$id', productIds),
+        Query.equal('isActive', true)
+      ]
+    )
+
+    return {
+      documents: productsResult.documents,
+      total: inventoryResult.total,
+      limit: options.limit || 50,
+      offset: options.offset || 0,
+      hasMore: (options.offset || 0) + (options.limit || 50) < inventoryResult.total
+    }
+  } catch (error) {
+    console.error('Error getting products available at store:', error)
+    return { documents: [], total: 0, limit: 0, offset: 0, hasMore: false }
+  }
+}
+
+/**
+ * Search products with store context and availability
+ * @param searchTerm - Search query
+ * @param storeCode - Store to check availability
+ * @param options - Query options
+ * @returns Search results with availability
+ */
+export async function searchProductsWithStore(
+  searchTerm: string,
+  storeCode?: StoreCode,
+  options: ProductQueryOptions = {}
+) {
+  try {
+    const queries: string[] = [
+      Query.search('search', searchTerm),
+      Query.equal('isActive', true)
+    ]
+
+    // Apply pagination
+    const limit = options.limit || 20
+    const offset = options.offset || 0
+    queries.push(Query.limit(limit))
+    queries.push(Query.offset(offset))
+
+    // Apply ordering
+    if (options.orderBy) {
+      const direction = options.orderDirection === 'desc' ? Query.orderDesc : Query.orderAsc
+      queries.push(direction(options.orderBy))
+    }
+
+    const result = await databases.listDocuments(
+      DATABASE_ID,
+      'products',
+      queries
+    )
+
+    // If store is specified, enrich with availability data
+    if (storeCode) {
+      const enrichedProducts = await Promise.all(
+        result.documents.map(async (product) => {
+          const availability = await checkProductAvailability(product.$id, storeCode)
+          return {
+            ...product,
+            storeAvailability: {
+              [storeCode]: availability
+            }
+          }
+        })
+      )
+
+      return {
+        documents: enrichedProducts,
+        total: result.total,
+        limit,
+        offset,
+        hasMore: offset + limit < result.total,
+      }
+    }
+
+    return {
+      documents: result.documents,
+      total: result.total,
+      limit,
+      offset,
+      hasMore: offset + limit < result.total,
+    }
+  } catch (error) {
+    console.error('Error searching products with store:', error)
+    throw error
+  }
+}
+
+/**
+ * Get products with cross-store availability comparison
+ * @param productIds - Array of product IDs
+ * @param stores - Array of store codes to check
+ * @returns Products with availability at each store
+ */
+export async function getProductsWithCrossStoreAvailability(
+  productIds: string[],
+  stores: StoreCode[] = ['COCODY', 'KOUMASSI']
+) {
+  try {
+    // Get product details
+    const productsResult = await databases.listDocuments(
+      DATABASE_ID,
+      'products',
+      [Query.contains('$id', productIds)]
+    )
+
+    // Get availability for each product at each store
+    const enrichedProducts = await Promise.all(
+      productsResult.documents.map(async (product) => {
+        const storeAvailability: Record<string, any> = {}
+        
+        for (const store of stores) {
+          storeAvailability[store] = await checkProductAvailability(product.$id, store)
+        }
+
+        return {
+          ...product,
+          storeAvailability
+        }
+      })
+    )
+
+    return enrichedProducts
+  } catch (error) {
+    console.error('Error getting cross-store availability:', error)
+    return []
+  }
+}
+
+/**
+ * Get enhanced product recommendations with store availability
+ * @param productId - Current product ID
+ * @param storeCode - Store to check availability
+ * @param categoryId - Product category ID
+ * @param limit - Number of recommendations
+ * @returns Recommended products with availability
+ */
+export async function getProductRecommendationsWithStore(
+  productId: string,
+  storeCode: StoreCode,
+  categoryId?: string,
+  limit: number = 4
+) {
+  try {
+    const queries = [
+      Query.equal('isActive', true),
+      Query.notEqual('$id', productId),
+      Query.limit(limit * 2) // Get more to filter for availability
+    ]
+
+    if (categoryId) {
+      queries.push(Query.equal('categoryId', categoryId))
+    }
+
+    const result = await databases.listDocuments(
+      DATABASE_ID,
+      'products',
+      queries
+    )
+
+    // Enrich with availability and filter available products
+    const availableProducts = []
+    for (const product of result.documents) {
+      const availability = await checkProductAvailability(product.$id, storeCode)
+      if (availability.available) {
+        availableProducts.push({
+          ...product,
+          storeAvailability: { [storeCode]: availability }
+        })
+        if (availableProducts.length >= limit) break
+      }
+    }
+
+    return availableProducts
+  } catch (error) {
+    console.error('Error getting product recommendations with store:', error)
+    return []
+  }
+}
+
+/**
+ * Batch availability check for multiple products
+ * @param productIds - Array of product IDs
+ * @param storeCode - Store code
+ * @returns Map of product availability
+ */
+export async function batchCheckProductAvailability(
+  productIds: string[],
+  storeCode: StoreCode
+): Promise<Map<string, ProductAvailability>> {
+  const availabilityMap = new Map<string, ProductAvailability>()
+
+  try {
+    // Get inventory records for all products at once
+    const inventoryResult = await databases.listDocuments(
+      DATABASE_ID,
+      'store_inventory',
+      [
+        Query.contains('productId', productIds),
+        Query.equal('store', storeCode),
+        Query.limit(productIds.length)
+      ]
+    )
+
+    // Create availability map
+    for (const inventory of inventoryResult.documents) {
+      const availableQty = inventory.quantityAvailable - inventory.quantityReserved
+      availabilityMap.set(inventory.productId, {
+        productId: inventory.productId,
+        store: storeCode,
+        isAvailable: availableQty > 0,
+        quantity: Math.max(0, availableQty),
+        isLowStock: availableQty <= inventory.lowStockThreshold,
+        lastUpdated: new Date().toISOString(),
+        nextRestockDate: inventory.nextDeliveryAt,
+      })
+    }
+
+    // Add unavailable entries for products not found in inventory
+    for (const productId of productIds) {
+      if (!availabilityMap.has(productId)) {
+        availabilityMap.set(productId, {
+          productId,
+          store: storeCode,
+          isAvailable: false,
+          quantity: 0,
+          isLowStock: false,
+          lastUpdated: new Date().toISOString(),
+        })
+      }
+    }
+
+    return availabilityMap
+  } catch (error) {
+    console.error('Error in batch availability check:', error)
+    // Return empty availability for all products on error
+    for (const productId of productIds) {
+      availabilityMap.set(productId, {
+        productId,
+        store: storeCode,
+        isAvailable: false,
+        quantity: 0,
+        isLowStock: false,
+        lastUpdated: new Date().toISOString(),
+      })
+    }
+    return availabilityMap
+  }
+}
+
+/**
  * Get low stock products
  * @param storeCode - Store code
  * @returns Products with low stock
@@ -423,7 +718,7 @@ export async function checkProductAvailability(productId: string, storeCode: str
 export async function getLowStockProducts(storeCode: string = 'COCODY') {
   try {
     const result = await databases.listDocuments(
-      SERVER_CONFIG.DATABASE_ID,
+      DATABASE_ID,
       'store_inventory',
       [
         Query.equal('store', storeCode),
@@ -456,11 +751,11 @@ export async function getProductStats() {
       specialtyProducts,
       categoriesResult
     ] = await Promise.all([
-      databases.listDocuments(SERVER_CONFIG.DATABASE_ID, 'products', [Query.limit(1)]),
-      databases.listDocuments(SERVER_CONFIG.DATABASE_ID, 'products', [Query.equal('isActive', true), Query.limit(1)]),
-      databases.listDocuments(SERVER_CONFIG.DATABASE_ID, 'products', [Query.equal('isFeatured', true), Query.limit(1)]),
-      databases.listDocuments(SERVER_CONFIG.DATABASE_ID, 'products', [Query.equal('isSpecialty', true), Query.limit(1)]),
-      databases.listDocuments(SERVER_CONFIG.DATABASE_ID, 'categories', [Query.limit(1)])
+      databases.listDocuments(DATABASE_ID, 'products', [Query.limit(1)]),
+      databases.listDocuments(DATABASE_ID, 'products', [Query.equal('isActive', true), Query.limit(1)]),
+      databases.listDocuments(DATABASE_ID, 'products', [Query.equal('isFeatured', true), Query.limit(1)]),
+      databases.listDocuments(DATABASE_ID, 'products', [Query.equal('isSpecialty', true), Query.limit(1)]),
+      databases.listDocuments(DATABASE_ID, 'categories', [Query.limit(1)])
     ])
     
     return {
@@ -530,9 +825,10 @@ export function handleDatabaseError(error: any, operation: string) {
 }
 
 /**
- * Export default functions for backward compatibility
+ * Export enhanced service with store-aware functions
  */
 export const productService = {
+  // Core product functions
   getProductById,
   getProductBySlug,
   getProductByLegacyId,
@@ -542,12 +838,25 @@ export const productService = {
   getSpecialtyProducts,
   searchProducts,
   getRelatedProducts,
+  
+  // Category functions
   getCategories,
   getCategoryById,
   getCategoryBySlug,
   getFeaturedCategories,
+  
+  // Store-aware functions
   checkProductAvailability,
+  getProductsAvailableAtStore,
+  searchProductsWithStore,
+  getProductsWithCrossStoreAvailability,
+  getProductRecommendationsWithStore,
+  batchCheckProductAvailability,
+  
+  // Inventory functions
   getLowStockProducts,
+  
+  // Statistics
   getProductStats,
 }
 

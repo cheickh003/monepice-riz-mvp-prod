@@ -17,17 +17,25 @@
     "postbuild": "npm run sentry:sourcemaps",
     "init-db": "npx tsx scripts/init-appwrite-collections.ts",
     "migrate-data": "npx tsx scripts/migrate-products.ts",
-    "dev:setup": "npm run init-db && npm run migrate-data && npm run dev"
+    "dev:setup": "npm run init-db && npm run migrate-data && npm run dev",
+    "test:stores": "npx tsx scripts/test-store-selection.ts",
+    "sync:inventory": "npx tsx scripts/sync-inventory.ts",
+    "check:availability": "npx tsx scripts/check-product-availability.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",
+    "@heroicons/react": "^2.2.0",
     "@sentry/nextjs": "^8.45.0",
+    "@tanstack/react-query": "^5.59.0",
+    "@tanstack/react-query-devtools": "^5.59.0",
     "appwrite": "^16.0.4",
     "lucide-react": "^0.533.0",
     "next": "15.4.4",
     "node-appwrite": "^14.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-window": "^1.8.11",
+    "react-window-infinite-loader": "^1.0.10",
     "zod": "^3.24.1",
     "zustand": "^5.0.6"
   },

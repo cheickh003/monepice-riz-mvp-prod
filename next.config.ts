@@ -2,10 +2,12 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
+  // Server external packages (moved from experimental in Next.js 15)
+  serverExternalPackages: ['appwrite', 'node-appwrite'],
+
   // Experimental features for Next.js 15
   experimental: {
-    // Enable Server Components debugging in development
-    serverComponentsExternalPackages: ['appwrite', 'node-appwrite'],
+    // Add other experimental features here if needed
   },
 
   // Image configuration for Appwrite Storage
@@ -147,12 +149,6 @@ const sentryWebpackPluginOptions = {
   
   // Route browser requests to Sentry through a Next.js rewrite
   tunnelRoute: "/monitoring",
-  
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
-  
-  // Automatically tree-shake Sentry logger statements
-  disableLogger: true,
   
   // Enable automatic Instrumentation.js creation
   automaticVercelMonitors: true,

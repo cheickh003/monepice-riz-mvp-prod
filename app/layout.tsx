@@ -4,6 +4,9 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { QueryProvider } from "@/providers/QueryProvider";
+import { StoreProvider } from "@/providers/StoreProvider";
+import StoreBanner from "@/components/store/StoreBanner";
 import { ErrorBoundary } from "@sentry/nextjs";
 import { env } from "@/lib/config/environment";
 
@@ -129,15 +132,20 @@ export default function RootLayout({
             scope.setTag("location", "root_layout");
           }}
         >
-          <AuthProvider>
-            <div className="min-h-screen flex flex-col">
-              <Header />
-              <main className="flex-grow pb-20 md:pb-0">
-                {children}
-              </main>
-              <Footer />
-            </div>
-          </AuthProvider>
+          <QueryProvider>
+            <StoreProvider>
+              <AuthProvider>
+                <div className="min-h-screen flex flex-col">
+                  <Header />
+                  <StoreBanner variant="compact" isDismissible />
+                  <main className="flex-grow pb-20 md:pb-0">
+                    {children}
+                  </main>
+                  <Footer />
+                </div>
+              </AuthProvider>
+            </StoreProvider>
+          </QueryProvider>
         </ErrorBoundary>
       </body>
     </html>

@@ -2,74 +2,160 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { categories, getFeaturedProducts, getPromoProducts, getProductsByCategory } from '@/lib/products';
+import { useQuery } from '@tanstack/react-query';
 import { ShoppingCart, Truck, CheckCircle, CreditCard, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import * as Icons from '@/lib/icons';
+import { 
+  getFeaturedProducts, 
+  getCategories, 
+  listProducts 
+} from '@/lib/services/products';
+import { useSelectedStore } from '@/lib/stores/storeSelectionStore';
 import ProductCard from '@/components/product/ProductCard';
+import SpecialtySection from '@/components/specialty/SpecialtySection';
+import StoreSelector from '@/components/store/StoreSelector';
 
 export default function Home() {
-  const featuredProducts = getFeaturedProducts(8);
-  const promoProducts = getPromoProducts(8);
+  const selectedStore = useSelectedStore();
   const [currentSlide, setCurrentSlide] = useState(0);
-  
-  // Récupérer les produits du jour
-  const boucherieProducts = getProductsByCategory('boucherie').slice(0, 4);
-  const poissonnerieProducts = getProductsByCategory('poissonnerie').slice(0, 4);
-  const volailleProducts = getProductsByCategory('volaille').slice(0, 4);
-  const epicesProducts = getProductsByCategory('epices').slice(0, 4);
-  const petitsFumesProducts = getProductsByCategory('petits-fumes').slice(0, 4);
-  
-  // Produits phares - Escargots et Crabes
-  const escargotsCrabesProducts = [
-    ...getProductsByCategory('poissonnerie').filter(p => p.name.toLowerCase().includes('escargot') || p.name.toLowerCase().includes('crabe')),
-    ...getProductsByCategory('frais').filter(p => p.name.toLowerCase().includes('escargot') || p.name.toLowerCase().includes('crabe'))
-  ].slice(0, 4);
+  const [showStoreSelector, setShowStoreSelector] = useState(false);
+
+  // Fetch categories
+  const { data: categories = [] } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => getCategories(true),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+
+  // Fetch featured products
+  const { data: featuredProducts = [] } = useQuery({
+    queryKey: ['featured-products'],
+    queryFn: () => getFeaturedProducts(8),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  // Fetch products by category for daily selection
+  const { data: boucherieProducts = [] } = useQuery({
+    queryKey: ['category-products', 'boucherie'],
+    queryFn: async () => {
+      const boucherieCategory = categories.find(c => c.slug === 'boucherie');
+      if (!boucherieCategory) return [];
+      const result = await listProducts({ categoryId: boucherieCategory.$id }, { limit: 4 });
+      return result.documents;
+    },
+    enabled: categories.length > 0,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: poissonnerieProducts = [] } = useQuery({
+    queryKey: ['category-products', 'poissonnerie'],
+    queryFn: async () => {
+      const poissonnerieCategory = categories.find(c => c.slug === 'poissonnerie');
+      if (!poissonnerieCategory) return [];
+      const result = await listProducts({ categoryId: poissonnerieCategory.$id }, { limit: 4 });
+      return result.documents;
+    },
+    enabled: categories.length > 0,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: volailleProducts = [] } = useQuery({
+    queryKey: ['category-products', 'volaille'],
+    queryFn: async () => {
+      const volailleCategory = categories.find(c => c.slug === 'volaille');
+      if (!volailleCategory) return [];
+      const result = await listProducts({ categoryId: volailleCategory.$id }, { limit: 4 });
+      return result.documents;
+    },
+    enabled: categories.length > 0,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: epicesProducts = [] } = useQuery({
+    queryKey: ['category-products', 'epices'],
+    queryFn: async () => {
+      const epicesCategory = categories.find(c => c.slug === 'epices');
+      if (!epicesCategory) return [];
+      const result = await listProducts({ categoryId: epicesCategory.$id }, { limit: 4 });
+      return result.documents;
+    },
+    enabled: categories.length > 0,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: petitsFumesProducts = [] } = useQuery({
+    queryKey: ['category-products', 'petits-fumes'],
+    queryFn: async () => {
+      const petitsFumesCategory = categories.find(c => c.slug === 'petits-fumes');
+      if (!petitsFumesCategory) return [];
+      const result = await listProducts({ categoryId: petitsFumesCategory.$id }, { limit: 4 });
+      return result.documents;
+    },
+    enabled: categories.length > 0,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // Fetch promotional products (featured + discounted)
+  const { data: promoProducts = [] } = useQuery({
+    queryKey: ['promo-products'],
+    queryFn: async () => {
+      const result = await listProducts({ featured: true }, { limit: 8 });
+      return result.documents;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
 
   const slides = [
     {
       id: 1,
-      title: "🥩 Nouveau ! Boucherie, Poissonnerie & Volaille",
-      subtitle: "Livraison quotidienne • Poissons de San Pedro",
-      buttonText: "Découvrir la sélection",
-      buttonLink: "#selection-jour",
-      bgColor: "from-red-500 to-orange-500",
-      icon: Icons.Beef
+      title: "🐌🦀 Spécialités de San Pedro",
+      subtitle: selectedStore 
+        ? `Escargots & crabes frais disponibles à ${selectedStore === 'COCODY' ? 'Cocody' : 'Koumassi'}`
+        : "Escargots & crabes frais • Livraison express",
+      buttonText: "Découvrir nos spécialités",
+      buttonLink: "/products?specialty=true",
+      bgColor: "from-amber-500 to-orange-500",
+      icon: Icons.Fish
     },
     {
       id: 2,
-      title: "Promotion -15% sur la sélection du jour !",
-      subtitle: "Fromages, lait, beurre et plus encore",
-      buttonText: "Voir les promotions",
-      buttonLink: "/products/promo",
-      bgColor: "from-primary to-primary-600",
-      icon: Icons.Milk
+      title: "🥩 Boucherie, Poissonnerie & Volaille",
+      subtitle: selectedStore 
+        ? `Produits frais du jour à ${selectedStore === 'COCODY' ? 'Cocody' : 'Koumassi'}`
+        : "Livraison quotidienne • Poissons de San Pedro",
+      buttonText: "Voir la sélection",
+      buttonLink: "#selection-jour",
+      bgColor: "from-red-500 to-pink-500",
+      icon: Icons.Beef
     },
     {
       id: 3,
-      title: "Livraison express",
-      subtitle: "Commandez maintenant, recevez rapidement",
-      buttonText: "Commander maintenant",
-      buttonLink: "/products",
-      bgColor: "from-secondary to-secondary-600",
+      title: selectedStore ? `Livraison express depuis ${selectedStore}` : "Livraison express 3h",
+      subtitle: selectedStore 
+        ? "Commandez avant 10h pour une livraison le jour même"
+        : "Choisissez votre magasin pour commander",
+      buttonText: selectedStore ? "Commander maintenant" : "Choisir un magasin",
+      buttonLink: selectedStore ? "/products" : "#store-selector",
+      bgColor: "from-blue-500 to-cyan-500",
       icon: Truck
     },
     {
       id: 4,
-      title: "Nouveaux produits pour bébés",
-      subtitle: "Découvrez notre sélection spécialisée",
+      title: "Produits d'exception",
+      subtitle: "Sélection premium • Qualité garantie • Prix compétitifs",
       buttonText: "Découvrir",
-      buttonLink: "/products/bebes",
-      bgColor: "from-accent to-yellow-500",
-      icon: Icons.Baby
+      buttonLink: "/products?featured=true",
+      bgColor: "from-purple-500 to-indigo-500",
+      icon: Icons.Star
     },
     {
       id: 5,
-      title: "Produits d'entretien à prix réduits",
-      subtitle: "Jusqu'à -20% sur votre hygiène quotidienne",
-      buttonText: "Profiter des offres",
-      buttonLink: "/products/entretien",
-      bgColor: "from-tertiary to-orange-400",
-      icon: Icons.Sparkles
+      title: "Deux magasins à Abidjan",
+      subtitle: "Cocody & Koumassi • Retrait en magasin ou livraison",
+      buttonText: "Nos magasins",
+      buttonLink: "/stores",
+      bgColor: "from-emerald-500 to-teal-500",
+      icon: Icons.MapPin
     }
   ];
 
@@ -87,6 +173,12 @@ export default function Home() {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const handleSlideButtonClick = (buttonLink: string) => {
+    if (buttonLink === "#store-selector") {
+      setShowStoreSelector(true);
+    }
   };
 
   return (
@@ -112,13 +204,23 @@ export default function Home() {
                       <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 md:mb-6 opacity-90 leading-relaxed">
                         {slide.subtitle}
                       </p>
-                      <Link 
-                        href={slide.buttonLink} 
-                        className="inline-flex items-center bg-white text-gray-900 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base"
-                      >
-                        <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                        <span className="truncate">{slide.buttonText}</span>
-                      </Link>
+                      {slide.buttonLink.startsWith('#') ? (
+                        <button
+                          onClick={() => handleSlideButtonClick(slide.buttonLink)}
+                          className="inline-flex items-center bg-white text-gray-900 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base"
+                        >
+                          <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                          <span className="truncate">{slide.buttonText}</span>
+                        </button>
+                      ) : (
+                        <Link 
+                          href={slide.buttonLink} 
+                          className="inline-flex items-center bg-white text-gray-900 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base"
+                        >
+                          <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                          <span className="truncate">{slide.buttonText}</span>
+                        </Link>
+                      )}
                     </div>
                     <div className="hidden sm:block ml-4 md:ml-8 flex-shrink-0">
                       <slide.icon className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 opacity-20" />
@@ -171,7 +273,12 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {boucherieProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard 
+                  key={product.$id} 
+                  product={product}
+                  showStoreAvailability={true}
+                  compact={true}
+                />
               ))}
             </div>
           </div>
@@ -189,7 +296,12 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {poissonnerieProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard 
+                  key={product.$id} 
+                  product={product}
+                  showStoreAvailability={true}
+                  compact={true}
+                />
               ))}
             </div>
           </div>
@@ -207,7 +319,12 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {volailleProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard 
+                  key={product.$id} 
+                  product={product}
+                  showStoreAvailability={true}
+                  compact={true}
+                />
               ))}
             </div>
           </div>
@@ -225,7 +342,12 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {epicesProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard 
+                  key={product.$id} 
+                  product={product}
+                  showStoreAvailability={true}
+                  compact={true}
+                />
               ))}
             </div>
           </div>
@@ -243,31 +365,16 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {petitsFumesProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard 
+                  key={product.$id} 
+                  product={product}
+                  showStoreAvailability={true}
+                  compact={true}
+                />
               ))}
             </div>
           </div>
 
-          {/* Nos Spécialités - Escargots & Crabes */}
-          {escargotsCrabesProducts.length > 0 && (
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center">
-                  <span className="text-2xl mr-3">🐌🦀</span>
-                  <h3 className="text-2xl font-bold text-gray-900">Nos Spécialités</h3>
-                  <span className="ml-2 text-sm bg-primary text-white px-2 py-1 rounded-full">Phares</span>
-                </div>
-                <Link href="/products/poissonnerie" className="text-primary hover:text-primary-600 font-medium">
-                  Voir tout →
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {escargotsCrabesProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Bannière d'information */}
           <div className="bg-gradient-to-r from-primary to-primary-600 text-white rounded-lg p-6 text-center">
@@ -285,6 +392,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Specialty Section - Escargots & Crabes */}
+      <SpecialtySection 
+        limit={6}
+        showCrossStoreAvailability={true}
+        compact={false}
+      />
+
       {/* Grille des catégories */}
       <section className="py-12">
         <div className="container-app">
@@ -294,25 +408,25 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {categories.map((category) => (
               <Link
-                key={category.id}
+                key={category.$id}
                 href={`/products/${category.slug}`}
                 className="card hover:scale-105 transition-transform duration-200 text-center group"
               >
                 <div className="mb-3">
-                {Icons.categoryIcons[category.id as keyof typeof Icons.categoryIcons] && (
-                  <div className="w-10 h-10 mx-auto">
-                    {(() => {
-                      const Icon = Icons.categoryIcons[category.id as keyof typeof Icons.categoryIcons];
-                      return <Icon className="w-full h-full text-gray-700" />;
-                    })()}
-                  </div>
-                )}
-              </div>
+                  {Icons.categoryIcons[category.slug as keyof typeof Icons.categoryIcons] && (
+                    <div className="w-10 h-10 mx-auto">
+                      {(() => {
+                        const Icon = Icons.categoryIcons[category.slug as keyof typeof Icons.categoryIcons];
+                        return <Icon className="w-full h-full text-gray-700" />;
+                      })()}
+                    </div>
+                  )}
+                </div>
                 <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   {category.name}
                 </h3>
                 <p className="text-sm text-gray-600 mt-1">
-                  {category.productCount} produits
+                  {category.description || 'Disponible'}
                 </p>
               </Link>
             ))}
@@ -328,12 +442,12 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
             {featuredProducts.slice(0, 8).map((product) => (
-              <div key={product.id} className="flex flex-col h-full">
+              <div key={product.$id} className="flex flex-col h-full">
                 <Link href={`/product/${product.slug}`} className="block group flex-1 flex flex-col">
                   <div className="w-full aspect-square bg-white rounded-lg shadow-sm overflow-hidden mb-2 group-hover:shadow-md transition-shadow flex-shrink-0">
                     <div className="w-full h-full flex items-center justify-center p-4">
                       {(() => {
-                        const Icon = Icons.categoryIcons[product.mainCategory as keyof typeof Icons.categoryIcons] || Icons.Package;
+                        const Icon = Icons.categoryIcons[product.categorySlug as keyof typeof Icons.categoryIcons] || Icons.Package;
                         return <Icon className="w-8 h-8 text-gray-400" />;
                       })()}
                     </div>
@@ -343,7 +457,7 @@ export default function Home() {
                       {product.name}
                     </h3>
                     <p className="text-sm font-bold text-primary">
-                      {product.price.toLocaleString('fr-FR')} F
+                      {product.basePrice?.toLocaleString('fr-FR')} F
                     </p>
                   </div>
                 </Link>
@@ -371,39 +485,12 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {promoProducts.slice(0, 4).map((product) => (
-                <div key={product.id} className="card group h-full flex flex-col">
-                  <Link href={`/product/${product.slug}`} className="flex-1 flex flex-col">
-                    <div className="relative">
-                      <div className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3 flex-shrink-0">
-                        <div className="w-full h-full flex items-center justify-center p-4">
-                          {(() => {
-                            const Icon = Icons.categoryIcons[product.mainCategory as keyof typeof Icons.categoryIcons] || Icons.Package;
-                            return <Icon className="w-12 h-12 text-gray-400" />;
-                          })()}
-                        </div>
-                      </div>
-                      <span className="absolute top-2 right-2 bg-primary text-white text-xs px-2 py-1 rounded-full font-bold">
-                        -15%
-                      </span>
-                    </div>
-                    <div className="flex-1 flex flex-col justify-between">
-                      <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                        {product.name}
-                      </h3>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg font-bold text-primary">
-                          {product.promoPrice?.toLocaleString('fr-FR')} F
-                        </span>
-                        <span className="text-sm text-gray-500 line-through">
-                          {product.price.toLocaleString('fr-FR')} F
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                  <button className="btn-accent w-full mt-3 text-sm flex-shrink-0">
-                    Ajouter au panier
-                  </button>
-                </div>
+                <ProductCard
+                  key={product.$id}
+                  product={product}
+                  showStoreAvailability={true}
+                  showPromotion={true}
+                />
               ))}
             </div>
           </div>
@@ -447,6 +534,14 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Store Selector Modal */}
+      {showStoreSelector && (
+        <StoreSelector
+          onClose={() => setShowStoreSelector(false)}
+          variant="modal"
+        />
+      )}
     </div>
   );
 }

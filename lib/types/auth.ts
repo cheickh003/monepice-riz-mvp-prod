@@ -362,9 +362,8 @@ export interface UserUpdateData {
  * Authentication context interface
  * Used by the AuthProvider component
  */
-export interface AuthContextType {
-  /** Current authentication state */
-  ...AuthState;
+export interface AuthContextType extends AuthState {
+  /** Current authentication state inherited from AuthState */
   
   /** Login with email and password */
   login: (credentials: LoginCredentials) => Promise<void>;

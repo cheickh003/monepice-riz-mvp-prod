@@ -1,3 +1,37 @@
+// Store types for multi-location support
+export type StoreCode = 'COCODY' | 'KOUMASSI';
+
+export interface StoreLocation {
+  latitude: number;
+  longitude: number;
+  address: string;
+  zone: string;
+}
+
+export interface Store {
+  code: StoreCode;
+  name: string;
+  location: StoreLocation;
+  phone: string;
+  email?: string;
+  operatingHours: {
+    [key: string]: { open: string; close: string; closed?: boolean };
+  };
+  deliveryRadius: number; // in kilometers
+  isActive: boolean;
+}
+
+export interface StoreInventory {
+  store: StoreCode;
+  quantityAvailable: number;
+  quantityReserved: number;
+  lowStockThreshold: number;
+  lastRestockedAt?: string;
+  nextDeliveryAt?: string;
+  isAvailable: boolean;
+  isLowStock: boolean;
+}
+
 export interface Product {
   // Legacy JSON fields
   id: number;
@@ -42,6 +76,11 @@ export interface Product {
   nutrition?: string;
   storage?: string;
   origin?: string;
+  
+  // Store-specific inventory (optional for backward compatibility)
+  storeInventory?: {
+    [key in StoreCode]?: StoreInventory;
+  };
 }
 
 export interface Category {
@@ -69,6 +108,7 @@ export interface Category {
 export interface CartItem {
   product: Product;
   quantity: number;
+  selectedStore?: StoreCode;
 }
 
 export interface Cart {
@@ -78,6 +118,7 @@ export interface Cart {
   deliveryFee: number;
   preparationFee: number;
   total: number;
+  selectedStore?: StoreCode;
 }
 
 export interface Address {
@@ -133,4 +174,63 @@ export interface User {
   orders: Order[];
   createdAt: string;
   isGuest?: boolean;
+}
+
+// Geolocation and store selection types
+export interface GeolocationCoordinates {
+  latitude: number;
+  longitude: number;
+  accuracy?: number;
+}
+
+export interface StoreDistance extends Store {
+  distance?: number; // in kilometers
+}
+
+export interface StoreSelectionState {
+  selectedStore: StoreCode;
+  userLocation?: GeolocationCoordinates;
+  isLoadingLocation: boolean;
+  locationError?: string;
+  nearestStore?: StoreCode;
+  lastLocationUpdate?: string;
+}
+
+// Product availability types
+export interface ProductAvailability {
+  productId: string;
+  store: StoreCode;
+  isAvailable: boolean;
+  quantity: number;
+  isLowStock: boolean;
+  lastUpdated: string;
+  nextRestockDate?: string;
+}
+
+// Search and filtering types
+export interface ProductFilters {
+  categoryId?: string;
+  priceRange?: { min: number; max: number };
+  availability?: 'available' | 'low_stock' | 'out_of_stock' | 'all';
+  isSpecialty?: boolean;
+  isFeatured?: boolean;
+  inStock?: boolean;
+  store?: StoreCode;
+  tags?: string[];
+}
+
+export interface SearchState {
+  query: string;
+  filters: ProductFilters;
+  sortBy: 'name' | 'price_asc' | 'price_desc' | 'rating' | 'availability';
+  currentPage: number;
+  itemsPerPage: number;
+}
+
+// Advanced search result
+export interface SearchResult {
+  products: Product[];
+  totalCount: number;
+  hasMore: boolean;
+  appliedFilters: ProductFilters;
 }
