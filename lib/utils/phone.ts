@@ -251,39 +251,91 @@ export function validateIvorianPhone(phone: string): PhoneValidationResult {
 }
 
 /**
- * Format a phone number for display purposes
+ * Convert phone number to international format
  * 
- * @param phone - The phone number to format
- * @param targetFormat - The desired output format (default: international)
- * @returns Formatted phone number or original string if invalid
+ * @param phone - The phone number to convert
+ * @returns Phone number in international format (+225XXXXXXXX)
  * 
  * @example
  * ```typescript
- * formatIvorianPhone("0143215478", PhoneFormat.INTERNATIONAL) // "+225 01 43 21 54 78"
- * formatIvorianPhone("+2250143215478", PhoneFormat.NATIONAL) // "01 43 21 54 78"
- * formatIvorianPhone("1234567890", PhoneFormat.LOCAL) // "12 34 56 78 90"
+ * toInternationalFormat("0143215478")  // "+2250143215478"
+ * toInternationalFormat("1234567890")  // "+2251234567890"
+ * toInternationalFormat("+2250143215478") // "+2250143215478" (already international)
  * ```
  */
-export function formatIvorianPhone(
-  phone: string, 
-  targetFormat: PhoneFormat = PhoneFormat.INTERNATIONAL
-): string {
-  const validation = validateIvorianPhone(phone)
-  
-  if (!validation.isValid || !validation.formatted) {
-    return phone // Return original if invalid
+export function toInternationalFormat(phone: string): string {
+  if (!phone || typeof phone !== 'string') {
+    return phone
   }
   
-  switch (targetFormat) {
-    case PhoneFormat.INTERNATIONAL:
-      return validation.formatted.international
-    case PhoneFormat.NATIONAL:
-      return validation.formatted.national
-    case PhoneFormat.LOCAL:
-      return validation.formatted.local
-    default:
-      return validation.formatted.display
+  const cleaned = phone.replace(/\D/g, '')
+  
+  // Already in international format
+  if (cleaned.startsWith('225') && cleaned.length === 11) {
+    return `+${cleaned}`
   }
+  
+  // National format (0XXXXXXXXX)
+  if (cleaned.startsWith('0') && cleaned.length === 10) {
+    return `+225${cleaned.slice(1)}`
+  }
+  
+  // Local format (XXXXXXXXXX) - assume it's a full 10-digit number
+  if (cleaned.length === 10 && !cleaned.startsWith('0')) {
+    return `+225${cleaned}`
+  }
+  
+  // Legacy format (XXXXXXXX) - assume it's an 8-digit number
+  if (cleaned.length === 8) {
+    return `+225${cleaned}`
+  }
+  
+  // If we can't determine format, return original
+  return phone
+}
+
+/**
+ * Convert phone number to national format
+ * 
+ * @param phone - The phone number to convert
+ * @returns Phone number in national format (0XXXXXXXXX)
+ * 
+ * @example
+ * ```typescript
+ * toNationalFormat("+2250143215478") // "0143215478"
+ * toNationalFormat("1234567890")     // "01234567890"
+ * toNationalFormat("0143215478")     // "0143215478" (already national)
+ * ```
+ */
+export function toNationalFormat(phone: string): string {
+  if (!phone || typeof phone !== 'string') {
+    return phone
+  }
+  
+  const cleaned = phone.replace(/\D/g, '')
+  
+  // International format (+225XXXXXXXX)
+  if (cleaned.startsWith('225') && cleaned.length === 11) {
+    return `0${cleaned.slice(3)}`
+  }
+  
+  // Already in national format
+  if (cleaned.startsWith('0') && cleaned.length === 10) {
+    return cleaned
+  }
+  
+  // Local format (XXXXXXXXXX)
+  if (cleaned.length === 10 && !cleaned.startsWith('0')) {
+    return `0${cleaned.slice(-9)}`
+  }
+  
+  // Legacy format (XXXXXXXX)
+  if (cleaned.length === 8) {
+    return `0${cleaned}`
+  }
+  
+  // If we can't determine format, return original
+  return phone
 }
 
 /**
@@ -302,44 +354,6 @@ export function formatPhoneForDisplay(phone: string): string {
   const validation = validateIvorianPhone(phone)
   return validation.isValid && validation.formatted 
     ? validation.formatted.display 
-    : phone
-}
-
-/**
- * Convert phone number to international format
- * 
- * @param phone - The phone number to convert
- * @returns Phone number in international format (+225XXXXXXXX)
- * 
- * @example
- * ```typescript
- * toInternationalFormat("0143215478")  // "+2250143215478"
- * toInternationalFormat("1234567890")  // "+2251234567890"
- * ```
- */
-export function toInternationalFormat(phone: string): string {
-  const validation = validateIvorianPhone(phone)
-  return validation.isValid && validation.formatted 
-    ? validation.formatted.international 
-    : phone
-}
-
-/**
- * Convert phone number to national format
- * 
- * @param phone - The phone number to convert
- * @returns Phone number in national format (0XXXXXXXXX)
- * 
- * @example
- * ```typescript
- * toNationalFormat("+2250143215478") // "0143215478"
- * toNationalFormat("1234567890")     // "01234567890"
- * ```
- */
-export function toNationalFormat(phone: string): string {
-  const validation = validateIvorianPhone(phone)
-  return validation.isValid && validation.formatted 
-    ? validation.formatted.national 
     : phone
 }
 
@@ -518,4 +532,14 @@ export const PHONE_ERROR_MESSAGES = {
   INVALID_LENGTH: 'Le numéro doit contenir 8, 10, ou 11 chiffres',
   INVALID_PREFIX: 'Préfixe d\'opérateur non reconnu',
   NO_DIGITS: 'Le numéro ne contient aucun chiffre valide',
+} as const
+
+/**
+ * Constants for validation and formatting
+ */
+export const PHONE_CONSTANTS = {
+  COUNTRY_CODE: CI_COUNTRY_CODE,
+  MIN_LENGTH: 8,  // Legacy format
+  MAX_LENGTH: 11, // International format with +
+  DISPLAY_SEPARATORS: [' ', '-', '.'],
 } as const

@@ -23,6 +23,9 @@ export const COLLECTION_IDS = {
   categories: 'categories',
   storeInventory: 'store_inventory',
   
+  // Store-related collections
+  stores: 'stores',
+  
   // Order-related collections
   orders: 'orders',
   orderItems: 'order_items',
@@ -174,6 +177,51 @@ export const COLLECTION_SCHEMAS = {
   },
 
   /**
+   * Stores Collection Schema
+   * Physical store locations
+   */
+  stores: {
+    collectionId: COLLECTION_IDS.stores,
+    name: 'Stores',
+    description: 'Physical store locations and information',
+    attributes: {
+      /** Store name */
+      name: { type: 'string', required: true, size: 100 },
+      
+      /** Store code (COCODY, KOUMASSI) */
+      code: { type: 'string', required: true, size: 20 },
+      
+      /** Store address */
+      address: { type: 'string', required: true, size: 500 },
+      
+      /** Store phone number */
+      phone: { type: 'string', required: true, size: 20 },
+      
+      /** Store email */
+      email: { type: 'string', required: false, size: 100 },
+      
+      /** GPS latitude */
+      latitude: { type: 'double', required: false },
+      
+      /** GPS longitude */
+      longitude: { type: 'double', required: false },
+      
+      /** Opening hours (JSON string) */
+      openingHours: { type: 'string', required: false, size: 1000 },
+      
+      /** Is store active */
+      isActive: { type: 'boolean', required: true, default: true },
+      
+      /** Delivery radius in km */
+      deliveryRadius: { type: 'integer', required: true, default: 10 },
+    },
+    indexes: [
+      { key: 'code', type: 'unique', attributes: ['code'] },
+      { key: 'isActive', type: 'key', attributes: ['isActive'] },
+    ],
+  },
+
+  /**
    * Categories Collection Schema
    * Product categories for the e-commerce catalog
    */
@@ -205,6 +253,9 @@ export const COLLECTION_SCHEMAS = {
       
       /** Is featured category */
       isFeatured: { type: 'boolean', required: true, default: false },
+      
+      /** Legacy ID for migration */
+      legacyId: { type: 'string', required: false, size: 100 },
     },
     indexes: [
       { key: 'slug', type: 'unique', attributes: ['slug'] },
@@ -212,6 +263,7 @@ export const COLLECTION_SCHEMAS = {
       { key: 'displayOrder', type: 'key', attributes: ['displayOrder'] },
       { key: 'isActive', type: 'key', attributes: ['isActive'] },
       { key: 'isFeatured', type: 'key', attributes: ['isFeatured'] },
+      { key: 'legacyId', type: 'unique', attributes: ['legacyId'] },
     ],
   },
 
@@ -260,6 +312,9 @@ export const COLLECTION_SCHEMAS = {
       /** SKU/reference code */
       sku: { type: 'string', required: false, size: 100 },
       
+      /** Legacy ID for migration */
+      legacyId: { type: 'string', required: false, size: 100 },
+      
       /** Is product active/available */
       isActive: { type: 'boolean', required: true, default: true },
       
@@ -285,10 +340,12 @@ export const COLLECTION_SCHEMAS = {
       { key: 'slug', type: 'unique', attributes: ['slug'] },
       { key: 'categoryId', type: 'key', attributes: ['categoryId'] },
       { key: 'sku', type: 'unique', attributes: ['sku'] },
+      { key: 'legacyId', type: 'unique', attributes: ['legacyId'] },
       { key: 'basePrice', type: 'key', attributes: ['basePrice'] },
       { key: 'isActive', type: 'key', attributes: ['isActive'] },
       { key: 'isFeatured', type: 'key', attributes: ['isFeatured'] },
       { key: 'isSpecialty', type: 'key', attributes: ['isSpecialty'] },
+      { key: 'search', type: 'fulltext', attributes: ['name', 'description', 'tags'] },
     ],
   },
 

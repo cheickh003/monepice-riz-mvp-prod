@@ -143,7 +143,7 @@ export const functions = new Functions(client)
 export const appwriteConfig = {
   endpoint: requiredEnvVars.endpoint!,
   projectId: requiredEnvVars.projectId!,
-  databaseId: process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
+  databaseId: process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
   storageId: process.env.NEXT_PUBLIC_APPWRITE_STORAGE_ID,
   
   // Collection IDs imported from configuration
@@ -151,6 +151,21 @@ export const appwriteConfig = {
   
   // Storage bucket IDs imported from configuration
   buckets: BUCKET_IDS,
+  
+  // Authentication settings
+  auth: {
+    // Phone authentication settings
+    phone: {
+      enabled: true,
+      otpExpiry: 5 * 60, // 5 minutes in seconds
+    },
+    // Magic link settings
+    magicLink: {
+      enabled: true,
+      redirectUrl: process.env.NEXT_PUBLIC_APP_URL + '/auth/magic-link/verify',
+      expiry: 30 * 60, // 30 minutes in seconds
+    },
+  },
 } as const
 
 /**

@@ -242,8 +242,38 @@ export interface PhoneLoginCredentials {
   /** OTP code */
   otp?: string;
   
+  /** User ID from OTP generation step */
+  userId?: string;
+  
   /** Remember device option */
   remember?: boolean;
+}
+
+/**
+ * Magic link credentials interface
+ * For passwordless email authentication
+ */
+export interface MagicLinkCredentials {
+  /** Email address */
+  email: string;
+  
+  /** Optional redirect URL after verification */
+  redirectUrl?: string;
+}
+
+/**
+ * Magic link data interface
+ * For magic link generation response
+ */
+export interface MagicLinkData {
+  /** Email address */
+  email: string;
+  
+  /** Magic link URL */
+  url: string;
+  
+  /** Expiration time */
+  expire: string;
 }
 
 /**
@@ -340,7 +370,10 @@ export interface AuthContextType {
   login: (credentials: LoginCredentials) => Promise<void>;
   
   /** Login with phone and OTP */
-  loginWithPhone: (credentials: PhoneLoginCredentials) => Promise<void>;
+  loginWithPhone: (credentials: PhoneLoginCredentials) => Promise<any>;
+  
+  /** Login with magic link */
+  loginWithMagicLink: (credentials: MagicLinkCredentials) => Promise<any>;
   
   /** Register new user */
   register: (data: RegistrationData) => Promise<void>;
@@ -355,10 +388,10 @@ export interface AuthContextType {
   confirmPasswordReset: (data: PasswordResetData) => Promise<void>;
   
   /** Send OTP to phone */
-  sendOTP: (phone: string, type: OTPVerificationData['type']) => Promise<void>;
+  sendOTP: (phone: string, type: OTPVerificationData['type']) => Promise<any>;
   
   /** Verify OTP code */
-  verifyOTP: (data: OTPVerificationData) => Promise<void>;
+  verifyOTP: (data: OTPVerificationData & { userId: string }) => Promise<any>;
   
   /** Update user profile */
   updateProfile: (data: UserUpdateData) => Promise<void>;
@@ -380,6 +413,8 @@ export enum AuthError {
   PHONE_ALREADY_EXISTS = 'PHONE_ALREADY_EXISTS',
   INVALID_OTP = 'INVALID_OTP',
   OTP_EXPIRED = 'OTP_EXPIRED',
+  MAGIC_LINK_INVALID = 'MAGIC_LINK_INVALID',
+  MAGIC_LINK_EXPIRED = 'MAGIC_LINK_EXPIRED',
   SESSION_EXPIRED = 'SESSION_EXPIRED',
   NETWORK_ERROR = 'NETWORK_ERROR',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',

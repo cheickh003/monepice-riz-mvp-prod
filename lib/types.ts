@@ -1,35 +1,69 @@
 export interface Product {
+  // Legacy JSON fields
   id: number;
-  ref: string;
-  barcode: string;
+  ref?: string;
+  barcode?: string;
   name: string;
   slug: string;
   category: string;
   mainCategory: string;
   price: number;
-  priceHT: number;
-  priceTTC: number;
-  currency: string;
+  originalPrice?: number;
+  priceHT?: number;
+  priceTTC?: number;
+  currency?: string;
   unit: string;
-  stock: 'in_stock' | 'low_stock' | 'out_of_stock';
+  stock?: 'in_stock' | 'low_stock' | 'out_of_stock';
+  image: string;
   images: string[];
   description: string;
-  brand: string;
-  weight: string | null;
-  rating: number;
-  reviewCount: number;
+  brand?: string;
+  weight?: number | string | null;
+  rating?: number;
+  reviewCount?: number;
   isFeatured: boolean;
   isPromo: boolean;
-  promoPrice: number | null;
+  promoPrice?: number | null;
+  inStock?: boolean;
+  
+  // New Appwrite fields (optional for backward compatibility)
+  $id?: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+  categoryId?: string;
+  shortDescription?: string;
+  basePrice?: number;
+  imageUrl?: string;
+  sku?: string;
+  legacyId?: string;
+  isActive?: boolean;
+  isSpecialty?: boolean;
+  tags?: string[];
+  nutrition?: string;
+  storage?: string;
+  origin?: string;
 }
 
 export interface Category {
+  // Legacy JSON fields
   id: string;
   name: string;
   slug: string;
-  icon: string;
+  icon?: string;
   description: string;
-  productCount: number;
+  productCount?: number;
+  image?: string;
+  
+  // New Appwrite fields (optional for backward compatibility)
+  $id?: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+  imageUrl?: string;
+  parentId?: string;
+  displayOrder?: number;
+  isActive?: boolean;
+  isFeatured?: boolean;
+  legacyId?: string;
 }
 
 export interface CartItem {

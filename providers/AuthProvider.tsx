@@ -31,8 +31,15 @@ import {
   UserRole,
   StoreCode,
   isUser,
-  isCustomer
+  isCustomer,
+  MagicLinkCredentials
 } from '@/lib/types/auth';
+import { 
+  sendPhoneOTP, 
+  completePhoneLogin, 
+  generateMagicLink, 
+  getAuthErrorMessage 
+} from '@/lib/services/auth';
 import { captureError, setUserContext, addBreadcrumb } from '@/sentry.client.config';
 import { ID, Query } from 'appwrite';
 
@@ -283,27 +290,74 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [updateAuthState, handleAuthError, loadCustomerProfile]);
 
   /**
-   * Login with phone and OTP (placeholder for future implementation)
+   * Login with phone and OTP (two-step process)
    */
   const loginWithPhone = useCallback(async (credentials: PhoneLoginCredentials) => {
     try {
       updateAuthState({ loading: true, error: null });
       addBreadcrumb('Phone login attempt', 'auth', { phone: credentials.phone });
 
-      // TODO: Implement phone/OTP authentication with Appwrite
-      // This will require setting up phone authentication in Appwrite
-      // For now, throw a not implemented error
-      throw new Error('Phone authentication not yet implemented');
-      
+      if (credentials.otp) {
+        // Step 2: Complete login with OTP
+        if (!credentials.userId) {
+          throw new Error('User ID required for OTP verification');
+        }
+        
+        const result = await completePhoneLogin(credentials.userId, credentials.otp);
+        
+        // Get user details
+        const user = await account.get();
+        
+        if (!isUser(user)) {
+          throw new Error('Invalid user data received');
+        }
+
+        // Load customer profile if applicable
+        let customerProfile: CustomerProfile | null = null;
+        if (user.role === UserRole.CUSTOMER) {
+          customerProfile = await loadCustomerProfile(user.$id);
+        }
+
+        // Set user context for Sentry
+        setUserContext({
+          id: user.$id,
+          email: user.email,
+          name: user.name,
+        });
+
+        addBreadcrumb('Phone login successful', 'auth', { user_id: user.$id });
+
+        updateAuthState({
+          user,
+          customer: customerProfile,
+          loading: false,
+          sessionId: result.session.$id,
+          error: null,
+        });
+      } else {
+        // Step 1: Send OTP
+        const result = await sendPhoneOTP(credentials.phone, 'login');
+        
+        updateAuthState({
+          loading: false,
+          error: null,
+        });
+
+        return {
+          userId: result.userId,
+          phone: result.phone,
+          expire: result.expire,
+        };
+      }
     } catch (error) {
-      const authError = handleAuthError(error);
+      const errorMessage = getAuthErrorMessage(error);
       updateAuthState({
         loading: false,
-        error: authError.message,
+        error: errorMessage,
       });
-      throw authError;
+      throw new Error(errorMessage);
     }
-  }, [updateAuthState, handleAuthError]);
+  }, [updateAuthState, loadCustomerProfile]);
 
   /**
    * Register new user
@@ -468,29 +522,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [updateAuthState, handleAuthError]);
 
   /**
-   * Send OTP (placeholder for future implementation)
+   * Send OTP to phone number
    */
   const sendOTP = useCallback(async (phone: string, type: OTPVerificationData['type']) => {
     try {
       updateAuthState({ loading: true, error: null });
       addBreadcrumb('OTP send attempt', 'auth', { phone, type });
 
-      // TODO: Implement OTP sending with Appwrite phone authentication
-      throw new Error('OTP functionality not yet implemented');
+      const result = await sendPhoneOTP(phone, type);
+      
+      updateAuthState({ loading: false });
+      
+      return {
+        userId: result.userId,
+        phone: result.phone,
+        expire: result.expire,
+      };
     } catch (error) {
-      const authError = handleAuthError(error);
+      const errorMessage = getAuthErrorMessage(error);
       updateAuthState({
         loading: false,
-        error: authError.message,
+        error: errorMessage,
       });
-      throw authError;
+      throw new Error(errorMessage);
     }
-  }, [updateAuthState, handleAuthError]);
+  }, [updateAuthState]);
 
   /**
-   * Verify OTP (placeholder for future implementation)
+   * Verify OTP code
    */
-  const verifyOTP = useCallback(async (data: OTPVerificationData) => {
+  const verifyOTP = useCallback(async (data: OTPVerificationData & { userId: string }) => {
     try {
       updateAuthState({ loading: true, error: null });
       addBreadcrumb('OTP verification attempt', 'auth', { 
@@ -498,17 +559,80 @@ export function AuthProvider({ children }: AuthProviderProps) {
         type: data.type 
       });
 
-      // TODO: Implement OTP verification with Appwrite
-      throw new Error('OTP verification not yet implemented');
+      const result = await completePhoneLogin(data.userId, data.otp);
+      
+      if (data.type === 'login') {
+        // Get user details and update state
+        const user = await account.get();
+        
+        if (!isUser(user)) {
+          throw new Error('Invalid user data received');
+        }
+
+        // Load customer profile if applicable
+        let customerProfile: CustomerProfile | null = null;
+        if (user.role === UserRole.CUSTOMER) {
+          customerProfile = await loadCustomerProfile(user.$id);
+        }
+
+        // Set user context for Sentry
+        setUserContext({
+          id: user.$id,
+          email: user.email,
+          name: user.name,
+        });
+
+        updateAuthState({
+          user,
+          customer: customerProfile,
+          loading: false,
+          sessionId: result.session.$id,
+          error: null,
+        });
+      } else {
+        updateAuthState({ loading: false });
+      }
+
+      return result;
     } catch (error) {
-      const authError = handleAuthError(error);
+      const errorMessage = getAuthErrorMessage(error);
       updateAuthState({
         loading: false,
-        error: authError.message,
+        error: errorMessage,
       });
-      throw authError;
+      throw new Error(errorMessage);
     }
-  }, [updateAuthState, handleAuthError]);
+  }, [updateAuthState, loadCustomerProfile]);
+
+  /**
+   * Login with magic link
+   */
+  const loginWithMagicLink = useCallback(async (credentials: MagicLinkCredentials) => {
+    try {
+      updateAuthState({ loading: true, error: null });
+      addBreadcrumb('Magic link login attempt', 'auth', { email: credentials.email });
+
+      const result = await generateMagicLink(
+        credentials.email, 
+        credentials.redirectUrl || `${window.location.origin}/auth/magic-link/verify`
+      );
+      
+      updateAuthState({ loading: false });
+      
+      return {
+        userId: result.userId,
+        email: result.email,
+        expire: result.expire,
+      };
+    } catch (error) {
+      const errorMessage = getAuthErrorMessage(error);
+      updateAuthState({
+        loading: false,
+        error: errorMessage,
+      });
+      throw new Error(errorMessage);
+    }
+  }, [updateAuthState]);
 
   /**
    * Update user profile
@@ -573,6 +697,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     ...authState,
     login,
     loginWithPhone,
+    loginWithMagicLink,
     register,
     logout,
     resetPassword,
