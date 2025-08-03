@@ -1,0 +1,336 @@
+name: MonEpiceRiz CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME_FRONTEND: ${{ github.repository }}/frontend
+  IMAGE_NAME_BACKEND: ${{ github.repository }}/backend
+
+jobs:
+  # Tests et validation du code
+  test:
+    name: Tests et Linting
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install Frontend dependencies
+      run: |
+        cd frontend
+        npm ci
+
+    - name: Install Backend dependencies
+      run: |
+        cd backend
+        npm ci
+
+    - name: Run Frontend linting
+      run: |
+        cd frontend
+        npm run lint
+
+    - name: Run Frontend tests
+      run: |
+        cd frontend
+        npm test -- --coverage --watchAll=false
+
+    - name: Run Backend tests
+      run: |
+        cd backend
+        npm test
+
+    - name: TypeScript compilation check
+      run: |
+        cd frontend
+        npx tsc --noEmit
+        cd ../backend
+        npx tsc --noEmit
+
+  # Analyse de sécurité
+  security:
+    name: Analyse de sécurité
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  # Build des images Docker
+  build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    needs: [test, security]
+    
+    outputs:
+      frontend-image: ${{ steps.meta-frontend.outputs.tags }}
+      backend-image: ${{ steps.meta-backend.outputs.tags }}
+      frontend-digest: ${{ steps.build-frontend.outputs.digest }}
+      backend-digest: ${{ steps.build-backend.outputs.digest }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata for Frontend
+      id: meta-frontend
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Extract metadata for Backend
+      id: meta-backend
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Build and push Frontend image
+      id: build-frontend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./frontend
+        file: ./frontend/Dockerfile
+        target: production
+        push: true
+        tags: ${{ steps.meta-frontend.outputs.tags }}
+        labels: ${{ steps.meta-frontend.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        platforms: linux/amd64,linux/arm64
+
+    - name: Build and push Backend image
+      id: build-backend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend
+        file: ./backend/Dockerfile
+        target: production
+        push: true
+        tags: ${{ steps.meta-backend.outputs.tags }}
+        labels: ${{ steps.meta-backend.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        platforms: linux/amd64,linux/arm64
+
+  # Tests d'intégration avec Docker Compose
+  integration-test:
+    name: Tests d'intégration
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create test environment file
+      run: |
+        cat > .env << EOF
+        DATABASE_URL=postgres://medusa_user:medusa_password@postgres:5432/medusa_db
+        REDIS_URL=redis://redis:6379
+        JWT_SECRET=test_jwt_secret
+        COOKIE_SECRET=test_cookie_secret
+        MEDUSA_ADMIN_CORS=http://localhost:7001
+        STORE_CORS=http://localhost:3000
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9000
+        NEXT_PUBLIC_BASE_URL=http://localhost:3000
+        EOF
+
+    - name: Start test environment
+      run: |
+        docker-compose up -d postgres redis
+        sleep 10
+
+    - name: Run integration tests
+      run: |
+        docker-compose up --exit-code-from medusa_backend medusa_backend
+        docker-compose up --exit-code-from frontend frontend
+
+    - name: Cleanup test environment
+      if: always()
+      run: docker-compose down -v
+
+  # Déploiement automatique en staging
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build, integration-test]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to staging server
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.STAGING_HOST }}
+        username: ${{ secrets.STAGING_USER }}
+        key: ${{ secrets.STAGING_SSH_KEY }}
+        script: |
+          cd /opt/monepiceriz-staging
+          git pull origin develop
+          docker-compose pull
+          docker-compose up -d --remove-orphans
+          docker system prune -f
+
+    - name: Run staging health checks
+      run: |
+        sleep 30
+        curl -f ${{ secrets.STAGING_URL }}/health || exit 1
+        curl -f ${{ secrets.STAGING_URL }}:9000/health || exit 1
+
+  # Déploiement en production (manuel avec approbation)
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build, integration-test]
+    if: github.ref == 'refs/heads/master'
+    environment: production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create production deployment package
+      run: |
+        tar -czf deployment-package.tar.gz \
+          docker-compose.yml \
+          docker-compose.prod.yml \
+          .env.example \
+          scripts/ \
+          Makefile
+
+    - name: Upload deployment package
+      uses: actions/upload-artifact@v4
+      with:
+        name: production-deployment
+        path: deployment-package.tar.gz
+
+    - name: Deploy to production server
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.PRODUCTION_HOST }}
+        username: ${{ secrets.PRODUCTION_USER }}
+        key: ${{ secrets.PRODUCTION_SSH_KEY }}
+        script: |
+          cd /opt/monepiceriz-production
+          
+          # Backup current version
+          docker-compose exec postgres pg_dump -U medusa_user medusa_db > backup-$(date +%Y%m%d-%H%M%S).sql
+          
+          # Update to new version
+          git pull origin master
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
+          
+          # Rolling update with health checks
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans
+          
+          # Wait and verify deployment
+          sleep 60
+          if ! curl -f http://localhost/health; then
+            echo "Health check failed, rolling back"
+            git checkout HEAD~1
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans
+            exit 1
+          fi
+          
+          # Cleanup old images
+          docker system prune -f
+
+    - name: Run production health checks
+      run: |
+        sleep 30
+        curl -f ${{ secrets.PRODUCTION_URL }}/health || exit 1
+        curl -f ${{ secrets.PRODUCTION_URL }}/api/health || exit 1
+
+    - name: Notify deployment success
+      uses: 8398a7/action-slack@v3
+      with:
+        status: success
+        text: 'MonEpiceRiz déployé avec succès en production! 🎉'
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: success()
+
+    - name: Notify deployment failure
+      uses: 8398a7/action-slack@v3
+      with:
+        status: failure
+        text: 'Échec du déploiement MonEpiceRiz en production! ❌'
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
+
+  # Monitoring post-déploiement
+  post-deploy-monitoring:
+    name: Post-deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+    - name: Performance testing
+      run: |
+        # Utiliser Artillery ou k6 pour les tests de performance
+        npx artillery quick --count 10 --num 5 ${{ secrets.PRODUCTION_URL }}
+
+    - name: Database migration check
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.PRODUCTION_HOST }}
+        username: ${{ secrets.PRODUCTION_USER }}
+        key: ${{ secrets.PRODUCTION_SSH_KEY }}
+        script: |
+          cd /opt/monepiceriz-production
+          docker-compose exec medusa_backend npm run migrations:show
