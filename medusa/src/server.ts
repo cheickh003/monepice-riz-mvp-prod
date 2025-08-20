@@ -1,25 +1,33 @@
 import 'dotenv/config';
 import express from 'express';
+import { registerCinetPayRoutes } from './plugins/payment-cinetpay/index';
+import { registerDeliverySlotRoutes } from './plugins/delivery-slots/index';
+import { bootstrapMedusaV2 } from './bootstrap.medusa';
 
 const app = express();
 app.use(express.json());
 
 // Healthcheck
 app.get('/health', (_req, res) => {
-  res.json({ ok: true, service: 'medusa-backend-skeleton' });
+  res.json({ ok: true, service: 'medusa-backend-skeleton', medusa: 'v2-planned' });
 });
 
-// Placeholder routes for plugins to mount beneath
-app.use('/payments/cinetpay', (req, res) => {
-  res.status(501).json({ error: 'Not Implemented', hint: 'Implement CinetPay processor plugin' });
-});
-
-app.use('/delivery/slots', (req, res) => {
-  res.status(501).json({ error: 'Not Implemented', hint: 'Implement delivery-slots plugin' });
-});
+// Plugin routes (temporary until Medusa v2 bootstrap wires HTTP)
+registerCinetPayRoutes(app);
+registerDeliverySlotRoutes(app);
 
 const port = Number(process.env.PORT || 9000);
-app.listen(port, () => {
-  console.log(`Medusa backend skeleton listening on :${port}`);
-});
 
+async function main() {
+  // Log intended medusa v2 bootstrap (no-op placeholder)
+  await bootstrapMedusaV2();
+
+  app.listen(port, () => {
+    console.log(`Medusa backend skeleton listening on :${port}`);
+  });
+}
+
+main().catch((err) => {
+  console.error('Failed to start backend:', err);
+  process.exit(1);
+});
