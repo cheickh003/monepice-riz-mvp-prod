@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  medusa:
+    build:
+      context: ../medusa
+      dockerfile: Dockerfile
+    container_name: monepiceriz-medusa
+    env_file:
+      - ../medusa/.env
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+      - redis
+      - meilisearch
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    container_name: monepiceriz-db
+    environment:
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: medusa
+      POSTGRES_DB: medusa
+    ports:
+      - "5432:5432"
+    volumes:
+      - medusa_postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: monepiceriz-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.8
+    container_name: monepiceriz-meilisearch
+    environment:
+      MEILI_NO_ANALYTICS: "true"
+      MEILI_ENV: development
+      MEILI_MASTER_KEY: dev_meili_master_key_change_me
+    ports:
+      - "7700:7700"
+    volumes:
+      - meili_data:/meili_data
+    restart: unless-stopped
+
+volumes:
+  medusa_postgres:
+  meili_data:
+
