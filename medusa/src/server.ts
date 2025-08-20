@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import { registerCinetPayRoutes } from './plugins/payment-cinetpay/index';
 import { registerDeliverySlotRoutes } from './plugins/delivery-slots/index';
+import { registerTestRoutes } from './routes/test';
 import { bootstrapMedusaV2 } from './bootstrap.medusa';
 
 const app = express();
@@ -15,6 +16,7 @@ app.get('/health', (_req, res) => {
 // Plugin routes (temporary until Medusa v2 bootstrap wires HTTP)
 registerCinetPayRoutes(app);
 registerDeliverySlotRoutes(app);
+registerTestRoutes(app);
 
 const port = Number(process.env.PORT || 9000);
 
