@@ -251,17 +251,6 @@ export default function Header() {
             </li>
             <li>
               <Link
-                href="/products/bebes"
-                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
-                  pathname === '/products/bebes' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
-                }`}
-              >
-                <Icons.Baby className="w-6 h-6" />
-                <span className="text-xs font-medium">Bébés</span>
-              </Link>
-            </li>
-            <li>
-              <Link
                 href="/products/epices"
                 className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
                   pathname === '/products/epices' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
@@ -291,7 +280,6 @@ export default function Header() {
               >
                 <div className="relative">
                   <Icons.Tag className="w-6 h-6" />
-                  <span className="absolute -top-1 -right-1 bg-primary text-white text-xs px-1.5 py-0.5 rounded-full font-bold leading-none">-15%</span>
                 </div>
                 <span className="text-xs font-medium">Promo</span>
               </Link>
@@ -355,7 +343,6 @@ export default function Header() {
                     { href: '/products/sec', icon: Icons.Package, label: 'Produits Secs' },
                     { href: '/products/boissons', icon: Icons.Droplets, label: 'Boissons' },
                     { href: '/products/entretien', icon: Icons.Sparkles, label: 'Hygiène & Entretien' },
-                    { href: '/products/bebes', icon: Icons.Baby, label: 'Bébés' },
                     { href: '/products/epices', icon: Icons.Star, label: 'Épices' },
                     { href: '/products/petits-fumes', icon: Icons.Zap, label: 'Les petits fumées' },
                   ].map((item) => (
@@ -380,7 +367,6 @@ export default function Header() {
                     >
                       <Icons.Tag className="w-4 h-4 sm:w-5 sm:h-5 text-primary group-hover:text-primary-600 transition-colors duration-200" />
                       <span className="text-sm sm:text-base text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Promotions</span>
-                      <span className="ml-auto text-xs bg-primary text-white px-1.5 sm:px-2 py-0.5 rounded-full">-15%</span>
                     </Link>
                   </li>
                 </ul>

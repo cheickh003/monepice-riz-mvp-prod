@@ -38,32 +38,22 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="relative flex-shrink-0">
           {/* Image produit */}
           <div className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
-            <div className="w-full h-full flex items-center justify-center p-4 transition-transform duration-200 group-hover:scale-110">
-              {(() => {
-                const Icon = getProductIcon();
-                return <Icon className="w-12 h-12 text-gray-400" />;
-              })()}
-            </div>
+            {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') ? (
+              <img 
+                src={product.images[0]} 
+                alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-110"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center p-4 transition-transform duration-200 group-hover:scale-110">
+                {(() => {
+                  const Icon = getProductIcon();
+                  return <Icon className="w-12 h-12 text-gray-400" />;
+                })()}
+              </div>
+            )}
           </div>
 
-          {/* Badges */}
-          <div className="absolute top-2 left-2 flex flex-col gap-2">
-            {product.isPromo && (
-              <span className="bg-primary text-white text-xs px-2 py-1 rounded-full font-bold">
-                -15%
-              </span>
-            )}
-            {product.stock === 'low_stock' && (
-              <span className="bg-warning text-white text-xs px-2 py-1 rounded-full font-medium">
-                Stock limité
-              </span>
-            )}
-            {product.stock === 'out_of_stock' && (
-              <span className="bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-medium">
-                Rupture
-              </span>
-            )}
-          </div>
 
           {/* Badge dans le panier */}
           {quantity > 0 && (

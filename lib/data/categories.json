@@ -63,13 +63,6 @@
     "productCount": 10
   },
   {
-    "id": "bebes",
-    "name": "Bébés",
-    "slug": "bebes",
-    "description": "Produits pour bébés et enfants",
-    "productCount": 10
-  },
-  {
     "id": "promo",
     "name": "Promotions",
     "slug": "promo",

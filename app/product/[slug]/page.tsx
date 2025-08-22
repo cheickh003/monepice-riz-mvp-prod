@@ -120,21 +120,6 @@ export default function ProductPage() {
 
           {/* Informations produit */}
           <div className="space-y-6">
-            {/* Badges */}
-            <div className="flex flex-wrap gap-2">
-              {product.stock === 'in_stock' && (
-                <span className="badge badge-success">En stock</span>
-              )}
-              {product.stock === 'low_stock' && (
-                <span className="badge badge-warning">Stock limité</span>
-              )}
-              {product.stock === 'out_of_stock' && (
-                <span className="badge badge-error">Rupture de stock</span>
-              )}
-              {product.isPromo && (
-                <span className="badge bg-primary text-white">-15% Promo</span>
-              )}
-            </div>
 
             {/* Titre et infos */}
             <div>

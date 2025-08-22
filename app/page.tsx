@@ -8,22 +8,50 @@ import * as Icons from '@/lib/icons';
 import ProductCard from '@/components/product/ProductCard';
 
 export default function Home() {
-  const featuredProducts = getFeaturedProducts(8);
-  const promoProducts = getPromoProducts(8);
+  const featuredProducts = (() => {
+    const realImages = getFeaturedProducts(8).filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const placeholders = getFeaturedProducts(8).filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    return [...realImages, ...placeholders].slice(0, 8);
+  })();
+  
+  const promoProducts = (() => {
+    const realImages = getPromoProducts(8).filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const placeholders = getPromoProducts(8).filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    return [...realImages, ...placeholders].slice(0, 8);
+  })();
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Récupérer les produits du jour
-  const boucherieProducts = getProductsByCategory('boucherie').slice(0, 4);
-  const poissonnerieProducts = getProductsByCategory('poissonnerie').slice(0, 4);
-  const volailleProducts = getProductsByCategory('volaille').slice(0, 4);
-  const epicesProducts = getProductsByCategory('epices').slice(0, 4);
-  const petitsFumesProducts = getProductsByCategory('petits-fumes').slice(0, 4);
+  // Récupérer les produits du jour (vraies images en priorité, puis placeholders)
+  const boucherieProducts = (() => {
+    const realImages = getProductsByCategory('boucherie').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const placeholders = getProductsByCategory('boucherie').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    return [...realImages, ...placeholders].slice(0, 4);
+  })();
   
-  // Produits phares - Escargots et Crabes
-  const escargotsCrabesProducts = [
-    ...getProductsByCategory('poissonnerie').filter(p => p.name.toLowerCase().includes('escargot') || p.name.toLowerCase().includes('crabe')),
-    ...getProductsByCategory('frais').filter(p => p.name.toLowerCase().includes('escargot') || p.name.toLowerCase().includes('crabe'))
-  ].slice(0, 4);
+  const poissonnerieProducts = (() => {
+    const realImages = getProductsByCategory('poissonnerie').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const placeholders = getProductsByCategory('poissonnerie').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    return [...realImages, ...placeholders].slice(0, 4);
+  })();
+  
+  const volailleProducts = (() => {
+    const realImages = getProductsByCategory('volaille').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const placeholders = getProductsByCategory('volaille').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    return [...realImages, ...placeholders].slice(0, 4);
+  })();
+  
+  const epicesProducts = (() => {
+    const realImages = getProductsByCategory('epices').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const placeholders = getProductsByCategory('epices').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    return [...realImages, ...placeholders].slice(0, 4);
+  })();
+  
+  const petitsFumesProducts = (() => {
+    const realImages = getProductsByCategory('petits-fumes').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const placeholders = getProductsByCategory('petits-fumes').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    return [...realImages, ...placeholders].slice(0, 4);
+  })();
+  
 
   const slides = [
     {
@@ -52,15 +80,6 @@ export default function Home() {
       buttonLink: "/products",
       bgColor: "from-secondary to-secondary-600",
       icon: Truck
-    },
-    {
-      id: 4,
-      title: "Nouveaux produits pour bébés",
-      subtitle: "Découvrez notre sélection spécialisée",
-      buttonText: "Découvrir",
-      buttonLink: "/products/bebes",
-      bgColor: "from-accent to-yellow-500",
-      icon: Icons.Baby
     },
     {
       id: 5,
@@ -146,15 +165,129 @@ export default function Home() {
 
       </section>
 
+      {/* Section Produits Phares */}
+      <section className="py-12 bg-gradient-to-b from-red-50 to-white">
+        <div className="container-app">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
+            Nos Produits Phares
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Filet de bœuf mature */}
+            <div className="card group h-full flex flex-col">
+              <div className="relative">
+                <div className="w-full aspect-square bg-white rounded-lg overflow-hidden mb-3 flex-shrink-0">
+                  <img 
+                    src="/media produits phare/image1.png" 
+                    alt="Filet de bœuf mature"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  />
+                </div>
+              </div>
+              <div className="flex-1 flex flex-col justify-between">
+                <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                  Filet de bœuf mature
+                </h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-primary">
+                    Sur commande
+                  </span>
+                </div>
+              </div>
+              <button className="btn-primary w-full mt-3 text-sm flex-shrink-0">
+                Ajouter au panier
+              </button>
+            </div>
+
+            {/* Entrecôte de bœuf */}
+            <div className="card group h-full flex flex-col">
+              <div className="relative">
+                <div className="w-full aspect-square bg-white rounded-lg overflow-hidden mb-3 flex-shrink-0">
+                  <img 
+                    src="/media produits phare/image2.png" 
+                    alt="Entrecôte de bœuf"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  />
+                </div>
+              </div>
+              <div className="flex-1 flex flex-col justify-between">
+                <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                  Entrecôte de bœuf
+                </h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-primary">
+                    Sur commande
+                  </span>
+                </div>
+              </div>
+              <button className="btn-primary w-full mt-3 text-sm flex-shrink-0">
+                Ajouter au panier
+              </button>
+            </div>
+
+            {/* Bourguignon sans os */}
+            <div className="card group h-full flex flex-col">
+              <div className="relative">
+                <div className="w-full aspect-square bg-white rounded-lg overflow-hidden mb-3 flex-shrink-0">
+                  <img 
+                    src="/media produits phare/image3.png" 
+                    alt="Bourguignon sans os"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  />
+                </div>
+              </div>
+              <div className="flex-1 flex flex-col justify-between">
+                <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                  Bourguignon sans os
+                </h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-primary">
+                    Sur commande
+                  </span>
+                </div>
+              </div>
+              <button className="btn-primary w-full mt-3 text-sm flex-shrink-0">
+                Ajouter au panier
+              </button>
+            </div>
+
+            {/* Viande fraîchement hachée */}
+            <div className="card group h-full flex flex-col">
+              <div className="relative">
+                <div className="w-full aspect-square bg-white rounded-lg overflow-hidden mb-3 flex-shrink-0">
+                  <img 
+                    src="/media produits phare/image4.jpeg" 
+                    alt="Viande fraîchement hachée"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  />
+                </div>
+              </div>
+              <div className="flex-1 flex flex-col justify-between">
+                <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                  Viande fraîchement hachée
+                </h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-primary">
+                    Sur commande
+                  </span>
+                </div>
+              </div>
+              <button className="btn-primary w-full mt-3 text-sm flex-shrink-0">
+                Ajouter au panier
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Section Sélection du Jour - Mise en avant */}
-      <section className="py-12 bg-gradient-to-b from-green-50 to-white">
+      <section id="selection-jour" className="py-12 bg-gradient-to-b from-green-50 to-white">
         <div className="container-app">
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
               🥩 Sélection du Jour 🐟
             </h2>
             <p className="text-lg text-gray-600">
-              Viandes, poissons de San Pedro, volailles et nos spécialités escargots & crabes
+              Viandes premium, poissons frais de San Pedro et volailles de qualité
             </p>
           </div>
 
@@ -163,7 +296,10 @@ export default function Home() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
                 <Icons.Beef className="w-8 h-8 text-red-600 mr-3" />
-                <h3 className="text-2xl font-bold text-gray-900">Boucherie</h3>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">Boucherie Premium</h3>
+                  <p className="text-sm text-gray-600">Filet de bœuf mature • Entrecôte • Bourguignon sans os</p>
+                </div>
               </div>
               <Link href="/products/boucherie" className="text-red-600 hover:text-red-700 font-medium">
                 Voir tout →
@@ -181,7 +317,10 @@ export default function Home() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
                 <Icons.Fish className="w-8 h-8 text-blue-600 mr-3" />
-                <h3 className="text-2xl font-bold text-gray-900">Poissonnerie</h3>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">Poissonnerie de San Pedro</h3>
+                  <p className="text-sm text-gray-600">Mérou • Crevettes • Gambas • Langoustes • Frais du jour</p>
+                </div>
               </div>
               <Link href="/products/poissonnerie" className="text-blue-600 hover:text-blue-700 font-medium">
                 Voir tout →
@@ -248,26 +387,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Nos Spécialités - Escargots & Crabes */}
-          {escargotsCrabesProducts.length > 0 && (
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center">
-                  <span className="text-2xl mr-3">🐌🦀</span>
-                  <h3 className="text-2xl font-bold text-gray-900">Nos Spécialités</h3>
-                  <span className="ml-2 text-sm bg-primary text-white px-2 py-1 rounded-full">Phares</span>
-                </div>
-                <Link href="/products/poissonnerie" className="text-primary hover:text-primary-600 font-medium">
-                  Voir tout →
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {escargotsCrabesProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Bannière d'information */}
           <div className="bg-gradient-to-r from-primary to-primary-600 text-white rounded-lg p-6 text-center">
@@ -382,9 +501,6 @@ export default function Home() {
                           })()}
                         </div>
                       </div>
-                      <span className="absolute top-2 right-2 bg-primary text-white text-xs px-2 py-1 rounded-full font-bold">
-                        -15%
-                      </span>
                     </div>
                     <div className="flex-1 flex flex-col justify-between">
                       <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">

@@ -46,7 +46,6 @@ export const categoryIcons = {
   sec: Package,
   boissons: Droplets,
   entretien: Sparkles,
-  bebes: Baby,
   boucherie: Beef,
   volaille: Bird,
   poissonnerie: Fish,
