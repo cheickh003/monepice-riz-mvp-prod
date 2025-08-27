@@ -15,19 +15,26 @@ export interface Product {
   images: string[];
   description: string;
   brand: string;
-  weight: string | null;
-  rating: number;
-  reviewCount: number;
+  weight?: string | null;
+  rating?: number;
+  reviewCount?: number;
   isFeatured: boolean;
   isPromo: boolean;
-  promoPrice: number | null;
+  promoPrice?: number | null;
+  nutritionalInfo?: string;
+  allergens?: string;
+  origin?: string;
+  conservation?: string;
+  // Medusa-specific fields
+  medusaId?: string;
+  variantId?: string;
 }
 
 export interface Category {
   id: string;
   name: string;
   slug: string;
-  icon: string;
+  icon?: string;
   description: string;
   productCount: number;
 }

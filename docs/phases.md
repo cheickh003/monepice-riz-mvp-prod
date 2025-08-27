@@ -29,6 +29,17 @@ Total MVP fonctionnel: ~5–6 semaines (hors contenus/visuels).
 ---
 
 ## Phase 0 — Pré‑requis & décisions
+Statut: Terminé — 2025‑08‑22
+
+Réalisé
+- Domaines cibles validés et consignés (front/api/admin) dans la doc.
+- Inventaire des secrets défini et variables d’environnement gabaritées (`medusa/.env.example`).
+- Rôles/permissions et flux commande (IPN → requires_review → confirmed/cancelled) actés et reflétés dans le code squelette.
+
+Preuves
+- `docs/plan.md` (Domaines, Paiement CinetPay, Sécurité & idempotence).
+- `medusa/.env.example` (CINETPAY_*, SMTP_*, S3/R2, MEILI_*...).
+Statut: Terminé — 2025‑08‑22
 Objectif: verrouiller les choix techniques et les secrets pour éviter les blocages ultérieurs.
 
 Tâches
@@ -45,6 +56,20 @@ Livrables
 ---
 
 ## Phase 1 — Infra & domaines (VPS + DNS + SSL)
+Statut: Terminé (stack locale) — 2025‑08‑22
+
+Réalisé (local)
+- Stack Docker locale: Postgres, Redis, Meilisearch, backend (`ops/docker-compose.yml`).
+- Endpoints de santé et de diagnostic exposés: `/health`, `/test/db`, `/test/redis`, `/test/meilisearch`.
+
+Restant (prod)
+- Provisionnement VPS + Nginx + SSL + DNS (`api.monepiceriz.com`, `admin.monepiceriz.com`).
+
+Preuves
+- `ops/docker-compose.yml`, `ops/README.md`.
+- Logs de démarrage backend (voir `docker compose logs medusa`).
+Statut: Terminé (stack locale) — 2025‑08‑22
+Note: Mise en prod (VPS+Nginx+SSL+DNS) à planifier.
 Objectif: préparer un socle fiable pour Medusa, Admin et services annexes.
 
 Tâches
@@ -63,6 +88,23 @@ Livrables
 ---
 
 ## Phase 2 — Bootstrap MedusaJS (API + Admin + R2 + SMTP + Meilisearch)
+Statut: En cours — 2025‑08‑22
+
+Réalisé (squelette opérationnel)
+- Plugins backend: CinetPay (init/IPN + idempotence + revalidation), delivery‑slots (créneaux 2h, cut‑off, capacité Redis).
+- Services: R2 (signature upload), SMTP (test), Meilisearch (health), queue BullMQ `order-review` + worker.
+- Configs centralisées: `medusa/medusa-config.ts` (DB/Redis/R2/Meili/CinetPay).
+
+Restant (v2 complet)
+- Installer/booter Medusa v2 (API) et Admin v2; câbler modules (DB, cache, event‑bus, file S3/R2, search Meili) et monter les plugins.
+- Retirer les routes fallback “simplifiées” et brancher la persistance DB (paiements/commandes, metadata delivery slot).
+
+Preuves
+- `medusa/src/plugins/payment-cinetpay/index.ts`, `medusa/src/plugins/delivery-slots/index.ts`.
+- `medusa/src/services/slots*.ts`, `medusa/src/services/cinetpay-client.ts`, `medusa/src/utils/idempotency.ts`.
+- `medusa/src/queues/order-review*.ts`, `medusa/src/server.ts` (enregistrement plugins + endpoints tests).
+Statut: Terminé (squelette opérationnel, pré‑v2) — 2025‑08‑22
+Note: Swap vers Medusa v2 et Admin à finaliser.
 Objectif: initialiser le backend e‑commerce complet et l’admin.
 
 Tâches

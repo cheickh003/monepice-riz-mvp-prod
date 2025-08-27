@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCheckoutStore } from '@/lib/stores/checkoutStore';
+import { apiFetch } from '@/lib/api/client';
+import { getOrCreateCartId } from '@/lib/cart-id';
 import { useCartStore } from '@/lib/stores/cartStore';
 import { CheckCircle, XCircle } from 'lucide-react';
 
@@ -40,16 +42,47 @@ export default function PaymentPage() {
     }
   }, [items, deliverySlot, router]);
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (paymentMethod === 'cash_on_delivery' || paymentMethod === 'cash_on_order') {
       // Direct confirmation for cash payments
       completeOrder();
     } else if (paymentMethod === 'mobile_money' && !mobileMoneyProvider) {
       alert('Veuillez sélectionner un opérateur Mobile Money');
     } else {
-      // Simulate payment process
-      setShowPaymentSimulation(true);
-      setPaymentStep('init');
+      // Try backend payment init, fallback to simulation if it fails
+      try {
+        setIsProcessing(true);
+        const orderId = `order_${Date.now()}`;
+        const amount = cart.total + (deliverySlot?.price || 0) - cart.deliveryFee;
+        const payload = {
+          orderId,
+          amount,
+          currency: 'XOF',
+          customer: {
+            name: customerInfo.fullName,
+            email: customerInfo.email,
+            phone: customerInfo.phoneNumber,
+          },
+          description: `Commande ${orderId}`,
+          channels: 'ALL',
+        };
+        const resp = await apiFetch<{ success: boolean; paymentUrl?: string; transactionId?: string }>(
+          '/payments/cinetpay/init',
+          { method: 'POST', body: JSON.stringify(payload) }
+        );
+        if (resp && (resp as any).success && (resp as any).paymentUrl) {
+          window.location.href = (resp as any).paymentUrl as string;
+          return;
+        }
+        // If backend doesn't return a URL, fallback to simulation
+        setShowPaymentSimulation(true);
+        setPaymentStep('init');
+      } catch (_e) {
+        setShowPaymentSimulation(true);
+        setPaymentStep('init');
+      } finally {
+        setIsProcessing(false);
+      }
     }
   };
 

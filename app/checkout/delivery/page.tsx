@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCheckoutStore } from '@/lib/stores/checkoutStore';
 import { useCartStore } from '@/lib/stores/cartStore';
 import { DeliverySlot, Address } from '@/lib/types';
+import { fetchSlots as apiFetchSlots, reserveSlot as apiReserveSlot, releaseSlot as apiReleaseSlot } from '@/lib/api/slots';
+import { getOrCreateCartId } from '@/lib/cart-id';
 
 export default function DeliveryPage() {
   const router = useRouter();
@@ -25,6 +27,10 @@ export default function DeliveryPage() {
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [selectedDate, setSelectedDate] = useState<'today' | 'tomorrow'>('today');
+  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [todaySlots, setTodaySlots] = useState<DeliverySlot[]>([]);
+  const [tomorrowSlots, setTomorrowSlots] = useState<DeliverySlot[]>([]);
+  const cartId = useMemo(() => getOrCreateCartId(), []);
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -33,41 +39,31 @@ export default function DeliveryPage() {
     }
   }, [items, router]);
 
-  // Générer les créneaux horaires
-  const generateTimeSlots = (date: 'today' | 'tomorrow'): DeliverySlot[] => {
-    const slots: DeliverySlot[] = [];
-    const now = new Date();
-    const isToday = date === 'today';
-    const slotDate = isToday ? now : new Date(now.getTime() + 24 * 60 * 60 * 1000);
-    
-    // Créneaux de 2h de 8h à 20h
-    const startHour = isToday && now.getHours() >= 8 ? Math.ceil(now.getHours() / 2) * 2 + 2 : 8;
-    
-    for (let hour = startHour; hour < 20; hour += 2) {
-      // Vérifier si le créneau est dans au moins 3h (pour today)
-      if (isToday) {
-        const slotTime = new Date(slotDate);
-        slotTime.setHours(hour, 0, 0, 0);
-        const timeDiff = slotTime.getTime() - now.getTime();
-        if (timeDiff < 3 * 60 * 60 * 1000) continue; // Skip if less than 3 hours
-      }
-
-      slots.push({
-        id: `${date}-${hour}`,
-        date: slotDate.toISOString().split('T')[0],
-        startTime: `${hour}:00`,
-        endTime: `${hour + 2}:00`,
-        available: Math.random() > 0.2, // 80% availability
-        price: 1500,
-      });
-    }
-
-    return slots;
-  };
-
-  const todaySlots = generateTimeSlots('today');
-  const tomorrowSlots = generateTimeSlots('tomorrow');
   const displaySlots = selectedDate === 'today' ? todaySlots : tomorrowSlots;
+
+  // Load slots from API
+  useEffect(() => {
+    const load = async () => {
+      setLoadingSlots(true);
+      try {
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
+        const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+        const tomorrowStr = tomorrow.toISOString().split('T')[0];
+        const [t1, t2] = await Promise.all([
+          apiFetchSlots(todayStr),
+          apiFetchSlots(tomorrowStr),
+        ]);
+        setTodaySlots(t1.slots);
+        setTomorrowSlots(t2.slots);
+      } catch (_e) {
+        // Fallback: keep any existing slots (UI still usable)
+      } finally {
+        setLoadingSlots(false);
+      }
+    };
+    load();
+  }, []);
 
   // Express delivery slot (always available)
   const expressSlot: DeliverySlot = {
@@ -413,7 +409,24 @@ export default function DeliveryPage() {
                       name="slot"
                       value={slot.id}
                       checked={deliverySlot?.id === slot.id}
-                      onChange={() => slot.available && setDeliverySlot(slot)}
+                      onChange={async () => {
+                        if (!slot.available) return;
+                        try {
+                          // Release previous slot if any
+                          if (deliverySlot?.id && deliverySlot.id !== slot.id) {
+                            await apiReleaseSlot(cartId);
+                          }
+                          // Reserve new slot via API
+                          // Backend expects standard slot ids; skip express through API for now
+                          if (slot.id !== 'express') {
+                            await apiReserveSlot(cartId, slot.id);
+                          }
+                          setDeliverySlot(slot);
+                          setFormErrors({ ...formErrors, slot: '' });
+                        } catch (_e) {
+                          setFormErrors({ ...formErrors, slot: "Ce créneau n'est plus disponible." });
+                        }
+                      }}
                       disabled={!slot.available}
                       className="sr-only"
                     />

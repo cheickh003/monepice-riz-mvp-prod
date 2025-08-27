@@ -2,26 +2,43 @@
   "name": "monepiceriz-medusa",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc -p tsconfig.json",
-    "start": "node dist/server.js"
+    "build": "tsc --build",
+    "start": "node dist/server.js",
+    "v2:dev": "medusa dev",
+    "v2:start": "medusa start",
+    "test:services": "npm run test:db && npm run test:redis && npm run test:meilisearch",
+    "test:db": "curl -s http://localhost:9000/test/db",
+    "test:redis": "curl -s http://localhost:9000/test/redis", 
+    "test:meilisearch": "curl -s http://localhost:9000/test/meilisearch"
   },
   "dependencies": {
-    "express": "^4.19.2",
+    "@medusajs/medusa": "^2.9.0",
+    "@medusajs/framework": "^2.9.0",
+    "@medusajs/modules-sdk": "^2.9.0",
+    "@medusajs/file": "^2.9.0",
+    "@medusajs/cache-inmemory": "^2.9.0",
+    "@medusajs/cache-redis": "^2.9.0",
+    "@medusajs/event-bus-redis": "^2.9.0",
     "dotenv": "^16.4.5",
     "ioredis": "^5.4.1",
     "bullmq": "^5.8.3",
     "meilisearch": "^0.40.0",
     "nodemailer": "^6.9.13",
     "@aws-sdk/client-s3": "^3.637.0",
-    "@aws-sdk/s3-request-presigner": "^3.637.0"
+    "@aws-sdk/s3-request-presigner": "^3.637.0",
+    "pg": "^8.11.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
   },
   "devDependencies": {
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.5.4",
+    "@medusajs/types": "^2.9.0",
+    "@types/node": "^20.12.7",
+    "@types/pg": "^8.11.2",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
-    "@types/node": "^20.12.7"
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.4"
   }
 }

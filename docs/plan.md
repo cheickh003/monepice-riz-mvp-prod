@@ -86,6 +86,11 @@ Sécurité & idempotence:
 - Observabilité: Sentry pour front/back; logs structurés JSON; traces (OTel) optionnelles.
 
 ## Roadmap (phases)
+Etat d’avancement (2025‑08‑22)
+- Phase 0 (prérequis): Terminé
+- Phase 1 (infra locale): Terminé (stack Docker); prod (VPS/Nginx/SSL/DNS) à faire
+- Phase 2 (bootstrap Medusa): En cours — squelette Express + plugins (CinetPay, delivery‑slots) livrés; Medusa v2 + Admin à brancher
+
 1) Setup plateforme (0.5–1 sem)
    - VPS (Docker, Nginx, SSL), projets Neon/Upstash/R2, Meilisearch. Secrets env. 
    - Déploiement Next sur Vercel. CORS/SSL/domains.
