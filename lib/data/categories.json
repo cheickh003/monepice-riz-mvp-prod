@@ -61,12 +61,5 @@
     "slug": "entretien",
     "description": "Produits d'hygiène et d'entretien",
     "productCount": 10
-  },
-  {
-    "id": "promo",
-    "name": "Promotions",
-    "slug": "promo",
-    "description": "Produits en promotion",
-    "productCount": 0
   }
 ]

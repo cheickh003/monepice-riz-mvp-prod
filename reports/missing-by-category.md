@@ -1,17 +1,11 @@
 # Produits avec prix manquants par catégorie
 
-## bebes (7)
+## bebes (4)
 
 ## boissons (1)
 
-## boucherie (6)
+## boucherie (1)
 
-## entretien (8)
+## entretien (2)
 
-## epices (7)
-
-## petits-fumes (3)
-
-## poissonnerie (7)
-
-## volaille (1)
+## poissonnerie (6)

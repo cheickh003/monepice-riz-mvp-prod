@@ -254,7 +254,12 @@ async function extractPdfText(pdfPath) {
 // Approximate matching helpers
 const STOPWORDS = new Set(['poisson','viande','de','du','des','le','la','les','en','ou','et','frais','fraiche','fraîche','entier','tranche','tranches','au','aux','a','à']);
 function tokensSet(s) {
-  const base = deburr(String(s||'').toLowerCase()).replace(/[^\p{L}\p{N}\s]/gu,' ');
+  let base = deburr(String(s||'').toLowerCase());
+  // Expand common abbreviations/synonyms
+  base = base.replace(/\bst\.?\s+/g, 'saint ');
+  base = base.replace(/\bste\.?\s+/g, 'sainte ');
+  base = base.replace(/\btr\.?\s+/g, 'tranche ');
+  base = base.replace(/[^\p{L}\p{N}\s]/gu,' ');
   const parts = base.split(/\s+/).filter(t => t.length >= 3 && !STOPWORDS.has(t));
   return new Set(parts);
 }
@@ -280,7 +285,7 @@ function volumeMl(text) {
 function overlapCount(aSet, bSet) {
   let c = 0; for (const t of aSet) if (bSet.has(t)) c++; return c;
 }
-function findApproxPriceByName(rows, productName, category) {
+function findApproxPriceByName(rows, productName, category, currentPrice) {
   if (!rows || rows.length === 0) return null;
   const a = tokensSet(productName);
   if (!['poissonnerie','boucherie','epices','boissons','volaille','petits-fumes','entretien','bebes','frais','sec'].includes(String(category||'').toLowerCase())) return null;
@@ -310,6 +315,15 @@ function findApproxPriceByName(rows, productName, category) {
   if (top.length === 1) return top[0].r.price;
   const uniqPrices = new Set(top.map(x => x.r.price));
   if (uniqPrices.size === 1) return top[0].r.price;
+  // Tie-breaker: choose candidate price closest to current price if provided
+  if (typeof currentPrice === 'number' && Number.isFinite(currentPrice) && currentPrice > 0) {
+    let best = null, bestDiff = Infinity;
+    for (const t of top) {
+      const diff = Math.abs((t.r.price || 0) - currentPrice);
+      if (diff < bestDiff) { bestDiff = diff; best = t; }
+    }
+    if (best) return best.r.price;
+  }
   return null;
 }
 
@@ -559,11 +573,11 @@ function findPriceForName(pdfLines, targetName) {
       }
       // 4) Approximate by tokens (MD rows then PDF rows) for targeted categories
       if (found == null) {
-        const approxMd = findApproxPriceByName(md.rows, p.name, p.mainCategory);
+        const approxMd = findApproxPriceByName(md.rows, p.name, p.mainCategory, original);
         if (approxMd != null) found = approxMd;
       }
       if (found == null) {
-        const approxPdf = findApproxPriceByName(pdfTab.rows, p.name, p.mainCategory);
+        const approxPdf = findApproxPriceByName(pdfTab.rows, p.name, p.mainCategory, original);
         if (approxPdf != null) found = approxPdf;
       }
       // 5) Fallback: PDF proximity match
@@ -727,12 +741,13 @@ function findPriceForName(pdfLines, targetName) {
       catSlugToFile.set(safeSlug, `./${safeSlug}.json`);
     }
 
-    // Update categories productCount
+    // Update categories productCount and drop empty categories
     const updatedCategories = categories.map(c => {
       const items = byCategory.get(c.id) || byCategory.get(c.slug) || [];
       return { ...c, productCount: items.length };
     });
-    fs.writeFileSync(CATEGORIES_JSON, JSON.stringify(updatedCategories, null, 2), 'utf8');
+    const filteredCategories = updatedCategories.filter(c => c.productCount > 0);
+    fs.writeFileSync(CATEGORIES_JSON, JSON.stringify(filteredCategories, null, 2), 'utf8');
 
     // Generate an index.ts aggregator that imports split JSONs statically
     const imports = [];
