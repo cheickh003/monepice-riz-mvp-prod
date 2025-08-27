@@ -165,19 +165,7 @@ export default function Home() {
 
       </section>
 
-      {/* Section Produits Phares */}
-      <section className="py-12 bg-gradient-to-b from-red-50 to-white">
-        <div className="container-app">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
-            Nos Produits Phares
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {featuredProducts.slice(0, 4).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Section Produits Phares supprimée */}
 
       {/* Section Sélection du Jour - Mise en avant */}
       <section id="selection-jour" className="py-12 bg-gradient-to-b from-green-50 to-white">

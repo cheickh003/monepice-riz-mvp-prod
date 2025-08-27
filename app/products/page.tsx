@@ -28,9 +28,9 @@ export default function ProductsPage() {
               Boucherie • Poissonnerie • Volaille • Charcuterie
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
             {categories
-              .filter(cat => ['boucherie', 'poissonnerie', 'volaille', 'charcuterie'].includes(cat.id))
+              .filter(cat => ['frais','sec','boissons','entretien','epices','petits-fumes','promo'].includes(cat.id))
               .map((category) => (
                 <Link
                   key={category.id}
@@ -46,9 +46,9 @@ export default function ProductsPage() {
                   <h3 className="font-semibold group-hover:scale-105 transition-transform">
                     {category.name}
                   </h3>
-                  <p className="text-sm opacity-90 mt-1">
-                    {category.productCount} produits
-                  </p>
+                  {typeof category.productCount === 'number' && (
+                    <p className="text-sm opacity-90 mt-1">{category.productCount} produits</p>
+                  )}
                 </Link>
               ))}
           </div>
@@ -57,7 +57,7 @@ export default function ProductsPage() {
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              Livraison express garantie pour toute notre sélection
+              Livraison express garantie sur toute la sélection
             </span>
           </div>
         </div>

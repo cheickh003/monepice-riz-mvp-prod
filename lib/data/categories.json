@@ -4,28 +4,28 @@
     "name": "Boucherie",
     "slug": "boucherie",
     "description": "Viandes fraîches de bœuf, agneau et veau",
-    "productCount": 45
+    "productCount": 13
   },
   {
     "id": "poissonnerie",
     "name": "Poissonnerie",
     "slug": "poissonnerie",
     "description": "Poissons de San Pedro, escargots, crabes et fruits de mer",
-    "productCount": 40
+    "productCount": 21
   },
   {
     "id": "volaille",
     "name": "Volaille",
     "slug": "volaille",
     "description": "Poulets, dindes, canards et volailles fraîches",
-    "productCount": 25
+    "productCount": 6
   },
   {
     "id": "epices",
     "name": "Épices",
     "slug": "epices",
     "description": "Épices africaines, mélanges et condiments",
-    "productCount": 18
+    "productCount": 17
   },
   {
     "id": "petits-fumes",
@@ -46,14 +46,14 @@
     "name": "Produits Secs",
     "slug": "sec",
     "description": "Épicerie, conserves, biscuits et produits secs",
-    "productCount": 33
+    "productCount": 35
   },
   {
     "id": "boissons",
     "name": "Boissons",
     "slug": "boissons",
     "description": "Boissons gazeuses, jus, sirops et boissons énergisantes",
-    "productCount": 40
+    "productCount": 43
   },
   {
     "id": "entretien",
@@ -67,6 +67,6 @@
     "name": "Promotions",
     "slug": "promo",
     "description": "Produits en promotion",
-    "productCount": 15
+    "productCount": 0
   }
 ]

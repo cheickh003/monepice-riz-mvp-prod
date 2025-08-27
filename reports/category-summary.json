@@ -1,0 +1,52 @@
+{
+  "bebes": {
+    "total": 10,
+    "updated": 0,
+    "missing": 7
+  },
+  "boissons": {
+    "total": 43,
+    "updated": 1,
+    "missing": 1
+  },
+  "boucherie": {
+    "total": 13,
+    "updated": 1,
+    "missing": 6
+  },
+  "entretien": {
+    "total": 10,
+    "updated": 0,
+    "missing": 8
+  },
+  "epices": {
+    "total": 17,
+    "updated": 0,
+    "missing": 7
+  },
+  "frais": {
+    "total": 22,
+    "updated": 0,
+    "missing": 0
+  },
+  "petits-fumes": {
+    "total": 5,
+    "updated": 0,
+    "missing": 3
+  },
+  "poissonnerie": {
+    "total": 21,
+    "updated": 0,
+    "missing": 7
+  },
+  "sec": {
+    "total": 35,
+    "updated": 0,
+    "missing": 0
+  },
+  "volaille": {
+    "total": 6,
+    "updated": 0,
+    "missing": 1
+  }
+}

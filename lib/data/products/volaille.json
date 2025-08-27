@@ -1,0 +1,172 @@
+[
+  {
+    "id": 9009,
+    "ref": "POULTRY001",
+    "barcode": "9009000000009",
+    "name": "Poulet effilé",
+    "slug": "poulet-effile",
+    "category": "VOLAILLE FRAICHE",
+    "mainCategory": "volaille",
+    "price": 3300,
+    "priceHT": 3300,
+    "priceTTC": 3300,
+    "currency": "XOF",
+    "unit": "unité",
+    "stock": "in_stock",
+    "images": [
+      "/media produits phare/image9.png"
+    ],
+    "description": "Poulet effilé frais, élevage local de qualité",
+    "brand": "MonEpice&Riz",
+    "weight": "1.5kg+",
+    "rating": 4.7,
+    "reviewCount": 89,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null
+  },
+  {
+    "id": 9010,
+    "ref": "POULTRY002",
+    "barcode": "9010000000010",
+    "name": "Chipolatas aux épices Gouanou",
+    "slug": "chipolatas-epices-gouanou",
+    "category": "SAUCISSE",
+    "mainCategory": "volaille",
+    "price": 3200,
+    "priceHT": 3200,
+    "priceTTC": 3200,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/media produits phare/image10.jpeg"
+    ],
+    "description": "Chipolatas aux épices Gouanou, mini saucisses épicées",
+    "brand": "MonEpice&Riz",
+    "weight": "500g",
+    "rating": 4.5,
+    "reviewCount": 67,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null
+  },
+  {
+    "id": 126,
+    "ref": "2400137000",
+    "barcode": "2400137000000",
+    "name": "Poulet Effilé +1.5kg",
+    "slug": "poulet-effile-1-5kg",
+    "category": "VOLAILLE",
+    "mainCategory": "volaille",
+    "price": 3300,
+    "priceHT": 3300,
+    "priceTTC": 3300,
+    "currency": "XOF",
+    "unit": "unité",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-volaille.jpg"
+    ],
+    "description": "Poulet effilé frais de plus de 1.5kg - Élevage local de qualité",
+    "brand": "MonEpice&Riz",
+    "weight": "1.5kg+",
+    "rating": 4.6,
+    "reviewCount": 124,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Frais du jour",
+      "Local"
+    ]
+  },
+  {
+    "id": 127,
+    "ref": "2400138000",
+    "barcode": "2400138000000",
+    "name": "Poulet Fermier",
+    "slug": "poulet-fermier",
+    "category": "VOLAILLE",
+    "mainCategory": "volaille",
+    "price": 6000,
+    "priceHT": 6000,
+    "priceTTC": 6000,
+    "currency": "XOF",
+    "unit": "unité",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-volaille.jpg"
+    ],
+    "description": "Poulet fermier élevé en plein air - Goût authentique garanti",
+    "brand": "MonEpice&Riz",
+    "weight": "2kg environ",
+    "rating": 4.9,
+    "reviewCount": 87,
+    "isFeatured": true,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Premium",
+      "Fermier"
+    ]
+  },
+  {
+    "id": 128,
+    "ref": "2400146000",
+    "barcode": "2400146000000",
+    "name": "Pintade Fraîche",
+    "slug": "pintade-fraiche",
+    "category": "VOLAILLE",
+    "mainCategory": "volaille",
+    "price": 7500,
+    "priceHT": 7500,
+    "priceTTC": 7500,
+    "currency": "XOF",
+    "unit": "unité",
+    "stock": "low_stock",
+    "images": [
+      "/images/products/placeholder-volaille.jpg"
+    ],
+    "description": "Pintade fraîche - Viande savoureuse et peu grasse",
+    "brand": "MonEpice&Riz",
+    "weight": "1.5kg environ",
+    "rating": 4.7,
+    "reviewCount": 34,
+    "isFeatured": false,
+    "isPromo": false,
+    "promoPrice": null,
+    "badges": [
+      "Frais du jour"
+    ]
+  },
+  {
+    "id": 129,
+    "ref": "2400141000",
+    "barcode": "2400141000000",
+    "name": "Dinde PAC",
+    "slug": "dinde-pac",
+    "category": "VOLAILLE",
+    "mainCategory": "volaille",
+    "price": 6000,
+    "priceHT": 6000,
+    "priceTTC": 6000,
+    "currency": "XOF",
+    "unit": "kg",
+    "stock": "in_stock",
+    "images": [
+      "/images/products/placeholder-volaille.jpg"
+    ],
+    "description": "Dinde prête à cuire - Idéale pour les repas de famille",
+    "brand": "MonEpice&Riz",
+    "weight": "1kg",
+    "rating": 4.5,
+    "reviewCount": 56,
+    "isFeatured": true,
+    "isPromo": true,
+    "promoPrice": 5100,
+    "badges": [
+      "Promo -15%"
+    ]
+  }
+]

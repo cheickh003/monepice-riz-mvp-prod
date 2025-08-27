@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
+import CategoryStrip from "@/components/layout/CategoryStrip";
 import Footer from "@/components/layout/Footer";
 
 const inter = Inter({
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <div className="min-h-screen flex flex-col">
           <Header />
+          <CategoryStrip />
           <main className="flex-grow pb-20 md:pb-0">
             {children}
           </main>

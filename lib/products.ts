@@ -1,5 +1,5 @@
 import { Product, Category } from './types';
-import productsData from './data/products.json';
+import productsData, { byCategory as productsByCategory } from './data/products/index';
 import categoriesData from './data/categories.json';
 
 export const products: Product[] = productsData as Product[];
@@ -17,6 +17,11 @@ export function getProductsByCategory(categorySlug: string): Product[] {
   if (categorySlug === 'promo') {
     return products.filter(p => p.isPromo);
   }
+  const cat = (productsByCategory as any)[categorySlug];
+  if (Array.isArray(cat)) {
+    return cat as Product[];
+  }
+  // Fallback if category not in split files
   return products.filter(p => p.mainCategory === categorySlug);
 }
 

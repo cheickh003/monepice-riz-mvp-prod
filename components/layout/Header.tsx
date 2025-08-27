@@ -201,92 +201,7 @@ export default function Header() {
         </form>
       </div>
 
-      {/* Navigation catégories - Desktop uniquement */}
-      <nav className="hidden md:block bg-gray-50 border-t border-gray-200">
-        <div className="container-app">
-          <ul className="flex items-center justify-center space-x-8 py-4">
-            <li>
-              <Link
-                href="/products/frais"
-                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
-                  pathname === '/products/frais' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
-                }`}
-              >
-                <Icons.Milk className="w-6 h-6" />
-                <span className="text-xs font-medium">Laitiers</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/products/sec"
-                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
-                  pathname === '/products/sec' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
-                }`}
-              >
-                <Icons.Package className="w-6 h-6" />
-                <span className="text-xs font-medium">Sec</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/products/boissons"
-                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
-                  pathname === '/products/boissons' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
-                }`}
-              >
-                <Icons.Droplets className="w-6 h-6" />
-                <span className="text-xs font-medium">Boissons</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/products/entretien"
-                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
-                  pathname === '/products/entretien' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
-                }`}
-              >
-                <Icons.Sparkles className="w-6 h-6" />
-                <span className="text-xs font-medium">Entretien</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/products/epices"
-                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
-                  pathname === '/products/epices' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
-                }`}
-              >
-                <Icons.Star className="w-6 h-6" />
-                <span className="text-xs font-medium">Épices</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/products/petits-fumes"
-                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm ${
-                  pathname === '/products/petits-fumes' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
-                }`}
-              >
-                <Icons.Zap className="w-6 h-6" />
-                <span className="text-xs font-medium">Fumées</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/products/promo"
-                className={`group flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-sm relative ${
-                  pathname === '/products/promo' ? 'text-primary bg-white shadow-sm' : 'text-gray-600 hover:text-primary'
-                }`}
-              >
-                <div className="relative">
-                  <Icons.Tag className="w-6 h-6" />
-                </div>
-                <span className="text-xs font-medium">Promo</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      {/* Navigation catégories - supprimée du header */}
 
       {/* Menu mobile overlay - Plein écran adaptatif */}
       {isMenuOpen && (
@@ -334,43 +249,7 @@ export default function Header() {
                 </Link>
               </div>
               
-              {/* Catégories */}
-              <div>
-                <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Catégories</h3>
-                <ul className="space-y-1">
-                  {[
-                    { href: '/products/frais', icon: Icons.Milk, label: 'Laitiers' },
-                    { href: '/products/sec', icon: Icons.Package, label: 'Produits Secs' },
-                    { href: '/products/boissons', icon: Icons.Droplets, label: 'Boissons' },
-                    { href: '/products/entretien', icon: Icons.Sparkles, label: 'Hygiène & Entretien' },
-                    { href: '/products/epices', icon: Icons.Star, label: 'Épices' },
-                    { href: '/products/petits-fumes', icon: Icons.Zap, label: 'Les petits fumées' },
-                  ].map((item) => (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        className="group flex items-center space-x-2.5 sm:space-x-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <item.icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-primary transition-colors duration-200" />
-                        <span className="text-sm sm:text-base text-gray-700 group-hover:text-gray-900 transition-colors duration-200">{item.label}</span>
-                      </Link>
-                    </li>
-                  ))}
-                  
-                  {/* Promotions avec badge */}
-                  <li>
-                    <Link
-                      href="/products/promo"
-                      className="group flex items-center space-x-2.5 sm:space-x-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg hover:bg-primary/5 transition-all duration-200"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <Icons.Tag className="w-4 h-4 sm:w-5 sm:h-5 text-primary group-hover:text-primary-600 transition-colors duration-200" />
-                      <span className="text-sm sm:text-base text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Promotions</span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+              {/* Catégories supprimées du menu mobile */}
               
               {/* Contact info */}
               <div className="mt-10 pt-10 border-t border-gray-100">

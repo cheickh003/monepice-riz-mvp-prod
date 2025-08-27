@@ -1,0 +1,683 @@
+{
+  "excelSheets": [
+    "Table 1",
+    "Table 2",
+    "Table 3",
+    "Table 4",
+    "Table 5"
+  ],
+  "excelRows": 797,
+  "productsInJson": 182,
+  "jsonNotInExcel": [
+    {
+      "id": 106,
+      "name": "LAIT NAN 1 400g"
+    },
+    {
+      "id": 107,
+      "name": "COUCHES PAMPERS TAILLE 3"
+    },
+    {
+      "id": 108,
+      "name": "CEREALES NESTLE BLEDINA 250g"
+    },
+    {
+      "id": 109,
+      "name": "BIBERON MAM 260ml"
+    },
+    {
+      "id": 110,
+      "name": "LINGETTES PAMPERS SENSITIVE"
+    },
+    {
+      "id": 111,
+      "name": "LAIT NAN 2 400g"
+    },
+    {
+      "id": 112,
+      "name": "COUCHES HUGGIES TAILLE 4"
+    },
+    {
+      "id": 113,
+      "name": "CREME MUSTELA 200ml"
+    },
+    {
+      "id": 114,
+      "name": "PETIT POT NESTLE LEGUMES"
+    },
+    {
+      "id": 115,
+      "name": "SAVON JOHNSON'S BABY 100g"
+    },
+    {
+      "id": 9029,
+      "name": "Eau Evian 1,5L pack"
+    },
+    {
+      "id": 9030,
+      "name": "Eau Evian 1L"
+    },
+    {
+      "id": 9031,
+      "name": "Eau Evian 50cl"
+    },
+    {
+      "id": 39,
+      "name": "Canette Orangina"
+    },
+    {
+      "id": 40,
+      "name": "Canette Sprite"
+    },
+    {
+      "id": 41,
+      "name": "Coca cola PET"
+    },
+    {
+      "id": 42,
+      "name": "FANTA ORANGE MINI"
+    },
+    {
+      "id": 43,
+      "name": "FANTA PET"
+    },
+    {
+      "id": 44,
+      "name": "ORANGINA PET"
+    },
+    {
+      "id": 47,
+      "name": "SPRITE PET"
+    },
+    {
+      "id": 52,
+      "name": "YOUKI POMME"
+    },
+    {
+      "id": 53,
+      "name": "BISSAP FEUILLE"
+    },
+    {
+      "id": 54,
+      "name": "BISSAP FEUILLE"
+    },
+    {
+      "id": 55,
+      "name": "Codys Energy"
+    },
+    {
+      "id": 56,
+      "name": "IVORIO ANANAS"
+    },
+    {
+      "id": 57,
+      "name": "IVORIO COCKTAIL"
+    },
+    {
+      "id": 58,
+      "name": "IVORIO PASSION"
+    },
+    {
+      "id": 60,
+      "name": "Jus capri Sun Orang"
+    },
+    {
+      "id": 64,
+      "name": "Jus Mini Pressia"
+    },
+    {
+      "id": 65,
+      "name": "Jus Pressea Nectar Cocktail"
+    },
+    {
+      "id": 66,
+      "name": "Jus Pressea Nectar Orange"
+    },
+    {
+      "id": 69,
+      "name": "PUR JUS ORANG BF"
+    },
+    {
+      "id": 71,
+      "name": "SIROP BID FRAMB BF"
+    },
+    {
+      "id": 72,
+      "name": "SIROP BID GRENAD BF"
+    },
+    {
+      "id": 73,
+      "name": "SIROP MENTHE BF"
+    },
+    {
+      "id": 77,
+      "name": "Youki COCKTAIL"
+    },
+    {
+      "id": 78,
+      "name": "Youki Moka"
+    },
+    {
+      "id": 9002,
+      "name": "Entrecôte de bœuf"
+    },
+    {
+      "id": 9004,
+      "name": "Viande fraîchement hachée"
+    },
+    {
+      "id": 9005,
+      "name": "Queue de bœuf"
+    },
+    {
+      "id": 9006,
+      "name": "Merguez aux épices Gouanou mini"
+    },
+    {
+      "id": 9007,
+      "name": "Merguez aux épices Gouanou"
+    },
+    {
+      "id": 9008,
+      "name": "Rognon de bœuf"
+    },
+    {
+      "id": 96,
+      "name": "SAVON PALMOLIVE 90g"
+    },
+    {
+      "id": 97,
+      "name": "DENTIFRICE COLGATE 75ml"
+    },
+    {
+      "id": 98,
+      "name": "LESSIVE OMO 400g"
+    },
+    {
+      "id": 99,
+      "name": "SHAMPOING HEAD & SHOULDERS 200ml"
+    },
+    {
+      "id": 100,
+      "name": "SAVON LIFEBUOY 75g"
+    },
+    {
+      "id": 101,
+      "name": "LESSIVE ARIEL 500g"
+    },
+    {
+      "id": 102,
+      "name": "DEODORANT AXE 150ml"
+    },
+    {
+      "id": 103,
+      "name": "LIQUIDE VAISSELLE VIM 500ml"
+    },
+    {
+      "id": 104,
+      "name": "EAU DE JAVEL LA CROIX 1L"
+    },
+    {
+      "id": 105,
+      "name": "BROSSE A DENTS ORAL-B"
+    },
+    {
+      "id": 9028,
+      "name": "Sel moulu de Guérande"
+    },
+    {
+      "id": 117,
+      "name": "Gouanou - Mélange 20 épices pour sublimer vos plats"
+    },
+    {
+      "id": 118,
+      "name": "Mankou - Gouanou aux piments"
+    },
+    {
+      "id": 119,
+      "name": "Gouanou Marinade Verte"
+    },
+    {
+      "id": 120,
+      "name": "Gouanou Marinade Viande"
+    },
+    {
+      "id": 121,
+      "name": "Tomate en poudre"
+    },
+    {
+      "id": 122,
+      "name": "Tomate en poudre aux épices"
+    },
+    {
+      "id": 123,
+      "name": "Poivre"
+    },
+    {
+      "id": 124,
+      "name": "Gingembre"
+    },
+    {
+      "id": 125,
+      "name": "Curry"
+    },
+    {
+      "id": 126,
+      "name": "Curcuma"
+    },
+    {
+      "id": 127,
+      "name": "Coriandre"
+    },
+    {
+      "id": 128,
+      "name": "Gombo sec"
+    },
+    {
+      "id": 129,
+      "name": "Pâte d'arachide"
+    },
+    {
+      "id": 130,
+      "name": "Poisson sec"
+    },
+    {
+      "id": 131,
+      "name": "Crevette séchée"
+    },
+    {
+      "id": 132,
+      "name": "Akpi aux épices africaines"
+    },
+    {
+      "id": 2,
+      "name": "BEURRE AYA"
+    },
+    {
+      "id": 5,
+      "name": "BEURRE SAINT AVE"
+    },
+    {
+      "id": 6,
+      "name": "BEURRE TENDRE DX"
+    },
+    {
+      "id": 10,
+      "name": "BRIE BTE PRESID"
+    },
+    {
+      "id": 11,
+      "name": "CAPRICE DES DIEUX"
+    },
+    {
+      "id": 14,
+      "name": "EMMENTAL RAPE PRESI"
+    },
+    {
+      "id": 18,
+      "name": "LESIEUR MAYONNAISE"
+    },
+    {
+      "id": 21,
+      "name": "ROQUEFORT SOCIETE"
+    },
+    {
+      "id": 133,
+      "name": "Poisson fumé"
+    },
+    {
+      "id": 134,
+      "name": "Queue de bœuf fumée"
+    },
+    {
+      "id": 136,
+      "name": "Bœuf fumé"
+    },
+    {
+      "id": 137,
+      "name": "Mouton fumé"
+    },
+    {
+      "id": 9011,
+      "name": "Mérou en tranche"
+    },
+    {
+      "id": 9012,
+      "name": "Mérou entier"
+    },
+    {
+      "id": 9013,
+      "name": "Thon blanc en tranche"
+    },
+    {
+      "id": 9014,
+      "name": "Sole"
+    },
+    {
+      "id": 9015,
+      "name": "Carpe"
+    },
+    {
+      "id": 9016,
+      "name": "Tilapia"
+    },
+    {
+      "id": 9017,
+      "name": "St Pierre"
+    },
+    {
+      "id": 9018,
+      "name": "Bar (Sosso)"
+    },
+    {
+      "id": 9021,
+      "name": "Crevettes"
+    },
+    {
+      "id": 9022,
+      "name": "Écrevisses"
+    },
+    {
+      "id": 9023,
+      "name": "Escargots Achatina Achatina"
+    },
+    {
+      "id": 9024,
+      "name": "Escargots Achatina en vrac"
+    },
+    {
+      "id": 9025,
+      "name": "Crabes frais"
+    },
+    {
+      "id": 123,
+      "name": "Crevettes Fraîches"
+    },
+    {
+      "id": 116,
+      "name": "Poisson St Pierre en tranches ou entier"
+    },
+    {
+      "id": 9026,
+      "name": "Couscous Ferrero Moyen"
+    },
+    {
+      "id": 9027,
+      "name": "Huile d'olive Puget"
+    },
+    {
+      "id": 23,
+      "name": "Biscuit BN Pocket Choco"
+    },
+    {
+      "id": 25,
+      "name": "CHIPSY"
+    },
+    {
+      "id": 28,
+      "name": "CRUNCH GOFRET"
+    },
+    {
+      "id": 33,
+      "name": "MINI BN CHOCOLAT"
+    },
+    {
+      "id": 37,
+      "name": "MINI BN FRAISE"
+    },
+    {
+      "id": 38,
+      "name": "Wafers Milk Toren"
+    },
+    {
+      "id": 79,
+      "name": "Huile Aya"
+    },
+    {
+      "id": 80,
+      "name": "HUILE D'OLIVE JANA"
+    },
+    {
+      "id": 82,
+      "name": "Huile Dinor"
+    },
+    {
+      "id": 83,
+      "name": "HUILE DINOR"
+    },
+    {
+      "id": 84,
+      "name": "HUILE DINOR"
+    },
+    {
+      "id": 85,
+      "name": "Huile Dinor"
+    },
+    {
+      "id": 88,
+      "name": "HUILE OLIVE V.E PUGET"
+    },
+    {
+      "id": 89,
+      "name": "HUILE ROUGE"
+    },
+    {
+      "id": 90,
+      "name": "HUILE ROUGE"
+    },
+    {
+      "id": 9009,
+      "name": "Poulet effilé"
+    },
+    {
+      "id": 9010,
+      "name": "Chipolatas aux épices Gouanou"
+    },
+    {
+      "id": 126,
+      "name": "Poulet Effilé +1.5kg"
+    }
+  ],
+  "excelPotentialNotInJson": [
+    "beurre aya 200gr",
+    "beurre saint ave 200gr",
+    "beurre tendre dx 82",
+    "brie bte presid 125g",
+    "caprice des dieux 125g",
+    "emmental rape presi 70g",
+    "lesieur mayonnaise 475g",
+    "roquefort societe 100g",
+    "biscuit bn pocket choco 150g",
+    "chipsy 26g",
+    "crunch gofret 30g",
+    "mini bn chocolat 175g",
+    "mini bn fraise 175g",
+    "wafers milk toren 55g",
+    "canette orangina 33cl",
+    "canette sprite 33cl",
+    "coca cola pet 30cl",
+    "fanta orange mini 150ml",
+    "fanta pet 30cl",
+    "orangina pet 50cl",
+    "sprite pet 30cl",
+    "youki pomme 30cl",
+    "bissap feuille 100g",
+    "bissap feuille 200g",
+    "codys energy 250ml",
+    "ivorio ananas 33cl",
+    "ivorio cocktail 33cl",
+    "ivorio passion 33cl",
+    "jus capri sun orang 200ml",
+    "jus mini pressia 200ml",
+    "jus pressea nectar cocktail 1l",
+    "jus pressea nectar orange 1l",
+    "pur jus orang bf 1 5l",
+    "sirop bid framb bf 75cl",
+    "sirop bid grenad bf 75cl",
+    "sirop menthe bf 75cl",
+    "youki cocktail 30cl",
+    "youki moka 30cl",
+    "cornichon martins",
+    "gigot agneau cuit",
+    "mouton de mechoui au",
+    "poisson carpe",
+    "salade de viande de boeuf 200",
+    "diamant noir bloc de",
+    "olla sardine 125g",
+    "sardine a huile marc",
+    "sardine costa 125g",
+    "sardines bonjounrne by",
+    "sardines joly 125g",
+    "thon a huile rois des",
+    "thon a l huile de tournessol 80g",
+    "thon au naturel 160g",
+    "aile semoule fine",
+    "alisa levure chimique 8g",
+    "anis vert en poudre",
+    "apta nutri cire",
+    "ass barbecue 125 gr",
+    "ass barbecue 75 gr",
+    "ass persillade 60 gr",
+    "ass poisson 125 gr",
+    "ass poisson 75 gr",
+    "ass poulet 125 gr",
+    "ass poulet 75 gr",
+    "ass riz curcuma 55 gr",
+    "ass riz gras 60 gr",
+    "ass riz moutarde 55 gr",
+    "ass riz soumara 75 gr",
+    "ass tout usage 125 gr",
+    "ass tout usage 75 gr",
+    "ass viande 125 gr",
+    "ass viande 75 gr",
+    "basilic feuille",
+    "bonduelle macedoine",
+    "celeri feuille",
+    "clous de girofle poudre",
+    "cuilleres cafe bois x12",
+    "curcuma poudre",
+    "cure dent",
+    "curry imperator",
+    "datte nature tamaro",
+    "desodorisant fleurs",
+    "destructeur d odeur",
+    "eponge veg grat cell 3p",
+    "eponges usage courant",
+    "eponges vegetales",
+    "escargot",
+    "essuie tout pro style",
+    "frite pomarillo 2 5k",
+    "frite ricardo chef 2 5kg",
+    "frite straight cut 2 5",
+    "gant de vaisselle long",
+    "gingembre poudre",
+    "glace alimentaire",
+    "haricot vert tres fin",
+    "herbes de provence",
+    "home gobelets 100ml x20",
+    "home gobelets vert 100ml",
+    "kable",
+    "labell compresse x10",
+    "labell confort 3pli",
+    "labell cors",
+    "laurier poudre",
+    "macedoine bonduelle 400gr",
+    "macedoine de legumes",
+    "mais ferme de l abbaye",
+    "moringa assaisonne",
+    "moringa poudre",
+    "mouchoirs etui doux x15",
+    "okay serviette de table",
+    "olive vert ayour 720ml",
+    "origan feuilles",
+    "pansement enfts x20",
+    "papier aluminium 50m",
+    "paprika doux",
+    "pate de mouton",
+    "persil gros flocon",
+    "petit pois ferma abbaye 400gr",
+    "petits poids tres fins",
+    "piment de table 100 gr",
+    "piment dit de cayenne",
+    "pique brochette",
+    "poivre blanc poudre",
+    "poivre gris grain",
+    "poivre gris poudre",
+    "romarin entier coupe",
+    "sauce bbq fs amora 490g",
+    "sauce sodja light pearl",
+    "serviette maxi goodnight",
+    "serviette ultra reg nana",
+    "soumara assaisonne",
+    "soumara epice",
+    "soumara nature 100 gr",
+    "sucre vanilline maman",
+    "tampon meta x3 apta 54g",
+    "thym monde",
+    "eau minerale celeste 33cl",
+    "eau minerale celeste 0 5l",
+    "eau minerale celeste 1 5l",
+    "eau minerale cristaline 33cl",
+    "eau minerale cristaline 0 5l",
+    "eau minerale cristaline 1 5l",
+    "eau minerale evian 33cl",
+    "eau minerale evian 1l",
+    "eau minerale evian 1 5l",
+    "eau minerale evian 50cl",
+    "eau minerale kirene 0 5l",
+    "eau minerale kirene 1 5l",
+    "eau minerale kirene 33cl",
+    "eau minerale kirkland 0 5l",
+    "eau minerale olgane 33l",
+    "eau minerale perrier 20cl",
+    "eau minerale volvic 1l",
+    "gants nitrile jetb non",
+    "sac isotherme",
+    "sac pou b dynastie 30l",
+    "sac pou dynastie 50l",
+    "sac poub apta 10x 100l",
+    "sac poub lc apta 50l",
+    "sac poubelle dynastie 100l",
+    "sac poubelle dynastie 120l",
+    "sac poubelle eco",
+    "adjovan",
+    "ail poudre 80g",
+    "akpi 100g",
+    "akpi 50g",
+    "alyssa tomate conc 400g",
+    "bouquet garni scht",
+    "coriandre grain 70g",
+    "coriandre moulu 80g",
+    "crevette pdre 50g",
+    "cube maggi 100c",
+    "cube maggi 4g",
+    "cumin poudre 80g",
+    "curcuma moulu ducros",
+    "curry pdre pv ducros",
+    "djoumgble 250g",
+    "feuille de basilic 50g",
+    "gingembre moulu",
+    "gingembre poudre 80g",
+    "gouanou 250gr",
+    "gouanou 44g",
+    "gouanou mankou 44gr",
+    "laurier ducros scht 17g",
+    "maggi crevette 3x10g",
+    "maggi crevette 600g",
+    "maggi poulet 3x10g",
+    "maggi poulet 600g",
+    "maggi tablette",
+    "maggi tablette 3x10g",
+    "oignon poudre 80g",
+    "oignon rissole 70g",
+    "paprika 80g",
+    "pate arachide 1kg",
+    "pate arachide 500g",
+    "pate cajou 1kg",
+    "pate cajou 500g",
+    "pate pistache 1kg",
+    "pate pistache 500g",
+    "persil 500g",
+    "persil bte ducros 17g"
+  ]
+}
