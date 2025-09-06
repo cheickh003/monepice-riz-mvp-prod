@@ -57,7 +57,7 @@ export default function DeliveryPage() {
         date: slotDate.toISOString().split('T')[0],
         startTime: `${hour}:00`,
         endTime: `${hour + 2}:00`,
-        available: Math.random() > 0.2, // 80% availability
+        available: (parseInt(hour.toString()) + parseInt(slotDate.getDate().toString())) % 5 !== 0, // Deterministic availability
         price: 1500,
       });
     }

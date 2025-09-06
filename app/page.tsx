@@ -6,51 +6,51 @@ import { categories, getFeaturedProducts, getPromoProducts, getProductsByCategor
 import { ShoppingCart, Truck, CheckCircle, CreditCard, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import * as Icons from '@/lib/icons';
 import ProductCard from '@/components/product/ProductCard';
+import { Product } from '@/lib/types';
 
 export default function Home() {
-  const featuredProducts = (() => {
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [promoProducts, setPromoProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    // Filter products on client side to avoid hydration mismatch
     const realImages = getFeaturedProducts(8).filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
     const placeholders = getFeaturedProducts(8).filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
-    return [...realImages, ...placeholders].slice(0, 8);
-  })();
-  
-  const promoProducts = (() => {
-    const realImages = getPromoProducts(8).filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
-    const placeholders = getPromoProducts(8).filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
-    return [...realImages, ...placeholders].slice(0, 8);
-  })();
+    setFeaturedProducts([...realImages, ...placeholders].slice(0, 8));
+
+    const promoRealImages = getPromoProducts(8).filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const promoPlaceholders = getPromoProducts(8).filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    setPromoProducts([...promoRealImages, ...promoPlaceholders].slice(0, 8));
+  }, []);
   const [currentSlide, setCurrentSlide] = useState(0);
-  
-  // Récupérer les produits du jour (vraies images en priorité, puis placeholders)
-  const boucherieProducts = (() => {
-    const realImages = getProductsByCategory('boucherie').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
-    const placeholders = getProductsByCategory('boucherie').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
-    return [...realImages, ...placeholders].slice(0, 4);
-  })();
-  
-  const poissonnerieProducts = (() => {
-    const realImages = getProductsByCategory('poissonnerie').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
-    const placeholders = getProductsByCategory('poissonnerie').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
-    return [...realImages, ...placeholders].slice(0, 4);
-  })();
-  
-  const volailleProducts = (() => {
-    const realImages = getProductsByCategory('volaille').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
-    const placeholders = getProductsByCategory('volaille').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
-    return [...realImages, ...placeholders].slice(0, 4);
-  })();
-  
-  const epicesProducts = (() => {
-    const realImages = getProductsByCategory('epices').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
-    const placeholders = getProductsByCategory('epices').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
-    return [...realImages, ...placeholders].slice(0, 4);
-  })();
-  
-  const petitsFumesProducts = (() => {
-    const realImages = getProductsByCategory('petits-fumes').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
-    const placeholders = getProductsByCategory('petits-fumes').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
-    return [...realImages, ...placeholders].slice(0, 4);
-  })();
+  const [boucherieProducts, setBoucherieProducts] = useState<Product[]>([]);
+  const [poissonnerieProducts, setPoissonnerieProducts] = useState<Product[]>([]);
+  const [volailleProducts, setVolailleProducts] = useState<Product[]>([]);
+  const [epicesProducts, setEpicesProducts] = useState<Product[]>([]);
+  const [petitsFumesProducts, setPetitsFumesProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    // Filter products on client side to avoid hydration mismatch
+    const boucherieRealImages = getProductsByCategory('boucherie').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const boucheriePlaceholders = getProductsByCategory('boucherie').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    setBoucherieProducts([...boucherieRealImages, ...boucheriePlaceholders].slice(0, 4));
+
+    const poissonnerieRealImages = getProductsByCategory('poissonnerie').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const poissonneriePlaceholders = getProductsByCategory('poissonnerie').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    setPoissonnerieProducts([...poissonnerieRealImages, ...poissonneriePlaceholders].slice(0, 4));
+
+    const volailleRealImages = getProductsByCategory('volaille').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const volaillePlaceholders = getProductsByCategory('volaille').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    setVolailleProducts([...volailleRealImages, ...volaillePlaceholders].slice(0, 4));
+
+    const epicesRealImages = getProductsByCategory('epices').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const epicesPlaceholders = getProductsByCategory('epices').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    setEpicesProducts([...epicesRealImages, ...epicesPlaceholders].slice(0, 4));
+
+    const petitsFumesRealImages = getProductsByCategory('petits-fumes').filter(p => p.images && p.images.length > 0 && !p.images[0].includes('placeholder'));
+    const petitsFumesPlaceholders = getProductsByCategory('petits-fumes').filter(p => p.images && p.images.length > 0 && p.images[0].includes('placeholder'));
+    setPetitsFumesProducts([...petitsFumesRealImages, ...petitsFumesPlaceholders].slice(0, 4));
+  }, []);
   
 
   const slides = [

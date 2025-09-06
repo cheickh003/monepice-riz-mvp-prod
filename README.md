@@ -53,7 +53,8 @@ Ouvrir [http://localhost:3000](http://localhost:3000) dans votre navigateur.
 
 ## 🛠️ Technologies utilisées
 
-- **Next.js 14** avec App Router
+- **Next.js 15** avec App Router
+- **React 19**
 - **TypeScript** pour le typage
 - **Tailwind CSS** pour le styling
 - **Zustand** pour la gestion d'état (panier et checkout)

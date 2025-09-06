@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useCheckoutStore } from '@/lib/stores/checkoutStore';
@@ -8,7 +8,13 @@ import { Check, Lightbulb, MapPin, Clock } from 'lucide-react';
 
 function ConfirmationContent() {
   const searchParams = useSearchParams();
-  const orderNumber = searchParams.get('order') || `MEP${Date.now().toString().slice(-8)}`;
+  const [orderNumber, setOrderNumber] = useState<string>('');
+
+  useEffect(() => {
+    const order = searchParams.get('order') || `MEP${Date.now().toString().slice(-8)}`;
+    setOrderNumber(order);
+  }, [searchParams]);
+
   const { resetCheckout, deliveryMethod, deliveryAddress, customerInfo } = useCheckoutStore();
 
   useEffect(() => {

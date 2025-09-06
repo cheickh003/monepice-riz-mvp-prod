@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Product, CartItem, Cart } from '@/lib/types';
+import { roundToMultipleOfFive } from '@/lib/payments/cinetpay';
 
 interface CartStore {
   items: CartItem[];
@@ -12,6 +13,14 @@ interface CartStore {
   getTotalItems: () => number;
   isInCart: (productId: number) => boolean;
   getItemQuantity: (productId: number) => number;
+  // Nouvelles méthodes pour le calcul avec livraison
+  getTotalWithDelivery: (deliveryMethod: 'delivery' | 'pickup', deliverySlotPrice?: number) => {
+    subtotal: number;
+    deliveryFee: number;
+    preparationFee: number;
+    total: number;
+    roundedTotal: number;
+  };
 }
 
 // Frais de livraison et de préparation
@@ -105,6 +114,35 @@ export const useCartStore = create<CartStore>()(
         const state = get();
         const item = state.items.find(item => item.product.id === productId);
         return item ? item.quantity : 0;
+      },
+
+      getTotalWithDelivery: (deliveryMethod: 'delivery' | 'pickup', deliverySlotPrice = 0) => {
+        const state = get();
+        const subtotal = state.items.reduce((total, item) => {
+          const price = item.product.isPromo && item.product.promoPrice
+            ? item.product.promoPrice
+            : item.product.price;
+          return total + (price * item.quantity);
+        }, 0);
+
+        const totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
+
+        // Calcul selon les règles du plan:
+        // total = subtotal + preparationFee + (deliveryMethod === 'pickup' ? 0 : deliverySlot.price)
+        const preparationFee = totalItems > 0 ? PREPARATION_FEE : 0;
+        const deliveryFee = deliveryMethod === 'pickup' ? 0 : deliverySlotPrice;
+        const total = subtotal + preparationFee + deliveryFee;
+
+        // Arrondi au multiple de 5 pour les paiements CinetPay
+        const roundedTotal = roundToMultipleOfFive(total);
+
+        return {
+          subtotal,
+          deliveryFee,
+          preparationFee,
+          total,
+          roundedTotal,
+        };
       },
     }),
     {

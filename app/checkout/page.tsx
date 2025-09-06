@@ -3,15 +3,35 @@
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/stores/cartStore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShoppingCart, Minus, Plus } from 'lucide-react';
 import * as Icons from '@/lib/icons';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, updateQuantity, removeItem, getCart } = useCartStore();
-  const cart = getCart();
+  const [cartData, setCartData] = useState<{
+    subtotal: number;
+    deliveryFee: number;
+    preparationFee: number;
+    total: number;
+    totalItems: number;
+  } | null>(null);
+  const [isClient, setIsClient] = useState(false);
   const [isGuest, setIsGuest] = useState(true);
+
+  // Initialize cart data on client side to avoid hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+    const cart = getCart();
+    setCartData({
+      subtotal: cart.subtotal,
+      deliveryFee: cart.deliveryFee,
+      preparationFee: cart.preparationFee,
+      total: cart.total,
+      totalItems: cart.totalItems,
+    });
+  }, [getCart]);
 
   const getProductIcon = (mainCategory: string) => {
     return Icons.categoryIcons[mainCategory as keyof typeof Icons.categoryIcons] || Icons.Package;
@@ -113,7 +133,7 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-lg shadow-sm">
               <div className="p-6">
                 <h2 className="text-lg font-semibold mb-4">
-                  Votre panier ({cart.totalItems} article{cart.totalItems > 1 ? 's' : ''})
+                  Votre panier ({cartData?.totalItems || 0} article{(cartData?.totalItems || 0) > 1 ? 's' : ''})
                 </h2>
                 <div className="space-y-4">
                   {items.map((item) => (
@@ -177,21 +197,21 @@ export default function CheckoutPage() {
               
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span>Sous-total ({cart.totalItems} article{cart.totalItems > 1 ? 's' : ''})</span>
-                  <span>{cart.subtotal.toLocaleString('fr-FR')} F</span>
+                  <span>Sous-total ({cartData?.totalItems || 0} article{(cartData?.totalItems || 0) > 1 ? 's' : ''})</span>
+                  <span>{isClient && cartData ? cartData.subtotal.toLocaleString('fr-FR') : '0'} F</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Frais de livraison</span>
-                  <span>{cart.deliveryFee.toLocaleString('fr-FR')} F</span>
+                  <span>{isClient && cartData ? cartData.deliveryFee.toLocaleString('fr-FR') : '0'} F</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Frais de préparation</span>
-                  <span>{cart.preparationFee.toLocaleString('fr-FR')} F</span>
+                  <span>{isClient && cartData ? cartData.preparationFee.toLocaleString('fr-FR') : '0'} F</span>
                 </div>
                 <div className="pt-3 border-t">
                   <div className="flex justify-between font-semibold text-base">
                     <span>Total TTC</span>
-                    <span className="text-primary">{cart.total.toLocaleString('fr-FR')} F CFA</span>
+                    <span className="text-primary">{isClient && cartData ? cartData.total.toLocaleString('fr-FR') : '0'} F CFA</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">TVA incluse</p>
                 </div>

@@ -28,8 +28,8 @@ interface CheckoutStore {
   setDeliveryInstructions: (instructions: string) => void;
 
   // Méthode de paiement
-  paymentMethod: 'mobile_money' | 'card' | 'cash_on_delivery' | 'cash_on_order';
-  setPaymentMethod: (method: 'mobile_money' | 'card' | 'cash_on_delivery' | 'cash_on_order') => void;
+  paymentMethod: 'mobile_money' | 'card';
+  setPaymentMethod: (method: 'mobile_money' | 'card') => void;
 
   // Mobile Money provider
   mobileMoneyProvider: 'orange' | 'mtn' | 'moov' | 'wave' | null;
@@ -85,3 +85,15 @@ export const useCheckoutStore = create<CheckoutStore>((set) => ({
       mobileMoneyProvider: null,
     }),
 }));
+
+// Fonction utilitaire pour mapper paymentMethod vers channel CinetPay
+export const getPaymentChannel = (paymentMethod: string): 'MOBILE_MONEY' | 'CREDIT_CARD' | 'WALLET' => {
+  switch (paymentMethod) {
+    case 'mobile_money':
+      return 'MOBILE_MONEY';
+    case 'card':
+      return 'CREDIT_CARD';
+    default:
+      return 'MOBILE_MONEY'; // fallback
+  }
+};

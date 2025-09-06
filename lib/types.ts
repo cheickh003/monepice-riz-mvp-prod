@@ -80,14 +80,50 @@ export interface Order {
   preparationFee: number;
   total: number;
   status: 'pending' | 'confirmed' | 'preparing' | 'delivering' | 'delivered' | 'cancelled';
-  paymentMethod: 'mobile_money' | 'card' | 'cash_on_delivery';
+  paymentMethod: 'mobile_money' | 'card';
   paymentStatus: 'pending' | 'paid' | 'failed';
+  // Champs de paiement CinetPay
+  transactionId?: string;
+  paymentChannel?: 'MOBILE_MONEY' | 'CREDIT_CARD' | 'WALLET';
+  paymentProvider?: 'orange' | 'mtn' | 'moov' | 'wave';
+  paymentCode?: string;
+  paymentMessage?: string;
+  paymentUrl?: string;
+  paidAt?: string;
+  failureReason?: string;
   deliveryMethod: 'delivery' | 'pickup';
   deliveryAddress?: Address;
   deliverySlot?: DeliverySlot;
   createdAt: string;
   updatedAt: string;
   notes?: string;
+}
+
+// Type pour la persistance des transactions CinetPay (côté serveur)
+export interface PaymentTransaction {
+  id: string;
+  transactionId: string;
+  orderNumber: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'paid' | 'failed' | 'cancelled';
+  paymentMethod: string;
+  paymentChannel: 'MOBILE_MONEY' | 'CREDIT_CARD' | 'WALLET';
+  paymentProvider?: 'orange' | 'mtn' | 'moov' | 'wave';
+  paymentCode?: string;
+  paymentMessage?: string;
+  customerInfo: {
+    fullName: string;
+    email?: string;
+    phoneNumber: string;
+  };
+  // Pour validation HMAC et debug
+  rawPayload?: any;
+  rawHeaders?: any;
+  hmacToken?: string;
+  webhookReceivedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface User {

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { Product } from '@/lib/types';
 import { useCartStore } from '@/lib/stores/cartStore';
 import * as Icons from '@/lib/icons';
@@ -11,19 +12,31 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addItem, updateQuantity, getItemQuantity } = useCartStore();
-  const quantity = getItemQuantity(product.id);
+  const [quantity, setQuantity] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+
+  // Get quantity on client side to avoid hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+    setQuantity(getItemQuantity(product.id));
+  }, [getItemQuantity, product.id]);
 
   const handleAddToCart = () => {
     addItem(product);
+    setQuantity(1); // Assuming addItem adds 1 item
   };
 
   const handleIncrease = () => {
-    updateQuantity(product.id, quantity + 1);
+    const newQuantity = quantity + 1;
+    updateQuantity(product.id, newQuantity);
+    setQuantity(newQuantity);
   };
 
   const handleDecrease = () => {
     if (quantity > 0) {
-      updateQuantity(product.id, quantity - 1);
+      const newQuantity = quantity - 1;
+      updateQuantity(product.id, newQuantity);
+      setQuantity(newQuantity);
     }
   };
 
@@ -55,8 +68,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
 
-          {/* Badge dans le panier */}
-          {quantity > 0 && (
+          {/* Badge dans le panier - Only show on client */}
+          {isClient && quantity > 0 && (
             <div className="absolute top-2 right-2 bg-success text-white rounded-full p-1">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -121,6 +134,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         {product.stock === 'out_of_stock' ? (
           <button disabled className="btn-primary w-full opacity-50 cursor-not-allowed">
             Rupture de stock
+          </button>
+        ) : !isClient ? (
+          <button className="btn-primary w-full opacity-50 cursor-not-allowed">
+            Chargement...
           </button>
         ) : quantity === 0 ? (
           <button onClick={handleAddToCart} className="btn-primary w-full">

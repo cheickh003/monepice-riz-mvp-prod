@@ -8,12 +8,12 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   const popularCategories = [
-    { name: 'Épices & Condiments', href: '/categories/epices-condiments' },
-    { name: 'Riz & Céréales', href: '/categories/riz-cereales' },
-    { name: 'Légumes Frais', href: '/categories/legumes-frais' },
-    { name: 'Fruits Tropicaux', href: '/categories/fruits-tropicaux' },
-    { name: 'Produits Locaux', href: '/categories/produits-locaux' },
-    { name: 'Boissons', href: '/categories/boissons' },
+    { name: 'Boucherie', href: '/products/boucherie' },
+    { name: 'Poissonnerie', href: '/products/poissonnerie' },
+    { name: 'Volaille', href: '/products/volaille' },
+    { name: 'Épices', href: '/products/epices' },
+    { name: 'Boissons', href: '/products/boissons' },
+    { name: 'Hygiène & Entretien', href: '/products/entretien' },
   ];
 
   return (
