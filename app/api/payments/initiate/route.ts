@@ -52,7 +52,8 @@ export async function POST(request: NextRequest) {
     const notifyUrl = process.env.CINETPAY_NOTIFY_URL || `${baseUrl}/api/payments/webhook`;
 
     // Mapper le channel de paiement
-    const cinetPayChannel = channel || getPaymentChannel(paymentMethod);
+    // Laisser l'utilisateur choisir sur le guichet CinetPay
+    const cinetPayChannel = 'ALL';
 
     // Construire le payload CinetPay
     const cinetPayPayload = buildInitiatePayload({

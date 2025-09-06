@@ -14,9 +14,6 @@ export default function PaymentPage() {
     deliveryMethod,
     deliverySlot,
     paymentMethod,
-    setPaymentMethod,
-    mobileMoneyProvider,
-    setMobileMoneyProvider,
   } = useCheckoutStore();
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -50,12 +47,8 @@ export default function PaymentPage() {
   }, [deliveryMethod, deliverySlot?.price, getTotalWithDelivery, getCart]);
 
   const handlePayment = async () => {
-    if (paymentMethod === 'mobile_money' && !mobileMoneyProvider) {
-      alert('Veuillez sélectionner un opérateur Mobile Money');
-    } else {
-      // Initiate real CinetPay payment
-      await initiateCinetPayPayment();
-    }
+    // Le choix final (Mobile Money ou Carte) se fait sur CinetPay
+    await initiateCinetPayPayment();
   };
 
   const initiateCinetPayPayment = async () => {
@@ -73,13 +66,13 @@ export default function PaymentPage() {
       // Use rounded total for CinetPay
       const totalAmount = totalCalculation.roundedTotal;
 
-      // Prepare payment payload
+      // Prepare payment payload (le choix se fera sur CinetPay)
       const paymentPayload = {
         orderNumber,
         amount: totalAmount,
         currency: 'XOF',
         paymentMethod,
-        channel: paymentMethod === 'mobile_money' ? 'MOBILE_MONEY' : 'CREDIT_CARD',
+        channel: 'ALL',
         customer: {
           fullName: customerInfo.fullName,
           email: customerInfo.email,
@@ -155,117 +148,29 @@ export default function PaymentPage() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            {/* Méthodes de paiement */}
             <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-lg font-semibold mb-4">Choisissez votre mode de paiement</h2>
-
-              {/* Mobile Money */}
-              <div className="space-y-4">
-                <label className="block">
-                  <div className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="mobile_money"
-                      checked={paymentMethod === 'mobile_money'}
-                      onChange={() => setPaymentMethod('mobile_money')}
-                    />
-                    <div className="flex-1">
-                      <p className="font-medium">Mobile Money</p>
-                      <p className="text-sm text-gray-600">Orange, MTN, Moov, Wave</p>
+              <h2 className="text-lg font-semibold mb-4">Paiement via CinetPay</h2>
+              <p className="text-sm text-gray-600 mb-4">
+                Sélectionnez votre moyen de paiement directement sur l'interface sécurisée de CinetPay (Mobile Money ou Carte).
+              </p>
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                {[
+                  { name: 'Orange Money', logo: '/images/payment-logos/logo orange money.png' },
+                  { name: 'MTN Money', logo: '/images/payment-logos/mtn money.png' },
+                  { name: 'Moov Money', logo: '/images/payment-logos/logo moov money.webp' },
+                  { name: 'Wave', logo: '/images/payment-logos/Logo vague.png' },
+                  { name: 'Visa', logo: '/images/payment-logos/visa logo.webp' },
+                  { name: 'Mastercard', logo: '/images/payment-logos/Logo Mastercard.svg' },
+                ].map((m) => (
+                  <div key={m.name} className="p-3 border rounded-lg bg-gray-50 flex items-center justify-center">
+                    <div className="relative w-12 h-8">
+                      <Image src={m.logo} alt={m.name} fill className="object-contain" />
                     </div>
                   </div>
-                </label>
-
-                {paymentMethod === 'mobile_money' && (
-                  <div className="ml-12 grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {[
-                      { id: 'orange', name: 'Orange Money', logo: '/images/payment-logos/logo orange money.png' },
-                      { id: 'mtn', name: 'MTN Money', logo: '/images/payment-logos/mtn money.png' },
-                      { id: 'moov', name: 'Moov Money', logo: '/images/payment-logos/logo moov money.webp' },
-                      { id: 'wave', name: 'Wave', logo: '/images/payment-logos/Logo vague.png' },
-                    ].map((provider) => (
-                      <label
-                        key={provider.id}
-                        className={`flex flex-col items-center p-3 border rounded-lg cursor-pointer transition-colors ${
-                          mobileMoneyProvider === provider.id
-                            ? 'border-primary bg-primary-50'
-                            : 'hover:bg-gray-50'
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="mobileMoneyProvider"
-                          value={provider.id}
-                          checked={mobileMoneyProvider === provider.id}
-                          onChange={() => setMobileMoneyProvider(provider.id as 'orange' | 'mtn' | 'moov' | 'wave')}
-                          className="sr-only"
-                        />
-                        <div className="w-12 h-12 mb-1 relative">
-                          <Image
-                            src={provider.logo}
-                            alt={provider.name}
-                            fill
-                            className="object-contain"
-                          />
-                        </div>
-                        <span className="text-xs text-center">{provider.name}</span>
-                      </label>
-                    ))}
-                  </div>
-                )}
-
-                {/* Card Payment */}
-                <label className="block">
-                  <div className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="card"
-                      checked={paymentMethod === 'card'}
-                      onChange={() => setPaymentMethod('card')}
-                    />
-                    <div className="flex-1">
-                      <p className="font-medium">Carte bancaire</p>
-                      <p className="text-sm text-gray-600">Visa, Mastercard</p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <div className="w-8 h-5 relative">
-                        <Image
-                          src="/images/payment-logos/visa logo.webp"
-                          alt="Visa"
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <div className="w-8 h-5 relative">
-                        <Image
-                          src="/images/payment-logos/Logo Mastercard.svg"
-                          alt="Mastercard"
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </label>
-
-                {paymentMethod === 'card' && (
-                  <div className="ml-12 p-4 bg-blue-50 rounded-lg">
-                    <div className="flex items-start space-x-3">
-                      <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <div className="text-sm">
-                        <p className="font-medium text-blue-900">Saisie sécurisée</p>
-                        <p className="text-blue-700">
-                          Vous serez redirigé vers la plateforme sécurisée de CinetPay pour saisir vos informations de carte bancaire.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
+                ))}
+              </div>
+              <div className="mt-3 text-xs text-gray-600">
+                Astuce: la sélection du moyen de paiement se fait sur CinetPay.
               </div>
             </div>
 
